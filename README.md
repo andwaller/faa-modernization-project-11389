@@ -2,7 +2,7 @@
 
 I love learning the history of computer technology. I had just come back from IBM TechExchange, where I gave a talk, and I had been watching videos about modernizing stable, critical systems. Banks, for example, still run core systems on mainframes that descend from the IBM System/370: decades old and rock solid.
 
-Then, on November 13, 2026, the FAA ordered a nationwide ground stop. The last one, in January 2023, was the first since the September 11, 2001 attacks (GAO-26-107992, p. 6). The media's reporting on what happened and why left me with more questions. If old systems can be rock solid, was age really the problem? GAO says FAA's aging systems are hard to maintain because replacement parts are unavailable and the technicians who knew them are retiring (p. 6). So I asked: **was this a technology problem or a project management problem?**
+Then, on November 13, 2026, the FAA ordered a nationwide ground stop. In January 2023, a nationwide ground stop was the first since the September 11, 2001 attacks (GAO-26-107992, p. 6). The media's reporting on what happened and why left me with more questions. If old systems can be rock solid, was age really the problem? GAO says FAA's aging systems are hard to maintain because replacement parts are unavailable and the technicians who knew them are retiring (p. 6). So I asked: **was this a technology problem or a project management problem?**
 
 I put the same question to my network on LinkedIn:
 
