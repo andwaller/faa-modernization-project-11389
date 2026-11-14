@@ -1,81 +1,47 @@
-## Inspiration
-
-I love the history of computing. Just back from IBM TechExchange, where I gave a talk, I had been watching videos about modernizing stable, critical systems. Banks still run core systems on mainframes descended from the IBM System/370: decades old and rock solid.
-
-Then, on November 13, 2026, the FAA ordered a nationwide ground stop. News coverage pointed to aging telecommunications equipment: outdated technology.
-
-I wondered: **the technology may be outdated, but could the project management approach have an impact too?**
-
 # Project 11,389
 
 **Thousands of infrastructure projects, each on its own schedule. What happens when you connect them?**
 
-An experiment in using [Relate by Neo4j](https://relatedb.ai), the embedded graph database, to make the connections between project schedules visible, so that an AI agent can find problems no single schedule shows.
+An experiment using [Relate by Neo4j](https://relatedb.ai), the embedded graph database, to connect project schedules so an AI agent can find problems no single schedule shows. *Work in progress.*
 
-*Work in progress.*
+## Why
 
-## Where the 11,389 comes from
+On November 13, 2026, the FAA ordered a nationwide ground stop, citing communication issues at multiple air traffic control centers. I wondered: the technology may be outdated, but could the project management approach matter too?
 
-Looking for an answer, I found GAO's report on the FAA's modernization ([GAO-26-107992](https://www.gao.gov/products/gao-26-107992), published September 14, 2026, schedule data as of May 2026). It describes the number at the center of this project:
+GAO's report on FAA modernization ([GAO-26-107992](https://www.gao.gov/products/gao-26-107992), September 2026) gave me the number:
 
-> "FAA has not developed an integrated master schedule for phase 1. Instead, FAA has 11,389 individual project schedules that are not integrated." (GAO highlights page)
+> "FAA has not developed an integrated master schedule for phase 1. Instead, FAA has 11,389 individual project schedules that are not integrated."
 
-And it reports the reason FAA officials gave:
-
-> "FAA officials stated that due to the high number of projects, attempting to integrate all the projects in their scheduling tool would not be useful or helpful." (p. 29; GAO's account of what officials said, not a direct quote from an official)
-
-**The Department of Transportation disagrees.** As GAO summarizes DOT's written reply, FAA "developed and maintains an integrated detailed master schedule for each BNATCS phase 1 program, covering the next three years," and its integrator has an AI scheduling tool that is still being optimized (p. 33). GAO's answer: "We disagree that FAA has established an integrated detailed master schedule for each BNATCS program that logically sequences activities and manages interdependencies" (p. 34). One reading that fits both: the schedules may be integrated *within* each program but not *across* programs. That is my inference; neither side says it.
-
-**How the 11,389 is explained:** GAO does not define a "project" or say how it counted. The program totals in GAO's Table 2 add up to 8,918, not 11,389. FAA's Modern Skies site cites about 4,600 FAA sites, so 11,389 projects works out to roughly two to three per site (my arithmetic, assuming the same scope). That is where overlaps would arise.
-
-## Is the 11,389 meaningful?
-
-**As a count of problems, no. As a claim to test, yes.**
-
-- It counts schedules, not conflicts or costs. GAO documents one overlap (St. Louis) and measures nothing else, and most of the 11,389 may never touch each other.
-- The unit is undefined and the figure is as of May 2026. FAA's own site now lists programs that GAO's table does not (for example, 2,696 analog protocol converter sites), so today's count may differ.
-- It is not a computing limit. 11,389 is tiny for a graph database: it loads in about four seconds here. If integration is hard, the difficulty is keeping thousands of schedules current and connected, which this project does not test.
-- What makes it meaningful is that FAA gave scale as the reason not to integrate. The numbers that matter are how many sites have several programs, and how far apart in time their work falls. FAA's lookup lists seven programs for St. Louis alone. That is what this project looks at.
+GAO reports that FAA officials said integrating that many projects in their scheduling tool "would not be useful or helpful" (p. 29). The Department of Transportation disputes GAO's finding (pp. 33 to 34).
 
 ## Thesis
 
-> FAA officials said that with so many project schedules, integrating them in their scheduling tool would not be useful. I am testing whether a graph database and an AI agent can make connecting them useful, by surfacing the overlaps and dependencies that no single schedule shows.
+> The number of schedules is not the obstacle. Once the schedules are connected in a graph, an AI agent can surface the overlaps and dependencies that no single schedule shows, and can test a fix before anyone acts on it.
 
-This is one angle on "technology or project management?" It cannot settle it. I am not saying the FAA is wrong, and I am not suggesting scheduling caused the ground stop. No source I have found establishes the cause.
-
-## What FAA's public data shows now
-
-- FAA's [Modern Skies](https://modernskies.faa.gov/) site (self-reported, data as of October 15, 2026): telecommunications 3,508 of 5,170 (68%), radio sites 457 of 1,581, voice switches 220 of 450, radars 15 of 612, information displays 0 of 435.
-- Its location lookup lists seven programs for St. Louis Lambert (STL): six Phase 1 (voice switches in progress; radios, information displays, flight data, surface radar, and radar replacement planned) and one Phase 2. That is consistent with GAO's St. Louis example, where voice switch and information display work were scheduled at the same site about eight months apart. The lookup shows no dates.
+**It does not claim** that integration would save the FAA money or time, that the FAA is wrong, or that scheduling caused the ground stop. GAO documents one overlap (St. Louis) and measures nothing else, and no source I have found establishes the cause.
 
 ## How I'm using Relate, and why
 
-- **Storage mode: a single `.rl` file** (`store/portfolio_n1000_seed1.rl`, 0.8 MB). Anyone can open the whole database without running a server. In-memory stores are used for tests.
-- **Why Relate fits:** schedules are naturally a graph (projects, facilities, crews, dependencies, programs). Relate is embedded, needs no server, speaks Cypher, and is built for agents, with a CLI agent mode, an MCP endpoint, and an installable skill. `relate clone` gives each agent a disposable copy for what-if scenarios, and every node carries a provenance label, so it is always clear what is documented and what is modeled.
-- **What I use:** the Python library to load data and run the conflict queries; the CLI to inspect the store; constraints and indexes to keep identities clean; `relate clone` and MCP were tested for agent use.
+- **Storage mode:** a single `.rl` file (`store/portfolio_n1000_seed1.rl`, 0.8 MB). No server. In-memory stores for tests.
+- **Why it fits:** schedules are a graph (projects, facilities, crews, dependencies, programs). Relate is embedded, speaks Cypher, and is built for agents (CLI agent mode, MCP endpoint, installable skill). `relate clone` gives an agent a disposable copy for what-if scenarios.
+- **What I use:** the Python library to load data and run conflict queries, the CLI to inspect the store, and constraints and indexes to keep identities clean. Every node carries a provenance label: documented, simulated, or hypothesis.
 
 ## What works today
 
-- A graph schema with unique IDs and a provenance label on every node: documented, simulated, or hypothesis (`schema/schema.cypher`).
-- A seeded generator for synthetic portfolios from 100 to 11,389 projects with **known conflicts planted in them**: duplicate visits, resource conflicts, dependency violations, maintenance-window collisions, and decoys that look mergeable but are not. An independent checker recomputes every planted conflict from the raw files.
-- A loader that puts a portfolio into a persistent Relate store and finds every conflict class in Cypher.
-- **Result:** at 1,000 and at 11,389 projects, the Cypher results match the planted answers exactly, with nothing missing and nothing extra (114 of each class at full scale).
+- **Schema** with unique IDs and provenance on every node (`schema/schema.cypher`).
+- **Generator** for seeded synthetic portfolios of 100 to 11,389 projects with known conflicts planted in them: duplicate visits, crew conflicts, dependency violations, maintenance collisions, and decoys that look mergeable but are not. An independent checker recomputes each one.
+- **Loader** that builds a persistent Relate store and finds every conflict class in Cypher.
+- **Result:** at 1,000 and at 11,389 projects, Cypher finds every planted conflict with nothing missing and nothing extra (114 per class at full scale). This shows the queries are correct. It says nothing about how many conflicts the FAA has.
+- **What-if queries** (`queries/thesis_questions.py`): site overlap, slip propagation through dependencies, and a merge test on a temporary copy. On the simulated full-scale portfolio, merging all 114 mergeable duplicate visits without checking crews raised crew conflicts from 114 to 326. A fix made in one schedule can break another.
 
-All generated data is **simulated**. Only the program names, scope, and completion dates come from GAO's Table 2, p. 17. The 11,389-project size is a scale test, not a reconstruction of the FAA's portfolio.
+**Not built yet:** the AI agent, a graph of the documented programs and sites, the hypothetical incident-scenario model, and a comparison against SQLite and a flat-file agent.
 
-## Not built yet
+## Limits
 
-- The AI agent that answers questions through Relate.
-- A graph of the documented programs and sites (GAO and Modern Skies data) with required installation pace labeled as inferred.
-- The incident-scenario network model (hypothetical blast-radius and redundancy questions).
-- A comparison against SQLite and a flat-file agent.
-
-## Honest limits
-
-- Nothing here measures real FAA conflicts, costs, or savings. GAO documents one concrete example and quantifies nothing else.
-- The project makes no claim about the cause of the 2026-11-13 ground stop.
-- The Modern Skies figures are the FAA's own reporting. GAO said it could not verify the reliability of the data behind FAA's internal status dashboard (pp. 3, 36).
-- At full scale, some Cypher conflict checks take 2 to 4 seconds. They have not been optimized, and I make no speed claim.
+- All generated data is simulated. Only program names, scope, and completion dates are real (GAO Table 2, p. 17). The 11,389 size is a scale test, not a reconstruction of the FAA's portfolio.
+- 11,389 counts schedules, not conflicts. GAO does not define a "project," and its Table 2 totals add up to 8,918.
+- Connecting the data is easy. Keeping thousands of real schedules current is the hard part, and this project does not test it.
+- No speed claim. Some full-scale checks take 2 to 4 seconds and are not optimized.
 
 ## Try it
 
@@ -85,7 +51,7 @@ Requires Python 3.10 or later (tested on 3.14, Windows, `relate-db` 1.0.1).
 python -m venv .venv
 .venv\Scripts\python.exe -m pip install -r requirements.txt
 
-# generate a portfolio (deterministic: same seed, same files)
+# generate a portfolio (same seed, same files)
 .venv\Scripts\python.exe -I generator\generate_portfolio.py --n 1000 --seed 1 --out data\synthetic
 
 # check the generator against its own oracle
@@ -93,6 +59,9 @@ python -m venv .venv
 
 # load into a new Relate store and verify every conflict class in Cypher
 .venv\Scripts\python.exe -I loader\load_portfolio.py --portfolio data\synthetic\portfolio_n1000_seed1 --store store\my_store.rl --verify
+
+# answer the thesis questions (runs on a temporary copy; the store is not changed)
+.venv\Scripts\python.exe -I queries\thesis_questions.py --store store\my_store.rl
 ```
 
 Inspect the included store with the Relate CLI ([install](https://relatedb.ai/docs/get-started/install)):
@@ -101,20 +70,17 @@ Inspect the included store with the Relate CLI ([install](https://relatedb.ai/do
 relate -d store\portfolio_n1000_seed1.rl --read-only --toon "MATCH (n) UNWIND labels(n) AS l RETURN l, count(*) AS n"
 ```
 
-## What's in the repo
+## More detail
 
 | Path | What it is |
 |---|---|
-| `schema/` | Graph schema (constraints and indexes), tested in Relate |
-| `generator/` | Seeded portfolio generator and independent checker |
-| `loader/` | Loads a portfolio into Relate and verifies it in Cypher |
-| `store/` | A ready-made 1,000-project Relate store |
 | `DESCRIPTION.md` | The story in more detail |
-| `PHASE1-REPORT.md`, `PREREGISTRATION.md` | Sources, findings, and the planned test design |
+| `PHASE1-REPORT.md` | Sources, the GAO and DOT positions, and what the 11,389 does and does not mean |
+| `PREREGISTRATION.md` | The planned test design |
 | `ARTIFACTS.md` | What is built, what is not |
 
 ## Disclosures
 
 - Built with Claude Code (Claude Sonnet 5.5).
-- [confirm wording] The author works at Neo4j, which publishes Relate.
+- The author works at Neo4j, which publishes Relate.
 - Sources: GAO-26-107992, FAA Modern Skies (modernskies.faa.gov), FAA statement of November 13, 2026, relatedb.ai, and the Relate repository.

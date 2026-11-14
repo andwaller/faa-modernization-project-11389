@@ -37,3 +37,26 @@ Relate by Neo4j (relatedb.ai) is an open-source, embedded graph database that sp
 - Built with Claude Code (Claude Sonnet 5.5). I describe significant AI use in the submission.
 - [confirm wording] I work at Neo4j, which publishes Relate.
 - Sources: GAO-26-107992 (pages cited in the repo), relatedb.ai, and the Relate repository.
+
+## Background moved from the README
+
+### GAO and DOT positions, and how the 11,389 is explained
+
+**The Department of Transportation disagrees.** As GAO summarizes DOT's written reply, FAA "developed and maintains an integrated detailed master schedule for each BNATCS phase 1 program, covering the next three years," and its integrator has an AI scheduling tool that is still being optimized (p. 33). GAO's answer: "We disagree that FAA has established an integrated detailed master schedule for each BNATCS program that logically sequences activities and manages interdependencies" (p. 34). One reading that fits both: the schedules may be integrated *within* each program but not *across* programs. That is my inference; neither side says it.
+
+**How the 11,389 is explained:** GAO does not define a "project" or say how it counted. The program totals in GAO's Table 2 add up to 8,918, not 11,389. FAA's Modern Skies site cites about 4,600 FAA sites, so 11,389 projects works out to roughly two to three per site (my arithmetic, assuming the same scope). That is where overlaps would arise.
+
+### Is the 11,389 meaningful?
+
+**As a count of problems, no. As a claim to test, yes.**
+
+- It counts schedules, not conflicts or costs. GAO documents one overlap (St. Louis) and measures nothing else, and most of the 11,389 may never touch each other.
+- The unit is undefined and the figure is as of May 2026. FAA's own site now lists programs that GAO's table does not (for example, 2,696 analog protocol converter sites), so today's count may differ.
+- It is not a computing limit. 11,389 is tiny for a graph database: it loads in about four seconds here. If integration is hard, the difficulty is keeping thousands of schedules current and connected, which this project does not test.
+- What makes it meaningful is that FAA gave scale as the reason not to integrate. The numbers that matter are how many sites have several programs, and how far apart in time their work falls. FAA's lookup lists seven programs for St. Louis alone. That is what this project looks at.
+
+### What FAA's public data shows now
+
+- FAA's [Modern Skies](https://modernskies.faa.gov/) site (self-reported, data as of October 15, 2026): telecommunications 3,508 of 5,170 (68%), radio sites 457 of 1,581, voice switches 220 of 450, radars 15 of 612, information displays 0 of 435.
+- Its location lookup lists seven programs for St. Louis Lambert (STL): six Phase 1 (voice switches in progress; radios, information displays, flight data, surface radar, and radar replacement planned) and one Phase 2. That is consistent with GAO's St. Louis example, where voice switch and information display work were scheduled at the same site about eight months apart. The lookup shows no dates.
+
