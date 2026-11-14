@@ -6,7 +6,7 @@ Work comes first. This list only tracks what will be needed. Nothing here is sta
 | Artifact | Needed | Status |
 |---|---|---|
 | Public GitHub repo, topic `relate`, kept public through Dec 17 | Yes | Created and public; `relate` topic is set |
-| Open-source license (MIT or Apache-2.0 recommended) | Recommended | Not chosen |
+| Open-source license (MIT or Apache-2.0 recommended) | Recommended | Apache-2.0 (`LICENSE`) |
 | README: setup, how a judge runs it, "how are you using Relate, and why?", storage mode | Yes | Drafted (setup, how to run, Relate usage, storage mode all present) |
 | Persistent Relate store (directory or `.rl` file) in the repo | Yes | Created (`store/portfolio_n1000_seed1.rl`) |
 | Demo video, up to 2 minutes, viewable without login | Yes | Not started |

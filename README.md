@@ -90,3 +90,7 @@ relate -d store\portfolio_n1000_seed1.rl --read-only --toon "MATCH (n) UNWIND la
 - Built with Claude Code (Claude Sonnet 5.5).
 - The author works at Neo4j, which publishes Relate.
 - Sources: GAO-26-107992, FAA Modern Skies (modernskies.faa.gov), FAA statement of November 13, 2026, relatedb.ai, and the Relate repository.
+
+## License
+
+Apache-2.0. See [LICENSE](LICENSE).
