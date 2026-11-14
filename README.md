@@ -1,12 +1,18 @@
+## Inspiration
+
+I love the history of computing. Just back from IBM TechExchange, where I gave a talk, I had been watching videos about modernizing stable, critical systems. Banks still run core systems on mainframes descended from the IBM System/370: decades old and rock solid.
+
+Then, on November 13, 2026, the FAA ordered a nationwide ground stop, citing communication issues at multiple air traffic control centers. News coverage pointed to aging telecommunications equipment: outdated technology.
+
+I wondered: **the technology may be outdated, but could the project management approach have an impact too?**
+
 # Project 11,389
 
 **Thousands of infrastructure projects, each on its own schedule. What happens when you connect them?**
 
 An experiment using [Relate by Neo4j](https://relatedb.ai), the embedded graph database, to connect project schedules so an AI agent can find problems no single schedule shows. *Work in progress.*
 
-## Why
-
-On November 13, 2026, the FAA ordered a nationwide ground stop, citing communication issues at multiple air traffic control centers. I wondered: the technology may be outdated, but could the project management approach matter too?
+## Where the 11,389 comes from
 
 GAO's report on FAA modernization ([GAO-26-107992](https://www.gao.gov/products/gao-26-107992), September 2026) gave me the number:
 
