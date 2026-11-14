@@ -97,6 +97,7 @@ main { padding-top: 1rem; padding-bottom: 1rem; }
 .controls { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; margin: 0 0 1rem; }
 select { font: inherit; padding: .4rem .5rem; border-radius: .4rem; border: 1px solid var(--line); background: var(--card); color: var(--ink); max-width: 100%; }
 label { font-weight: 600; }
+.hint { color: var(--muted); font-size: .9rem; }
 .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: .5rem; margin: .5rem 0 1rem; }
 table { border-collapse: collapse; width: 100%; font-size: .95rem; }
 caption { text-align: left; padding: .5rem .75rem; color: var(--muted); font-size: .88rem; }

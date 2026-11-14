@@ -33,7 +33,15 @@
 <main class="wrap">
   <section class="card intro" aria-labelledby="intro-h">
     <h2 id="intro-h">What is this?</h2>
-    <p>A government audit found that the FAA runs thousands of separate project schedules for upgrading air traffic systems. When several programs work at the same site, nobody looking at a single schedule can see the overlap. Here, 1,000 simulated projects are loaded into a graph database that runs inside this page, and you can ask it questions.</p>
+    <p>A government audit found that the FAA runs thousands of separate project schedules for upgrading air traffic systems. When several programs work at the same site, nobody looking at a single schedule can see the overlap. Here, simulated projects are loaded into a graph database that runs inside this page, and you can ask it questions. Choose how many projects to load: the smaller set starts fast, and the larger one matches the count GAO reported.</p>
+    <div class="controls">
+      <label for="size-pick">Portfolio size</label>
+      <select id="size-pick" aria-describedby="size-hint">
+        <option value="1000">1,000 projects</option>
+        <option value="11389">11,389 projects (the GAO count)</option>
+      </select>
+      <span id="size-hint" class="hint">The larger set can take 5 to 15 seconds to load and to answer some questions.</span>
+    </div>
     <ol class="steps">
       <li><strong>Pick a question</strong> on the left.</li>
       <li><strong>Read the plain answer</strong> at the top of the result.</li>
@@ -80,6 +88,6 @@
   <div class="dlg-actions"><button type="button" class="close-dlg primary">Close</button></div>
 </dialog>
 
-<script type="module" src="app.js?v=2"></script>
+<script type="module" src="app.js?v=4"></script>
 </body>
 </html>
