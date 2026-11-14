@@ -1,11 +1,3 @@
-# Project 11,389
-
-**Thousands of infrastructure projects, each on its own schedule. What happens when you connect them?**
-
-An experiment in using [Relate](https://relatedb.ai), Neo4j's embedded graph database, to make the connections between project schedules visible, so that an AI agent can find problems no single schedule shows.
-
-*Work in progress for the Relate by Neo4j Hackathon 2026. See "What works today" and "Not built yet" below.*
-
 ## Inspiration
 
 > "FAA officials stated that due to the high number of projects, attempting to integrate all the projects in their scheduling tool would not be useful or helpful."
@@ -15,6 +7,16 @@ An experiment in using [Relate](https://relatedb.ai), Neo4j's embedded graph dat
 [confirm: your words] That sentence stuck with me. The more projects there are, the harder it is to see how they connect, and that is exactly where a graph should help rather than a reason to give up. Days after I read it, the FAA's nationwide ground stop on November 13, 2026 was attributed in news coverage to aging telecommunications equipment, and I wondered whether the real issue is old technology or how its modernization is managed.
 
 I am not saying the FAA is wrong, and I am not suggesting scheduling caused the outage. No source I have found establishes the cause, and the FAA's integrator says its own AI scheduling tool is in the works. I wanted to see what connecting the data would actually let an AI agent find.
+
+# Project 11,389
+
+**Thousands of infrastructure projects, each on its own schedule. What happens when you connect them?**
+
+An experiment in using [Relate](https://relatedb.ai), Neo4j's embedded graph database, to make the connections between project schedules visible, so that an AI agent can find problems no single schedule shows.
+
+*Work in progress for the Relate by Neo4j Hackathon 2026. See "What works today" and "Not built yet" below.*
+
+
 
 ## The problem
 
