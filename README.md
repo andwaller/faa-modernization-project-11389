@@ -1,10 +1,14 @@
 ## Inspiration
 
+I love learning the history of computer technology. I had just come back from IBM TechExchange, where I gave a talk, and I had been watching videos about modernizing stable, critical systems. Then the FAA grounded all flights, and the reasons given got me wondering: **was this a technology problem or a project management problem?**
+
+That question led me to GAO's report on the FAA's modernization, where one sentence stood out:
+
 > "FAA officials stated that due to the high number of projects, attempting to integrate all the projects in their scheduling tool would not be useful or helpful."
 >
 > GAO-26-107992, p. 29 (GAO's account of what FAA officials stated, not a direct quote from an FAA official)
 
-[confirm: your words] That sentence stuck with me. The more projects there are, the harder it is to see how they connect, and that is exactly where a graph should help rather than a reason to give up. Days after I read it, the FAA's nationwide ground stop on November 13, 2026 was attributed in news coverage to aging telecommunications equipment, and I wondered whether the real issue is old technology or how its modernization is managed.
+The more projects there are, the harder it is to see how they connect. That is where I thought a graph might help, rather than a reason to give up. News coverage attributed the November 13, 2026 ground stop to aging telecommunications equipment.
 
 I am not saying the FAA is wrong, and I am not suggesting scheduling caused the outage. No source I have found establishes the cause, and the FAA's integrator says its own AI scheduling tool is in the works. I wanted to see what connecting the data would actually let an AI agent find.
 

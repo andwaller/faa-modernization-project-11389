@@ -8,9 +8,9 @@ Large infrastructure programs run as thousands of separate projects, each with i
 
 GAO documented this pattern at the FAA. Its September 2026 report (GAO-26-107992) found 11,389 individual project schedules that were not integrated across programs, and gave one example: technicians scheduled to prepare a St. Louis facility for a voice switch in April 2027, and the information-displays program planning its own site preparation at the same site about eight months later. GAO also reported that FAA officials said integrating all the projects in their scheduling tool "would not be useful or helpful." GAO did not measure what these overlaps cost, and the Department of Transportation disputes parts of GAO's findings. So this project does not claim to know how big the problem is at the FAA. It asks a smaller question: if schedule data is connected, how easily can an AI agent find these problems?
 
-## Why I thought of it [confirm]
+## Why I thought of it
 
-I read the GAO report after the FAA's nationwide ground stop on November 13, 2026, which news coverage attributed to aging telecommunications equipment. I wondered whether the real issue is old technology or how modernization is managed. The report's number, 11,389 schedules with no integrated master schedule, made me ask what happens if that complexity is exactly where connected data helps most. I am not suggesting scheduling caused the outage. No source I have found establishes the cause.
+I love learning the history of computer technology. I had just come back from IBM TechExchange, where I gave a talk, and I had been watching videos about modernizing stable, critical systems. Then the FAA grounded all flights, and the reasons given got me wondering whether this was a technology problem or a project management problem. That led me to GAO's report, whose number, 11,389 schedules with no integrated master schedule, made me ask what happens if that complexity is exactly where connected data helps most. I am not suggesting scheduling caused the outage. No source I have found establishes the cause.
 
 ## Why Relate
 
