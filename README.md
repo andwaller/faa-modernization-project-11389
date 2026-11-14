@@ -2,7 +2,7 @@
 
 I love the history of computing. Just back from IBM TechExchange, where I gave a talk, I had been watching videos about modernizing stable, critical systems. Banks still run core systems on mainframes descended from the IBM System/370: decades old and rock solid.
 
-Then, on November 13, 2026, the FAA ordered a nationwide ground stop. If old systems can be rock solid, was age really the problem? **Was this a technology problem or a project management problem?** ([My LinkedIn post](docs/linkedin-post.md))
+Then, on November 13, 2026, the FAA ordered a nationwide ground stop. If old systems can be rock solid, was age really the problem? **Was this a technology problem or a project management problem?**
 
 GAO's report on the FAA's modernization had one sentence that stood out:
 
@@ -28,15 +28,28 @@ An experiment in using [Relate](https://relatedb.ai), Neo4j's embedded graph dat
 
 Large modernization programs run as thousands of separate projects. The trouble is in the connections: two projects visiting the same facility months apart, one crew booked in two places at once, a project scheduled before the work it depends on. Each schedule looks fine alone. The conflict only appears when they are connected.
 
-GAO documented this pattern at the FAA. Its September 2026 report ([GAO-26-107992](https://www.gao.gov/products/gao-26-107992)) found **11,389 individual project schedules that were not integrated across programs**, and gave one example: site preparation for a voice switch at a St. Louis facility in April 2027, and the information-displays program planning its own site preparation at the same site about eight months later. GAO reported that FAA officials said integrating all the projects in their scheduling tool "would not be useful or helpful." The Department of Transportation disputes parts of GAO's findings, and GAO did not measure what these overlaps cost.
+GAO documented this pattern at the FAA. Its report ([GAO-26-107992](https://www.gao.gov/products/gao-26-107992), published September 14, 2026, with schedule data as of May 2026) found **11,389 individual project schedules that were not integrated across programs**, and gave one example: site preparation for a voice switch at a St. Louis facility in April 2027, and the information-displays program planning its own site preparation at the same site about eight months later. GAO reported that FAA officials said integrating all the projects in their scheduling tool "would not be useful or helpful." The Department of Transportation disputes parts of GAO's findings, and GAO did not measure what these overlaps cost.
 
 So this project does not claim to know how big the problem is. It asks something smaller and testable: **when schedule data is connected, how easily can an AI agent find these problems?**
 
 ## How I'm using Relate, and why
 
 - **Storage mode: a single `.rl` file** (`store/portfolio_n1000_seed1.rl`, 0.8 MB). Anyone can open the whole database without running a server. In-memory stores are used for tests.
-- **Why Relate fits:** project schedules are naturally a graph (projects, facilities, crews, dependencies, programs). Relate is embedded, needs no server, speaks Cypher, and is built for agents, with a CLI agent mode, an MCP endpoint, and an installable skill.
+- **Why Relate fits:** project schedules are naturally a graph (projects, facilities, crews, dependencies, programs). Relate is embedded, needs no server, speaks Cypher, and is built for agents, with a CLI agent mode, an MCP endpoint, and an installable skill. `relate clone` gives each agent a disposable copy for what-if scenarios without touching the original, and every node carries a provenance label, so it is always clear what is documented and what is modeled.
 - **What I use:** the Python library to load data and run the conflict queries; the CLI to inspect the store; constraints and indexes to keep identities clean; `relate clone` and MCP were tested for agent use.
+
+## What Relate can tell us about what is happening now
+
+**Supported by the public record (documented)**, from GAO-26-107992:
+- 8 of the 13 Phase 1 programs, including telecommunications, voice switches, radios, and radars, are due to finish in November or December 2028 (Table 2, p. 17).
+- FAA officials call telecommunications the most critical program because it "provides the backbone for ATC communications" (p. 18), and said voice switches carry the highest risk (p. 25).
+- As of June 2026, 30 months remained, with 2,610 fiber installs, 398 voice switches, and 1,311 radio sites still to do (pp. 26, 30).
+
+Loaded into Relate with those relationships, a few queries can show which programs converge on the same deadline, which sit on the telecom backbone, and the installation pace needed to finish (simple arithmetic, labeled inferred, not a forecast). **Planned, not built yet.**
+
+**Hypothetical only:** blast radius, single points of failure, and redundancy on a clearly labeled model. The real FAA network layout is not public.
+
+**Not answerable here:** what caused the November 13 ground stop, or whether scheduling played any part.
 
 ## What works today
 
@@ -50,6 +63,7 @@ All generated data is **simulated**. Only the 13 programs (names, scope, complet
 ## Not built yet
 
 - The AI agent that answers questions through Relate.
+- The graph of the 13 documented programs (deadline convergence, telecom backbone, required installation pace).
 - The incident-scenario network model (hypothetical blast-radius and redundancy questions).
 - A comparison against SQLite and a flat-file agent.
 
