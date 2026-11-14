@@ -6,6 +6,16 @@ An experiment in using [Relate](https://relatedb.ai), Neo4j's embedded graph dat
 
 *Work in progress for the Relate by Neo4j Hackathon 2026. See "What works today" and "Not built yet" below.*
 
+## Inspiration
+
+> "FAA officials stated that due to the high number of projects, attempting to integrate all the projects in their scheduling tool would not be useful or helpful."
+>
+> GAO-26-107992, p. 29 (GAO's account of what FAA officials stated, not a direct quote from an FAA official)
+
+[confirm: your words] That sentence stuck with me. The more projects there are, the harder it is to see how they connect, and that is exactly where a graph should help rather than a reason to give up. Days after I read it, the FAA's nationwide ground stop on November 13, 2026 was attributed in news coverage to aging telecommunications equipment, and I wondered whether the real issue is old technology or how its modernization is managed.
+
+I am not saying the FAA is wrong, and I am not suggesting scheduling caused the outage. No source I have found establishes the cause, and the FAA's integrator says its own AI scheduling tool is in the works. I wanted to see what connecting the data would actually let an AI agent find.
+
 ## The problem
 
 Large modernization programs run as thousands of separate projects. The trouble is in the connections: two projects visiting the same facility months apart, one crew booked in two places at once, a project scheduled before the work it depends on. Each schedule looks fine alone. The conflict only appears when they are connected.
@@ -13,10 +23,6 @@ Large modernization programs run as thousands of separate projects. The trouble 
 GAO documented this pattern at the FAA. Its September 2026 report ([GAO-26-107992](https://www.gao.gov/products/gao-26-107992)) found **11,389 individual project schedules that were not integrated across programs**, and gave one example: site preparation for a voice switch at a St. Louis facility in April 2027, and the information-displays program planning its own site preparation at the same site about eight months later. GAO reported that FAA officials said integrating all the projects in their scheduling tool "would not be useful or helpful." The Department of Transportation disputes parts of GAO's findings, and GAO did not measure what these overlaps cost.
 
 So this project does not claim to know how big the problem is. It asks something smaller and testable: **when schedule data is connected, how easily can an AI agent find these problems?**
-
-## Why I looked at it
-
-[confirm: your words] I read the GAO report in the days after the FAA's nationwide ground stop on November 13, 2026, which news coverage attributed to aging telecommunications equipment. I wondered whether the real issue is old technology or how its modernization is managed, and whether the complexity of connecting thousands of schedules is exactly where graph technology helps. I am not suggesting scheduling caused the outage; no source I have found establishes the cause.
 
 ## How I'm using Relate, and why
 
