@@ -1,0 +1,437 @@
+{
+ "T1": [
+  {
+   "facility": "F00231",
+   "projects": [
+    "P00745"
+   ]
+  },
+  {
+   "facility": "F00508",
+   "projects": [
+    "P00579"
+   ]
+  },
+  {
+   "facility": "F00287",
+   "projects": [
+    "P00290",
+    "P00616"
+   ]
+  },
+  {
+   "facility": "F00125",
+   "projects": [
+    "P00763"
+   ]
+  },
+  {
+   "facility": "F00515",
+   "projects": [
+    "P00662"
+   ]
+  }
+ ],
+ "T4": [
+  {
+   "affected": [
+    "P00468"
+   ],
+   "delay_days": 60,
+   "project": "P00774"
+  },
+  {
+   "affected": [
+    "P00892",
+    "P00992"
+   ],
+   "delay_days": 180,
+   "project": "P00098"
+  },
+  {
+   "affected": [],
+   "delay_days": 60,
+   "project": "P00331"
+  },
+  {
+   "affected": [
+    "P00005",
+    "P00156"
+   ],
+   "delay_days": 180,
+   "project": "P00137"
+  }
+ ],
+ "T6": {
+  "expected": {
+   "merge_feasible": [
+    "F00321",
+    "F00010"
+   ],
+   "merge_infeasible": [
+    "F00158"
+   ]
+  },
+  "facilities": [
+   "F00321",
+   "F00010",
+   "F00158"
+  ]
+ },
+ "classes": {
+  "C1": [
+   {
+    "facility": "F00210",
+    "projects": [
+     "P00043",
+     "P00565"
+    ]
+   },
+   {
+    "facility": "F00465",
+    "projects": [
+     "P00344",
+     "P00811"
+    ]
+   },
+   {
+    "facility": "F00518",
+    "projects": [
+     "P00497",
+     "P00533"
+    ]
+   },
+   {
+    "facility": "F00074",
+    "projects": [
+     "P00189",
+     "P00737"
+    ]
+   },
+   {
+    "facility": "F00010",
+    "projects": [
+     "P00279",
+     "P00670"
+    ]
+   },
+   {
+    "facility": "F00321",
+    "projects": [
+     "P00003",
+     "P00777"
+    ]
+   },
+   {
+    "facility": "F00046",
+    "projects": [
+     "P00710",
+     "P00928"
+    ]
+   },
+   {
+    "facility": "F00544",
+    "projects": [
+     "P00551",
+     "P00751"
+    ]
+   },
+   {
+    "facility": "F00500",
+    "projects": [
+     "P00495",
+     "P00807"
+    ]
+   },
+   {
+    "facility": "F00540",
+    "projects": [
+     "P00045",
+     "P00536"
+    ]
+   }
+  ],
+  "C2": [
+   {
+    "crew": "CRW0058",
+    "facilities": [
+     "F00002",
+     "F00515"
+    ],
+    "projects": [
+     "P00334",
+     "P00662"
+    ]
+   },
+   {
+    "crew": "CRW0010",
+    "facilities": [
+     "F00112",
+     "F00129"
+    ],
+    "projects": [
+     "P00073",
+     "P00879"
+    ]
+   },
+   {
+    "crew": "CRW0062",
+    "facilities": [
+     "F00156",
+     "F00367"
+    ],
+    "projects": [
+     "P00275",
+     "P00489"
+    ]
+   },
+   {
+    "crew": "CRW0003",
+    "facilities": [
+     "F00114",
+     "F00312"
+    ],
+    "projects": [
+     "P00392",
+     "P00455"
+    ]
+   },
+   {
+    "crew": "CRW0047",
+    "facilities": [
+     "F00263",
+     "F00472"
+    ],
+    "projects": [
+     "P00086",
+     "P00899"
+    ]
+   },
+   {
+    "crew": "CRW0092",
+    "facilities": [
+     "F00051",
+     "F00239"
+    ],
+    "projects": [
+     "P00095",
+     "P00229"
+    ]
+   },
+   {
+    "crew": "CRW0023",
+    "facilities": [
+     "F00008",
+     "F00247"
+    ],
+    "projects": [
+     "P00062",
+     "P00838"
+    ]
+   },
+   {
+    "crew": "CRW0063",
+    "facilities": [
+     "F00283",
+     "F00520"
+    ],
+    "projects": [
+     "P00487",
+     "P00658"
+    ]
+   },
+   {
+    "crew": "CRW0048",
+    "facilities": [
+     "F00220",
+     "F00412"
+    ],
+    "projects": [
+     "P00082",
+     "P00370"
+    ]
+   },
+   {
+    "crew": "CRW0019",
+    "facilities": [
+     "F00120",
+     "F00511"
+    ],
+    "projects": [
+     "P00218",
+     "P00843"
+    ]
+   }
+  ],
+  "C3": [
+   {
+    "facility": "F00469",
+    "post": "P00840",
+    "pre": "P00241"
+   },
+   {
+    "facility": "F00418",
+    "post": "P00702",
+    "pre": "P00238"
+   },
+   {
+    "facility": "F00137",
+    "post": "P00145",
+    "pre": "P00429"
+   },
+   {
+    "facility": "F00382",
+    "post": "P00553",
+    "pre": "P00623"
+   },
+   {
+    "facility": "F00133",
+    "post": "P00767",
+    "pre": "P00488"
+   },
+   {
+    "facility": "F00431",
+    "post": "P00036",
+    "pre": "P00814"
+   },
+   {
+    "facility": "F00486",
+    "post": "P00715",
+    "pre": "P00177"
+   },
+   {
+    "facility": "F00225",
+    "post": "P00148",
+    "pre": "P00592"
+   },
+   {
+    "facility": "F00235",
+    "post": "P00170",
+    "pre": "P00948"
+   },
+   {
+    "facility": "F00274",
+    "post": "P00072",
+    "pre": "P00168"
+   }
+  ],
+  "C4": [
+   {
+    "facility": "F00444",
+    "project": "P00512"
+   },
+   {
+    "facility": "F00230",
+    "project": "P00056"
+   },
+   {
+    "facility": "F00413",
+    "project": "P00804"
+   },
+   {
+    "facility": "F00094",
+    "project": "P00128"
+   },
+   {
+    "facility": "F00403",
+    "project": "P00190"
+   },
+   {
+    "facility": "F00508",
+    "project": "P00579"
+   },
+   {
+    "facility": "F00248",
+    "project": "P00989"
+   },
+   {
+    "facility": "F00146",
+    "project": "P00047"
+   },
+   {
+    "facility": "F00384",
+    "project": "P00561"
+   },
+   {
+    "facility": "F00550",
+    "project": "P00945"
+   }
+  ],
+  "C5": [
+   {
+    "facility": "F00082",
+    "projects": [
+     "P00009",
+     "P00146"
+    ]
+   },
+   {
+    "facility": "F00438",
+    "projects": [
+     "P00562",
+     "P00742"
+    ]
+   },
+   {
+    "facility": "F00158",
+    "projects": [
+     "P00689",
+     "P00724"
+    ]
+   },
+   {
+    "facility": "F00186",
+    "projects": [
+     "P00703",
+     "P00935"
+    ]
+   },
+   {
+    "facility": "F00285",
+    "projects": [
+     "P00382",
+     "P00704"
+    ]
+   },
+   {
+    "facility": "F00021",
+    "projects": [
+     "P00321",
+     "P00785"
+    ]
+   },
+   {
+    "facility": "F00058",
+    "projects": [
+     "P00013",
+     "P00827"
+    ]
+   },
+   {
+    "facility": "F00181",
+    "projects": [
+     "P00214",
+     "P00874"
+    ]
+   },
+   {
+    "facility": "F00040",
+    "projects": [
+     "P00328",
+     "P00716"
+    ]
+   },
+   {
+    "facility": "F00257",
+    "projects": [
+     "P00337",
+     "P00388"
+    ]
+   }
+  ]
+ },
+ "items_per_class": 10,
+ "n_chains": 4,
+ "n_projects": 1000,
+ "seed": 1
+}

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Same Site, Different Schedules</title>
+<meta name="description" content="Explore what happens when project schedules are connected in a graph, running Relate by Neo4j entirely in your browser.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#answer">Skip to the answer area</a>
+
+<header class="top">
+  <div class="wrap top-row">
+    <div>
+      <h1>Same Site, Different Schedules</h1>
+      <p class="sub">What happens when thousands of project schedules are connected? Powered by Relate by Neo4j, running in your browser.</p>
+    </div>
+    <div class="top-actions">
+      <button type="button" id="btn-tour">Quick tour</button>
+      <button type="button" id="btn-glossary">Glossary</button>
+      <button type="button" id="btn-help">Help</button>
+    </div>
+  </div>
+</header>
+
+<div class="banner" role="note">
+  <div class="wrap">
+    <strong>Simulated data.</strong> This page shows a method, not facts about the FAA. It makes no claim about what caused the November 13, 2026 ground stop or how much any real conflict costs.
+  </div>
+</div>
+
+<main class="wrap">
+  <section class="card intro" aria-labelledby="intro-h">
+    <h2 id="intro-h">What is this?</h2>
+    <p>A government audit found that the FAA runs thousands of separate project schedules for upgrading air traffic systems. When several programs work at the same site, nobody looking at a single schedule can see the overlap. Here, 1,000 simulated projects are loaded into a graph database that runs inside this page, and you can ask it questions.</p>
+    <ol class="steps">
+      <li><strong>Pick a question</strong> on the left.</li>
+      <li><strong>Read the plain answer</strong> at the top of the result.</li>
+      <li><strong>Open the extra panels</strong> to see what it means, or the exact query behind it.</li>
+    </ol>
+    <p id="status" class="status" role="status">Loading Relate in your browser...</p>
+  </section>
+
+  <div class="layout">
+    <nav aria-label="Questions" class="qnav">
+      <h2>Questions</h2>
+      <ul id="qlist"></ul>
+    </nav>
+    <section id="answer" class="card answer" aria-live="polite" aria-label="Answer" tabindex="-1">
+      <p class="placeholder">Pick a question on the left to begin. If you are not sure where to start, try <strong>What is at one site?</strong></p>
+    </section>
+  </div>
+</main>
+
+<footer class="wrap foot">
+  <p>Source for the real figures: GAO report <a href="https://www.gao.gov/products/gao-26-107992" target="_blank" rel="noopener">GAO-26-107992</a> and the FAA <a href="https://modernskies.faa.gov/" target="_blank" rel="noopener">Modern Skies</a> site (self-reported). Code and data: <a href="https://github.com/andwaller/project-11389" target="_blank" rel="noopener">github.com/andwaller/project-11389</a>. Licensed under Apache-2.0.</p>
+</footer>
+
+<dialog id="dlg-tour" aria-labelledby="tour-h">
+  <h2 id="tour-h"></h2>
+  <div id="tour-body"></div>
+  <p class="dlg-meta"><span id="tour-count"></span></p>
+  <div class="dlg-actions">
+    <button type="button" id="tour-back">Back</button>
+    <button type="button" id="tour-next" class="primary">Next</button>
+    <button type="button" id="tour-close">Close</button>
+  </div>
+</dialog>
+
+<dialog id="dlg-help" aria-labelledby="help-h">
+  <h2 id="help-h">Help</h2>
+  <div id="help-body"></div>
+  <div class="dlg-actions"><button type="button" class="close-dlg primary">Close</button></div>
+</dialog>
+
+<dialog id="dlg-glossary" aria-labelledby="gl-h">
+  <h2 id="gl-h">Glossary</h2>
+  <dl id="gl-body"></dl>
+  <div class="dlg-actions"><button type="button" class="close-dlg primary">Close</button></div>
+</dialog>
+
+<script type="module" src="app.js?v=2"></script>
+</body>
+</html>
