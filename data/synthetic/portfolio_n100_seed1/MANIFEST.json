@@ -1,0 +1,29 @@
+{
+ "counts": {
+  "dependencies": 9,
+  "facilities": 62,
+  "maintenance_windows": 3,
+  "programs": 13,
+  "projects": 100
+ },
+ "generator_sha256": "e341ade3f1af519006b3341f68cd9791a7ef5045d1cb0b6b8f23b3ab7be42186",
+ "generator_version": "0.1.0",
+ "n_projects": 100,
+ "note": "All rows SIMULATED except programs.csv (GAO-26-107992 Table 2, p. 17). Day 0 = 2026-01-01. Windows are half-open [start_day, end_day).",
+ "planted": {
+  "C1": 2,
+  "C2": 2,
+  "C3": 2,
+  "C4": 2,
+  "C5": 2
+ },
+ "seed": 1,
+ "sha256": {
+  "data/dependencies.csv": "a93188ea590c70ae1abb8410fbbcb139913849973baa08295d65209224c8f488",
+  "data/facilities.csv": "03151b83d4c566a7d304ee2575af0fc9bf53e3a70f59cede3dd925b988cbd966",
+  "data/maintenance_windows.csv": "1ee73313f39727031d6c2f11cfc2f4f5811996ab4bcd5f1125eac84d0553ce9c",
+  "data/programs.csv": "f73985072f825fb0ae69155e66d860ffaab4c25a5cc2231b2abc80d8f8f3ed2b",
+  "data/projects.csv": "02a4fca3c4ba4f720c37ff6c2eac66a92bd738762a13fec0a8084ccbf8414160",
+  "truth/ground_truth.json": "16e3189da16c32fd795e8f5f9921a8268105debf8c20be25de99e81138398c42"
+ }
+}

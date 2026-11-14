@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+*.auth-token
+# large portfolios are reproducible from the generator (same seed, same files)
+data/synthetic/portfolio_n5000_seed1/
+data/synthetic/portfolio_n11389_seed1/

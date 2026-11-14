@@ -1,0 +1,154 @@
+{
+ "T1": [
+  {
+   "facility": "F00017",
+   "projects": [
+    "P00093",
+    "P00100"
+   ]
+  },
+  {
+   "facility": "F00062",
+   "projects": [
+    "P00007",
+    "P00031"
+   ]
+  },
+  {
+   "facility": "F00040",
+   "projects": [
+    "P00091"
+   ]
+  },
+  {
+   "facility": "F00046",
+   "projects": [
+    "P00094"
+   ]
+  },
+  {
+   "facility": "F00016",
+   "projects": [
+    "P00027"
+   ]
+  }
+ ],
+ "T4": [
+  {
+   "affected": [
+    "P00051"
+   ],
+   "delay_days": 60,
+   "project": "P00096"
+  },
+  {
+   "affected": [
+    "P00030",
+    "P00041",
+    "P00098"
+   ],
+   "delay_days": 180,
+   "project": "P00087"
+  }
+ ],
+ "T6": {
+  "expected": {
+   "merge_feasible": [
+    "F00035",
+    "F00053"
+   ],
+   "merge_infeasible": [
+    "F00059"
+   ]
+  },
+  "facilities": [
+   "F00035",
+   "F00053",
+   "F00059"
+  ]
+ },
+ "classes": {
+  "C1": [
+   {
+    "facility": "F00053",
+    "projects": [
+     "P00057",
+     "P00072"
+    ]
+   },
+   {
+    "facility": "F00035",
+    "projects": [
+     "P00004",
+     "P00068"
+    ]
+   }
+  ],
+  "C2": [
+   {
+    "crew": "CRW0002",
+    "facilities": [
+     "F00012",
+     "F00038"
+    ],
+    "projects": [
+     "P00003",
+     "P00075"
+    ]
+   },
+   {
+    "crew": "CRW0001",
+    "facilities": [
+     "F00008",
+     "F00020"
+    ],
+    "projects": [
+     "P00020",
+     "P00034"
+    ]
+   }
+  ],
+  "C3": [
+   {
+    "facility": "F00015",
+    "post": "P00026",
+    "pre": "P00008"
+   },
+   {
+    "facility": "F00045",
+    "post": "P00025",
+    "pre": "P00076"
+   }
+  ],
+  "C4": [
+   {
+    "facility": "F00057",
+    "project": "P00021"
+   },
+   {
+    "facility": "F00041",
+    "project": "P00082"
+   }
+  ],
+  "C5": [
+   {
+    "facility": "F00027",
+    "projects": [
+     "P00005",
+     "P00056"
+    ]
+   },
+   {
+    "facility": "F00059",
+    "projects": [
+     "P00022",
+     "P00069"
+    ]
+   }
+  ]
+ },
+ "items_per_class": 2,
+ "n_chains": 2,
+ "n_projects": 100,
+ "seed": 1
+}
