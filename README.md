@@ -1,21 +1,53 @@
 # Project 11,389
 
-Seeing the connections between thousands of infrastructure project schedules, with [Relate](https://relatedb.ai), the embedded graph database.
+**Thousands of infrastructure projects, each on its own schedule. What happens when you connect them?**
 
-**Status: work in progress.** See `DESCRIPTION.md` for the problem and approach, `ARTIFACTS.md` for what is built and what is not, and `PHASE1-REPORT.md` and `PREREGISTRATION.md` for sources and the planned test design.
+An experiment in using [Relate](https://relatedb.ai), Neo4j's embedded graph database, to make the connections between project schedules visible, so that an AI agent can find problems no single schedule shows.
 
-## What exists today
+*Work in progress for the Relate by Neo4j Hackathon 2026. See "What works today" and "Not built yet" below.*
 
-- `schema/schema.cypher`: the graph schema (constraints and indexes), tested in Relate.
-- `generator/`: a seeded generator for synthetic project portfolios (100 to 11,389 projects) with planted conflicts, and an independent checker (`verify_portfolio.py`) that recomputes every planted conflict from the raw files. All generated data is **simulated**; only the 13 programs in `programs.csv` come from GAO-26-107992, Table 2, p. 17.
-- `loader/load_portfolio.py`: loads a portfolio into a persistent Relate store and, with `--verify`, recomputes every conflict class in Cypher and compares it with the planted answers.
-- `store/portfolio_n1000_seed1.rl`: a ready-made 1,000-project Relate store (0.8 MB).
+## The problem
 
-Not built yet: the AI agent demo, the incident-scenario network model, and the comparison against SQLite and a flat-file agent.
+Large modernization programs run as thousands of separate projects. The trouble is in the connections: two projects visiting the same facility months apart, one crew booked in two places at once, a project scheduled before the work it depends on. Each schedule looks fine alone. The conflict only appears when they are connected.
 
-## Run it
+GAO documented this pattern at the FAA. Its September 2026 report ([GAO-26-107992](https://www.gao.gov/products/gao-26-107992)) found **11,389 individual project schedules that were not integrated across programs**, and gave one example: site preparation for a voice switch at a St. Louis facility in April 2027, and the information-displays program planning its own site preparation at the same site about eight months later. GAO reported that FAA officials said integrating all the projects in their scheduling tool "would not be useful or helpful." The Department of Transportation disputes parts of GAO's findings, and GAO did not measure what these overlaps cost.
 
-Requires Python 3.10 or later. Tested with Python 3.14 on Windows, `relate-db` 1.0.1.
+So this project does not claim to know how big the problem is. It asks something smaller and testable: **when schedule data is connected, how easily can an AI agent find these problems?**
+
+## Why I looked at it
+
+[confirm: your words] I read the GAO report in the days after the FAA's nationwide ground stop on November 13, 2026, which news coverage attributed to aging telecommunications equipment. I wondered whether the real issue is old technology or how its modernization is managed, and whether the complexity of connecting thousands of schedules is exactly where graph technology helps. I am not suggesting scheduling caused the outage; no source I have found establishes the cause.
+
+## How I'm using Relate, and why
+
+- **Storage mode: a single `.rl` file** (`store/portfolio_n1000_seed1.rl`, 0.8 MB). Anyone can open the whole database without running a server. In-memory stores are used for tests.
+- **Why Relate fits:** project schedules are naturally a graph (projects, facilities, crews, dependencies, programs). Relate is embedded, needs no server, speaks Cypher, and is built for agents, with a CLI agent mode, an MCP endpoint, and an installable skill.
+- **What I use:** the Python library to load data and run the conflict queries; the CLI to inspect the store; constraints and indexes to keep identities clean; `relate clone` and MCP were tested for agent use.
+
+## What works today
+
+- A graph schema with unique IDs and a provenance label on every node: documented, simulated, or hypothesis (`schema/schema.cypher`).
+- A seeded generator for synthetic portfolios from 100 to 11,389 projects with **known conflicts planted in them**: duplicate visits, resource conflicts, dependency violations, maintenance-window collisions, and decoys that look mergeable but are not. An independent checker recomputes every planted conflict from the raw files.
+- A loader that puts a portfolio into a persistent Relate store and finds every conflict class in Cypher.
+- **Result:** at 1,000 and at 11,389 projects, the Cypher results match the planted answers exactly, with nothing missing and nothing extra (114 of each class at full scale).
+
+All generated data is **simulated**. Only the 13 programs (names, scope, completion dates) come from GAO's Table 2, p. 17. The 11,389-project size is a scale test, not a reconstruction of the FAA's portfolio.
+
+## Not built yet
+
+- The AI agent that answers questions through Relate.
+- The incident-scenario network model (hypothetical blast-radius and redundancy questions).
+- A comparison against SQLite and a flat-file agent.
+
+## Honest limits
+
+- Nothing here measures real FAA conflicts, costs, or savings. GAO documents one concrete example and quantifies nothing else.
+- The project makes no claim about the cause of the 2026-11-13 ground stop.
+- At full scale, some Cypher conflict checks take 2 to 4 seconds. They have not been optimized, and I make no speed claim.
+
+## Try it
+
+Requires Python 3.10 or later (tested on 3.14, Windows, `relate-db` 1.0.1).
 
 ```powershell
 python -m venv .venv
@@ -31,16 +63,26 @@ python -m venv .venv
 .venv\Scripts\python.exe -I loader\load_portfolio.py --portfolio data\synthetic\portfolio_n1000_seed1 --store store\my_store.rl --verify
 ```
 
-Inspect the included store with the Relate CLI (install from [relatedb.ai](https://relatedb.ai/docs/get-started/install)):
+Inspect the included store with the Relate CLI ([install](https://relatedb.ai/docs/get-started/install)):
 
 ```powershell
 relate -d store\portfolio_n1000_seed1.rl --read-only --toon "MATCH (n) UNWIND labels(n) AS l RETURN l, count(*) AS n"
 ```
 
-## Honesty notes
+## What's in the repo
 
-- Nothing here measures real FAA conflicts, costs, or savings. GAO documents one concrete example (St. Louis) and quantifies nothing else.
-- The project makes no claim about the cause of the 2026-11-13 FAA ground stop.
-- Some full-scale (11,389-project) Cypher conflict checks take 2 to 4 seconds. They have not been optimized.
+| Path | What it is |
+|---|---|
+| `schema/` | Graph schema (constraints and indexes), tested in Relate |
+| `generator/` | Seeded portfolio generator and independent checker |
+| `loader/` | Loads a portfolio into Relate and verifies it in Cypher |
+| `store/` | A ready-made 1,000-project Relate store |
+| `DESCRIPTION.md` | The story in more detail |
+| `PHASE1-REPORT.md`, `PREREGISTRATION.md` | Sources, findings, and the planned test design |
+| `ARTIFACTS.md` | What is built, what is not |
 
-Built with Claude Code (Claude Sonnet 5.5).
+## Disclosures
+
+- Built with Claude Code (Claude Sonnet 5.5).
+- [confirm wording] The author works at Neo4j, which publishes Relate.
+- Sources: GAO-26-107992, relatedb.ai, and the Relate repository.
