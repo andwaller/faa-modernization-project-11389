@@ -14,7 +14,7 @@ I love learning the history of computer technology. I had just come back from IB
 
 ## Why Relate
 
-Relate (relatedb.ai) is an open-source, embedded graph database that speaks Cypher: "No signup. No server to deploy." The data lives in memory, a directory, or one `.rl` file, and it ships with an agent skill and an MCP endpoint so an agent can write Cypher and get results back. That matches this problem. Project schedules are naturally a graph (projects, facilities, crews, dependencies), a judge can open the whole database as a single file, and each agent can work on its own disposable copy.
+Relate by Neo4j (relatedb.ai) is an open-source, embedded graph database that speaks Cypher: "No signup. No server to deploy." The data lives in memory, a directory, or one `.rl` file, and it ships with an agent skill and an MCP endpoint so an agent can write Cypher and get results back. That matches this problem. Project schedules are naturally a graph (projects, facilities, crews, dependencies), a judge can open the whole database as a single file, and each agent can work on its own disposable copy.
 
 ## What I did with Relate
 

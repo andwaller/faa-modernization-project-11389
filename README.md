@@ -10,9 +10,9 @@ I wondered: **the technology may be outdated, but could the project management a
 
 **Thousands of infrastructure projects, each on its own schedule. What happens when you connect them?**
 
-An experiment in using [Relate](https://relatedb.ai), Neo4j's embedded graph database, to make the connections between project schedules visible, so that an AI agent can find problems no single schedule shows.
+An experiment in using [Relate by Neo4j](https://relatedb.ai), the embedded graph database, to make the connections between project schedules visible, so that an AI agent can find problems no single schedule shows.
 
-*Work in progress for the Relate by Neo4j Hackathon 2026.*
+*Work in progress.*
 
 ## Where the 11,389 comes from
 
