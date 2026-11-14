@@ -22,6 +22,7 @@ Work comes first. This list only tracks what will be needed. Nothing here is sta
 | Loader into Relate (`loader/load_portfolio.py`) | Built; verified at 1,000 and 11,389 projects |
 | Persistent Relate store (`store/portfolio_n1000_seed1.rl`, 0.8 MB) | Created in the project folder; reopens with 14 constraints |
 | Thesis question queries (`queries/thesis_questions.py`) | Built; run at 1,000 and 11,389 projects |
+| Browser page with guided help (`web/`) | Built; all eight questions checked in Chrome at 1,000 and 11,389 projects |
 | Agent that answers questions through Relate | Not started |
 | Incident-scenario network model (all hypothetical) | Not started |
 | Research report and pre-registration (`PHASE1-REPORT.md`, `PREREGISTRATION.md`) | Drafted; heavier than the lean demo needs |

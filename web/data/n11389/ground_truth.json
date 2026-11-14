@@ -1,0 +1,3979 @@
+{
+ "T1": [
+  {
+   "facility": "F04561",
+   "projects": [
+    "P07389"
+   ]
+  },
+  {
+   "facility": "F00200",
+   "projects": [
+    "P06149",
+    "P06614"
+   ]
+  },
+  {
+   "facility": "F02335",
+   "projects": [
+    "P00873",
+    "P11020"
+   ]
+  },
+  {
+   "facility": "F05746",
+   "projects": [
+    "P03585",
+    "P07808"
+   ]
+  },
+  {
+   "facility": "F00422",
+   "projects": [
+    "P11214"
+   ]
+  }
+ ],
+ "T4": [
+  {
+   "affected": [],
+   "delay_days": 60,
+   "project": "P11049"
+  },
+  {
+   "affected": [
+    "P04182",
+    "P08308"
+   ],
+   "delay_days": 180,
+   "project": "P06048"
+  },
+  {
+   "affected": [],
+   "delay_days": 60,
+   "project": "P08434"
+  },
+  {
+   "affected": [
+    "P03308",
+    "P04390",
+    "P05285"
+   ],
+   "delay_days": 180,
+   "project": "P04568"
+  },
+  {
+   "affected": [],
+   "delay_days": 60,
+   "project": "P01059"
+  }
+ ],
+ "T6": {
+  "expected": {
+   "merge_feasible": [
+    "F03014",
+    "F02430"
+   ],
+   "merge_infeasible": [
+    "F02484"
+   ]
+  },
+  "facilities": [
+   "F03014",
+   "F02430",
+   "F02484"
+  ]
+ },
+ "classes": {
+  "C1": [
+   {
+    "facility": "F00054",
+    "projects": [
+     "P08209",
+     "P08870"
+    ]
+   },
+   {
+    "facility": "F05222",
+    "projects": [
+     "P00966",
+     "P08706"
+    ]
+   },
+   {
+    "facility": "F00517",
+    "projects": [
+     "P01007",
+     "P02040"
+    ]
+   },
+   {
+    "facility": "F03395",
+    "projects": [
+     "P00647",
+     "P09796"
+    ]
+   },
+   {
+    "facility": "F05593",
+    "projects": [
+     "P10103",
+     "P11370"
+    ]
+   },
+   {
+    "facility": "F02143",
+    "projects": [
+     "P01554",
+     "P04945"
+    ]
+   },
+   {
+    "facility": "F03251",
+    "projects": [
+     "P03155",
+     "P07586"
+    ]
+   },
+   {
+    "facility": "F03750",
+    "projects": [
+     "P04835",
+     "P08969"
+    ]
+   },
+   {
+    "facility": "F03928",
+    "projects": [
+     "P10429",
+     "P10816"
+    ]
+   },
+   {
+    "facility": "F06428",
+    "projects": [
+     "P08271",
+     "P10505"
+    ]
+   },
+   {
+    "facility": "F06050",
+    "projects": [
+     "P00356",
+     "P03078"
+    ]
+   },
+   {
+    "facility": "F04992",
+    "projects": [
+     "P00252",
+     "P06466"
+    ]
+   },
+   {
+    "facility": "F03711",
+    "projects": [
+     "P04129",
+     "P09697"
+    ]
+   },
+   {
+    "facility": "F01439",
+    "projects": [
+     "P00337",
+     "P07046"
+    ]
+   },
+   {
+    "facility": "F04827",
+    "projects": [
+     "P08391",
+     "P10850"
+    ]
+   },
+   {
+    "facility": "F05973",
+    "projects": [
+     "P04098",
+     "P10900"
+    ]
+   },
+   {
+    "facility": "F06494",
+    "projects": [
+     "P01511",
+     "P06583"
+    ]
+   },
+   {
+    "facility": "F05558",
+    "projects": [
+     "P07966",
+     "P09128"
+    ]
+   },
+   {
+    "facility": "F02045",
+    "projects": [
+     "P00186",
+     "P02492"
+    ]
+   },
+   {
+    "facility": "F05670",
+    "projects": [
+     "P05065",
+     "P09016"
+    ]
+   },
+   {
+    "facility": "F04495",
+    "projects": [
+     "P03594",
+     "P05172"
+    ]
+   },
+   {
+    "facility": "F02616",
+    "projects": [
+     "P01428",
+     "P06743"
+    ]
+   },
+   {
+    "facility": "F06075",
+    "projects": [
+     "P02434",
+     "P04069"
+    ]
+   },
+   {
+    "facility": "F04566",
+    "projects": [
+     "P02802",
+     "P08135"
+    ]
+   },
+   {
+    "facility": "F01204",
+    "projects": [
+     "P09350",
+     "P10135"
+    ]
+   },
+   {
+    "facility": "F04320",
+    "projects": [
+     "P00031",
+     "P03765"
+    ]
+   },
+   {
+    "facility": "F05241",
+    "projects": [
+     "P03488",
+     "P03669"
+    ]
+   },
+   {
+    "facility": "F01987",
+    "projects": [
+     "P01740",
+     "P03289"
+    ]
+   },
+   {
+    "facility": "F02351",
+    "projects": [
+     "P01250",
+     "P04442"
+    ]
+   },
+   {
+    "facility": "F00851",
+    "projects": [
+     "P03542",
+     "P06402"
+    ]
+   },
+   {
+    "facility": "F05568",
+    "projects": [
+     "P07870",
+     "P09043"
+    ]
+   },
+   {
+    "facility": "F04710",
+    "projects": [
+     "P04818",
+     "P07886"
+    ]
+   },
+   {
+    "facility": "F00040",
+    "projects": [
+     "P04446",
+     "P09688"
+    ]
+   },
+   {
+    "facility": "F01465",
+    "projects": [
+     "P02015",
+     "P03528"
+    ]
+   },
+   {
+    "facility": "F04805",
+    "projects": [
+     "P01855",
+     "P05399"
+    ]
+   },
+   {
+    "facility": "F00397",
+    "projects": [
+     "P04168",
+     "P06527"
+    ]
+   },
+   {
+    "facility": "F01212",
+    "projects": [
+     "P03173",
+     "P04540"
+    ]
+   },
+   {
+    "facility": "F02430",
+    "projects": [
+     "P04005",
+     "P05418"
+    ]
+   },
+   {
+    "facility": "F02470",
+    "projects": [
+     "P00617",
+     "P05635"
+    ]
+   },
+   {
+    "facility": "F03351",
+    "projects": [
+     "P00586",
+     "P02123"
+    ]
+   },
+   {
+    "facility": "F05954",
+    "projects": [
+     "P01493",
+     "P02309"
+    ]
+   },
+   {
+    "facility": "F02176",
+    "projects": [
+     "P04371",
+     "P07976"
+    ]
+   },
+   {
+    "facility": "F01114",
+    "projects": [
+     "P10085",
+     "P10936"
+    ]
+   },
+   {
+    "facility": "F02736",
+    "projects": [
+     "P01383",
+     "P07372"
+    ]
+   },
+   {
+    "facility": "F04635",
+    "projects": [
+     "P06927",
+     "P10367"
+    ]
+   },
+   {
+    "facility": "F04886",
+    "projects": [
+     "P01365",
+     "P02126"
+    ]
+   },
+   {
+    "facility": "F06406",
+    "projects": [
+     "P07254",
+     "P07789"
+    ]
+   },
+   {
+    "facility": "F02940",
+    "projects": [
+     "P04619",
+     "P09630"
+    ]
+   },
+   {
+    "facility": "F05736",
+    "projects": [
+     "P03218",
+     "P06056"
+    ]
+   },
+   {
+    "facility": "F02993",
+    "projects": [
+     "P02284",
+     "P05136"
+    ]
+   },
+   {
+    "facility": "F04460",
+    "projects": [
+     "P03820",
+     "P04114"
+    ]
+   },
+   {
+    "facility": "F04721",
+    "projects": [
+     "P01084",
+     "P09561"
+    ]
+   },
+   {
+    "facility": "F01256",
+    "projects": [
+     "P05258",
+     "P06999"
+    ]
+   },
+   {
+    "facility": "F03836",
+    "projects": [
+     "P02482",
+     "P09683"
+    ]
+   },
+   {
+    "facility": "F05276",
+    "projects": [
+     "P06844",
+     "P10597"
+    ]
+   },
+   {
+    "facility": "F00022",
+    "projects": [
+     "P06727",
+     "P09948"
+    ]
+   },
+   {
+    "facility": "F00337",
+    "projects": [
+     "P00956",
+     "P09199"
+    ]
+   },
+   {
+    "facility": "F04048",
+    "projects": [
+     "P08602",
+     "P11310"
+    ]
+   },
+   {
+    "facility": "F06381",
+    "projects": [
+     "P01272",
+     "P09317"
+    ]
+   },
+   {
+    "facility": "F02905",
+    "projects": [
+     "P01600",
+     "P07666"
+    ]
+   },
+   {
+    "facility": "F01835",
+    "projects": [
+     "P03828",
+     "P10739"
+    ]
+   },
+   {
+    "facility": "F03422",
+    "projects": [
+     "P08323",
+     "P10564"
+    ]
+   },
+   {
+    "facility": "F05989",
+    "projects": [
+     "P03288",
+     "P07797"
+    ]
+   },
+   {
+    "facility": "F00527",
+    "projects": [
+     "P01021",
+     "P01955"
+    ]
+   },
+   {
+    "facility": "F01079",
+    "projects": [
+     "P02426",
+     "P07619"
+    ]
+   },
+   {
+    "facility": "F05712",
+    "projects": [
+     "P01401",
+     "P01480"
+    ]
+   },
+   {
+    "facility": "F04967",
+    "projects": [
+     "P07352",
+     "P10720"
+    ]
+   },
+   {
+    "facility": "F04453",
+    "projects": [
+     "P02450",
+     "P05278"
+    ]
+   },
+   {
+    "facility": "F03001",
+    "projects": [
+     "P05636",
+     "P10587"
+    ]
+   },
+   {
+    "facility": "F02097",
+    "projects": [
+     "P01092",
+     "P06480"
+    ]
+   },
+   {
+    "facility": "F02997",
+    "projects": [
+     "P01626",
+     "P07716"
+    ]
+   },
+   {
+    "facility": "F02581",
+    "projects": [
+     "P05829",
+     "P06234"
+    ]
+   },
+   {
+    "facility": "F02848",
+    "projects": [
+     "P00846",
+     "P01796"
+    ]
+   },
+   {
+    "facility": "F04975",
+    "projects": [
+     "P01119",
+     "P10004"
+    ]
+   },
+   {
+    "facility": "F05714",
+    "projects": [
+     "P01436",
+     "P09990"
+    ]
+   },
+   {
+    "facility": "F00707",
+    "projects": [
+     "P03538",
+     "P09622"
+    ]
+   },
+   {
+    "facility": "F00583",
+    "projects": [
+     "P00942",
+     "P03404"
+    ]
+   },
+   {
+    "facility": "F01545",
+    "projects": [
+     "P07160",
+     "P10509"
+    ]
+   },
+   {
+    "facility": "F06412",
+    "projects": [
+     "P02350",
+     "P07585"
+    ]
+   },
+   {
+    "facility": "F01763",
+    "projects": [
+     "P08276",
+     "P10736"
+    ]
+   },
+   {
+    "facility": "F03908",
+    "projects": [
+     "P02756",
+     "P05498"
+    ]
+   },
+   {
+    "facility": "F03014",
+    "projects": [
+     "P01800",
+     "P06290"
+    ]
+   },
+   {
+    "facility": "F02567",
+    "projects": [
+     "P00250",
+     "P04939"
+    ]
+   },
+   {
+    "facility": "F06234",
+    "projects": [
+     "P00281",
+     "P04740"
+    ]
+   },
+   {
+    "facility": "F01880",
+    "projects": [
+     "P06388",
+     "P10467"
+    ]
+   },
+   {
+    "facility": "F01257",
+    "projects": [
+     "P04343",
+     "P04876"
+    ]
+   },
+   {
+    "facility": "F04408",
+    "projects": [
+     "P05273",
+     "P08202"
+    ]
+   },
+   {
+    "facility": "F06298",
+    "projects": [
+     "P04437",
+     "P08852"
+    ]
+   },
+   {
+    "facility": "F05661",
+    "projects": [
+     "P06354",
+     "P07896"
+    ]
+   },
+   {
+    "facility": "F01812",
+    "projects": [
+     "P01877",
+     "P07258"
+    ]
+   },
+   {
+    "facility": "F05485",
+    "projects": [
+     "P07777",
+     "P10295"
+    ]
+   },
+   {
+    "facility": "F00534",
+    "projects": [
+     "P04723",
+     "P04730"
+    ]
+   },
+   {
+    "facility": "F01332",
+    "projects": [
+     "P03426",
+     "P06382"
+    ]
+   },
+   {
+    "facility": "F04274",
+    "projects": [
+     "P00167",
+     "P04683"
+    ]
+   },
+   {
+    "facility": "F05025",
+    "projects": [
+     "P00234",
+     "P06013"
+    ]
+   },
+   {
+    "facility": "F04665",
+    "projects": [
+     "P00445",
+     "P07985"
+    ]
+   },
+   {
+    "facility": "F03148",
+    "projects": [
+     "P07297",
+     "P09477"
+    ]
+   },
+   {
+    "facility": "F02007",
+    "projects": [
+     "P05423",
+     "P08940"
+    ]
+   },
+   {
+    "facility": "F02724",
+    "projects": [
+     "P05284",
+     "P06594"
+    ]
+   },
+   {
+    "facility": "F01110",
+    "projects": [
+     "P01542",
+     "P06069"
+    ]
+   },
+   {
+    "facility": "F06005",
+    "projects": [
+     "P01162",
+     "P01791"
+    ]
+   },
+   {
+    "facility": "F01368",
+    "projects": [
+     "P01093",
+     "P05677"
+    ]
+   },
+   {
+    "facility": "F04403",
+    "projects": [
+     "P03627",
+     "P07813"
+    ]
+   },
+   {
+    "facility": "F06461",
+    "projects": [
+     "P05815",
+     "P05914"
+    ]
+   },
+   {
+    "facility": "F05275",
+    "projects": [
+     "P03052",
+     "P10160"
+    ]
+   },
+   {
+    "facility": "F02878",
+    "projects": [
+     "P07150",
+     "P08623"
+    ]
+   },
+   {
+    "facility": "F05600",
+    "projects": [
+     "P03287",
+     "P09761"
+    ]
+   },
+   {
+    "facility": "F00443",
+    "projects": [
+     "P03901",
+     "P10576"
+    ]
+   },
+   {
+    "facility": "F05774",
+    "projects": [
+     "P07029",
+     "P07587"
+    ]
+   },
+   {
+    "facility": "F00610",
+    "projects": [
+     "P00685",
+     "P02035"
+    ]
+   },
+   {
+    "facility": "F00596",
+    "projects": [
+     "P00345",
+     "P08260"
+    ]
+   },
+   {
+    "facility": "F00511",
+    "projects": [
+     "P00098",
+     "P06359"
+    ]
+   },
+   {
+    "facility": "F01170",
+    "projects": [
+     "P08243",
+     "P10319"
+    ]
+   },
+   {
+    "facility": "F05516",
+    "projects": [
+     "P09406",
+     "P10743"
+    ]
+   }
+  ],
+  "C2": [
+   {
+    "crew": "CRW0393",
+    "facilities": [
+     "F00328",
+     "F00518"
+    ],
+    "projects": [
+     "P06730",
+     "P11273"
+    ]
+   },
+   {
+    "crew": "CRW0907",
+    "facilities": [
+     "F01905",
+     "F05322"
+    ],
+    "projects": [
+     "P04718",
+     "P09221"
+    ]
+   },
+   {
+    "crew": "CRW0914",
+    "facilities": [
+     "F01375",
+     "F02504"
+    ],
+    "projects": [
+     "P08654",
+     "P08998"
+    ]
+   },
+   {
+    "crew": "CRW0976",
+    "facilities": [
+     "F01573",
+     "F02819"
+    ],
+    "projects": [
+     "P04813",
+     "P10437"
+    ]
+   },
+   {
+    "crew": "CRW0593",
+    "facilities": [
+     "F00655",
+     "F03101"
+    ],
+    "projects": [
+     "P03832",
+     "P05947"
+    ]
+   },
+   {
+    "crew": "CRW0304",
+    "facilities": [
+     "F02303",
+     "F02330"
+    ],
+    "projects": [
+     "P00589",
+     "P03405"
+    ]
+   },
+   {
+    "crew": "CRW0787",
+    "facilities": [
+     "F04075",
+     "F06306"
+    ],
+    "projects": [
+     "P02908",
+     "P06518"
+    ]
+   },
+   {
+    "crew": "CRW0144",
+    "facilities": [
+     "F00963",
+     "F05344"
+    ],
+    "projects": [
+     "P01433",
+     "P05666"
+    ]
+   },
+   {
+    "crew": "CRW0549",
+    "facilities": [
+     "F03549",
+     "F06186"
+    ],
+    "projects": [
+     "P02586",
+     "P07858"
+    ]
+   },
+   {
+    "crew": "CRW0694",
+    "facilities": [
+     "F01410",
+     "F04385"
+    ],
+    "projects": [
+     "P04230",
+     "P08702"
+    ]
+   },
+   {
+    "crew": "CRW0575",
+    "facilities": [
+     "F03200",
+     "F04838"
+    ],
+    "projects": [
+     "P06256",
+     "P07712"
+    ]
+   },
+   {
+    "crew": "CRW0713",
+    "facilities": [
+     "F02239",
+     "F02896"
+    ],
+    "projects": [
+     "P04489",
+     "P10858"
+    ]
+   },
+   {
+    "crew": "CRW0940",
+    "facilities": [
+     "F03531",
+     "F03935"
+    ],
+    "projects": [
+     "P05837",
+     "P08513"
+    ]
+   },
+   {
+    "crew": "CRW0065",
+    "facilities": [
+     "F02410",
+     "F04003"
+    ],
+    "projects": [
+     "P02146",
+     "P06315"
+    ]
+   },
+   {
+    "crew": "CRW0587",
+    "facilities": [
+     "F00537",
+     "F06142"
+    ],
+    "projects": [
+     "P00869",
+     "P07401"
+    ]
+   },
+   {
+    "crew": "CRW0828",
+    "facilities": [
+     "F01237",
+     "F05339"
+    ],
+    "projects": [
+     "P06109",
+     "P06144"
+    ]
+   },
+   {
+    "crew": "CRW0489",
+    "facilities": [
+     "F02314",
+     "F02583"
+    ],
+    "projects": [
+     "P01848",
+     "P02799"
+    ]
+   },
+   {
+    "crew": "CRW0869",
+    "facilities": [
+     "F03518",
+     "F03825"
+    ],
+    "projects": [
+     "P00129",
+     "P05508"
+    ]
+   },
+   {
+    "crew": "CRW0407",
+    "facilities": [
+     "F01932",
+     "F02593"
+    ],
+    "projects": [
+     "P01275",
+     "P01984"
+    ]
+   },
+   {
+    "crew": "CRW1025",
+    "facilities": [
+     "F01849",
+     "F02680"
+    ],
+    "projects": [
+     "P00697",
+     "P08032"
+    ]
+   },
+   {
+    "crew": "CRW0328",
+    "facilities": [
+     "F00984",
+     "F02104"
+    ],
+    "projects": [
+     "P04040",
+     "P06674"
+    ]
+   },
+   {
+    "crew": "CRW0754",
+    "facilities": [
+     "F00644",
+     "F04210"
+    ],
+    "projects": [
+     "P09533",
+     "P10511"
+    ]
+   },
+   {
+    "crew": "CRW0474",
+    "facilities": [
+     "F01467",
+     "F05822"
+    ],
+    "projects": [
+     "P02243",
+     "P05058"
+    ]
+   },
+   {
+    "crew": "CRW0158",
+    "facilities": [
+     "F02244",
+     "F02999"
+    ],
+    "projects": [
+     "P04295",
+     "P09699"
+    ]
+   },
+   {
+    "crew": "CRW0590",
+    "facilities": [
+     "F00570",
+     "F00573"
+    ],
+    "projects": [
+     "P00022",
+     "P06946"
+    ]
+   },
+   {
+    "crew": "CRW0672",
+    "facilities": [
+     "F02506",
+     "F06084"
+    ],
+    "projects": [
+     "P06708",
+     "P08548"
+    ]
+   },
+   {
+    "crew": "CRW0004",
+    "facilities": [
+     "F01486",
+     "F02065"
+    ],
+    "projects": [
+     "P03703",
+     "P08052"
+    ]
+   },
+   {
+    "crew": "CRW0685",
+    "facilities": [
+     "F00818",
+     "F01725"
+    ],
+    "projects": [
+     "P02282",
+     "P11123"
+    ]
+   },
+   {
+    "crew": "CRW0119",
+    "facilities": [
+     "F02779",
+     "F06085"
+    ],
+    "projects": [
+     "P01720",
+     "P03914"
+    ]
+   },
+   {
+    "crew": "CRW0655",
+    "facilities": [
+     "F03526",
+     "F06241"
+    ],
+    "projects": [
+     "P02573",
+     "P03811"
+    ]
+   },
+   {
+    "crew": "CRW0445",
+    "facilities": [
+     "F02535",
+     "F04794"
+    ],
+    "projects": [
+     "P00990",
+     "P02479"
+    ]
+   },
+   {
+    "crew": "CRW1026",
+    "facilities": [
+     "F05403",
+     "F05644"
+    ],
+    "projects": [
+     "P02999",
+     "P05385"
+    ]
+   },
+   {
+    "crew": "CRW0303",
+    "facilities": [
+     "F00172",
+     "F02098"
+    ],
+    "projects": [
+     "P03088",
+     "P05022"
+    ]
+   },
+   {
+    "crew": "CRW0867",
+    "facilities": [
+     "F00184",
+     "F01933"
+    ],
+    "projects": [
+     "P01971",
+     "P07336"
+    ]
+   },
+   {
+    "crew": "CRW0219",
+    "facilities": [
+     "F00718",
+     "F04675"
+    ],
+    "projects": [
+     "P01285",
+     "P11170"
+    ]
+   },
+   {
+    "crew": "CRW0232",
+    "facilities": [
+     "F03486",
+     "F05469"
+    ],
+    "projects": [
+     "P02224",
+     "P06151"
+    ]
+   },
+   {
+    "crew": "CRW0556",
+    "facilities": [
+     "F01754",
+     "F03679"
+    ],
+    "projects": [
+     "P01044",
+     "P09791"
+    ]
+   },
+   {
+    "crew": "CRW0309",
+    "facilities": [
+     "F05109",
+     "F05300"
+    ],
+    "projects": [
+     "P04867",
+     "P10453"
+    ]
+   },
+   {
+    "crew": "CRW0180",
+    "facilities": [
+     "F03597",
+     "F06302"
+    ],
+    "projects": [
+     "P10168",
+     "P11134"
+    ]
+   },
+   {
+    "crew": "CRW0569",
+    "facilities": [
+     "F04524",
+     "F05159"
+    ],
+    "projects": [
+     "P03183",
+     "P08970"
+    ]
+   },
+   {
+    "crew": "CRW0022",
+    "facilities": [
+     "F01314",
+     "F05256"
+    ],
+    "projects": [
+     "P02031",
+     "P08292"
+    ]
+   },
+   {
+    "crew": "CRW1011",
+    "facilities": [
+     "F02075",
+     "F03391"
+    ],
+    "projects": [
+     "P05349",
+     "P06065"
+    ]
+   },
+   {
+    "crew": "CRW0032",
+    "facilities": [
+     "F00480",
+     "F06264"
+    ],
+    "projects": [
+     "P07552",
+     "P10101"
+    ]
+   },
+   {
+    "crew": "CRW0807",
+    "facilities": [
+     "F02021",
+     "F04093"
+    ],
+    "projects": [
+     "P02837",
+     "P04222"
+    ]
+   },
+   {
+    "crew": "CRW0578",
+    "facilities": [
+     "F02797",
+     "F06482"
+    ],
+    "projects": [
+     "P02346",
+     "P08638"
+    ]
+   },
+   {
+    "crew": "CRW0289",
+    "facilities": [
+     "F00151",
+     "F04761"
+    ],
+    "projects": [
+     "P07614",
+     "P10395"
+    ]
+   },
+   {
+    "crew": "CRW1029",
+    "facilities": [
+     "F03637",
+     "F05598"
+    ],
+    "projects": [
+     "P04160",
+     "P08605"
+    ]
+   },
+   {
+    "crew": "CRW0930",
+    "facilities": [
+     "F00303",
+     "F04695"
+    ],
+    "projects": [
+     "P09596",
+     "P09639"
+    ]
+   },
+   {
+    "crew": "CRW0762",
+    "facilities": [
+     "F03341",
+     "F04125"
+    ],
+    "projects": [
+     "P04128",
+     "P08255"
+    ]
+   },
+   {
+    "crew": "CRW0654",
+    "facilities": [
+     "F03697",
+     "F04795"
+    ],
+    "projects": [
+     "P00668",
+     "P11181"
+    ]
+   },
+   {
+    "crew": "CRW0472",
+    "facilities": [
+     "F01618",
+     "F04036"
+    ],
+    "projects": [
+     "P05204",
+     "P10558"
+    ]
+   },
+   {
+    "crew": "CRW0872",
+    "facilities": [
+     "F01312",
+     "F03623"
+    ],
+    "projects": [
+     "P00982",
+     "P09333"
+    ]
+   },
+   {
+    "crew": "CRW0541",
+    "facilities": [
+     "F04160",
+     "F05970"
+    ],
+    "projects": [
+     "P03593",
+     "P07505"
+    ]
+   },
+   {
+    "crew": "CRW0683",
+    "facilities": [
+     "F00909",
+     "F01082"
+    ],
+    "projects": [
+     "P00308",
+     "P07855"
+    ]
+   },
+   {
+    "crew": "CRW0040",
+    "facilities": [
+     "F02343",
+     "F03212"
+    ],
+    "projects": [
+     "P09381",
+     "P09541"
+    ]
+   },
+   {
+    "crew": "CRW1028",
+    "facilities": [
+     "F03386",
+     "F04526"
+    ],
+    "projects": [
+     "P06052",
+     "P06959"
+    ]
+   },
+   {
+    "crew": "CRW0686",
+    "facilities": [
+     "F01203",
+     "F06497"
+    ],
+    "projects": [
+     "P02358",
+     "P05608"
+    ]
+   },
+   {
+    "crew": "CRW0347",
+    "facilities": [
+     "F00761",
+     "F03427"
+    ],
+    "projects": [
+     "P01547",
+     "P01775"
+    ]
+   },
+   {
+    "crew": "CRW0836",
+    "facilities": [
+     "F01954",
+     "F04247"
+    ],
+    "projects": [
+     "P00943",
+     "P04218"
+    ]
+   },
+   {
+    "crew": "CRW0343",
+    "facilities": [
+     "F02181",
+     "F03524"
+    ],
+    "projects": [
+     "P07085",
+     "P08173"
+    ]
+   },
+   {
+    "crew": "CRW0306",
+    "facilities": [
+     "F01525",
+     "F04033"
+    ],
+    "projects": [
+     "P01809",
+     "P08727"
+    ]
+   },
+   {
+    "crew": "CRW0365",
+    "facilities": [
+     "F02566",
+     "F04569"
+    ],
+    "projects": [
+     "P06852",
+     "P08337"
+    ]
+   },
+   {
+    "crew": "CRW0286",
+    "facilities": [
+     "F02909",
+     "F04484"
+    ],
+    "projects": [
+     "P02570",
+     "P03854"
+    ]
+   },
+   {
+    "crew": "CRW0516",
+    "facilities": [
+     "F01626",
+     "F05253"
+    ],
+    "projects": [
+     "P02470",
+     "P02998"
+    ]
+   },
+   {
+    "crew": "CRW0548",
+    "facilities": [
+     "F01480",
+     "F03834"
+    ],
+    "projects": [
+     "P07809",
+     "P07963"
+    ]
+   },
+   {
+    "crew": "CRW0550",
+    "facilities": [
+     "F02226",
+     "F06345"
+    ],
+    "projects": [
+     "P04405",
+     "P09662"
+    ]
+   },
+   {
+    "crew": "CRW0242",
+    "facilities": [
+     "F02741",
+     "F04848"
+    ],
+    "projects": [
+     "P06177",
+     "P09794"
+    ]
+   },
+   {
+    "crew": "CRW0853",
+    "facilities": [
+     "F05766",
+     "F05995"
+    ],
+    "projects": [
+     "P09529",
+     "P10931"
+    ]
+   },
+   {
+    "crew": "CRW0155",
+    "facilities": [
+     "F02205",
+     "F02726"
+    ],
+    "projects": [
+     "P01632",
+     "P09486"
+    ]
+   },
+   {
+    "crew": "CRW0989",
+    "facilities": [
+     "F04246",
+     "F05416"
+    ],
+    "projects": [
+     "P02375",
+     "P06417"
+    ]
+   },
+   {
+    "crew": "CRW0622",
+    "facilities": [
+     "F01958",
+     "F04774"
+    ],
+    "projects": [
+     "P00962",
+     "P08298"
+    ]
+   },
+   {
+    "crew": "CRW0462",
+    "facilities": [
+     "F00880",
+     "F05134"
+    ],
+    "projects": [
+     "P06719",
+     "P06983"
+    ]
+   },
+   {
+    "crew": "CRW0710",
+    "facilities": [
+     "F02817",
+     "F05417"
+    ],
+    "projects": [
+     "P00977",
+     "P05088"
+    ]
+   },
+   {
+    "crew": "CRW0310",
+    "facilities": [
+     "F00345",
+     "F05744"
+    ],
+    "projects": [
+     "P04110",
+     "P05819"
+    ]
+   },
+   {
+    "crew": "CRW0832",
+    "facilities": [
+     "F03381",
+     "F04287"
+    ],
+    "projects": [
+     "P03346",
+     "P06648"
+    ]
+   },
+   {
+    "crew": "CRW0021",
+    "facilities": [
+     "F02837",
+     "F02881"
+    ],
+    "projects": [
+     "P06657",
+     "P08911"
+    ]
+   },
+   {
+    "crew": "CRW0217",
+    "facilities": [
+     "F00698",
+     "F06379"
+    ],
+    "projects": [
+     "P09908",
+     "P10422"
+    ]
+   },
+   {
+    "crew": "CRW0123",
+    "facilities": [
+     "F02199",
+     "F04463"
+    ],
+    "projects": [
+     "P00726",
+     "P05099"
+    ]
+   },
+   {
+    "crew": "CRW0693",
+    "facilities": [
+     "F01674",
+     "F01744"
+    ],
+    "projects": [
+     "P00331",
+     "P10271"
+    ]
+   },
+   {
+    "crew": "CRW0663",
+    "facilities": [
+     "F01652",
+     "F02734"
+    ],
+    "projects": [
+     "P01309",
+     "P06912"
+    ]
+   },
+   {
+    "crew": "CRW0730",
+    "facilities": [
+     "F04362",
+     "F04508"
+    ],
+    "projects": [
+     "P02288",
+     "P10269"
+    ]
+   },
+   {
+    "crew": "CRW0791",
+    "facilities": [
+     "F05173",
+     "F05524"
+    ],
+    "projects": [
+     "P05690",
+     "P08000"
+    ]
+   },
+   {
+    "crew": "CRW0153",
+    "facilities": [
+     "F01886",
+     "F05521"
+    ],
+    "projects": [
+     "P03225",
+     "P03738"
+    ]
+   },
+   {
+    "crew": "CRW0765",
+    "facilities": [
+     "F00134",
+     "F00631"
+    ],
+    "projects": [
+     "P03071",
+     "P11078"
+    ]
+   },
+   {
+    "crew": "CRW0399",
+    "facilities": [
+     "F00954",
+     "F03848"
+    ],
+    "projects": [
+     "P01889",
+     "P11138"
+    ]
+   },
+   {
+    "crew": "CRW1006",
+    "facilities": [
+     "F01302",
+     "F02920"
+    ],
+    "projects": [
+     "P01914",
+     "P06475"
+    ]
+   },
+   {
+    "crew": "CRW0644",
+    "facilities": [
+     "F04224",
+     "F06459"
+    ],
+    "projects": [
+     "P04665",
+     "P09824"
+    ]
+   },
+   {
+    "crew": "CRW0546",
+    "facilities": [
+     "F00592",
+     "F04643"
+    ],
+    "projects": [
+     "P08125",
+     "P09121"
+    ]
+   },
+   {
+    "crew": "CRW0724",
+    "facilities": [
+     "F02255",
+     "F06146"
+    ],
+    "projects": [
+     "P06814",
+     "P10328"
+    ]
+   },
+   {
+    "crew": "CRW0194",
+    "facilities": [
+     "F01365",
+     "F03683"
+    ],
+    "projects": [
+     "P06273",
+     "P07756"
+    ]
+   },
+   {
+    "crew": "CRW0876",
+    "facilities": [
+     "F01381",
+     "F04097"
+    ],
+    "projects": [
+     "P02997",
+     "P04092"
+    ]
+   },
+   {
+    "crew": "CRW0296",
+    "facilities": [
+     "F02331",
+     "F05149"
+    ],
+    "projects": [
+     "P09311",
+     "P10714"
+    ]
+   },
+   {
+    "crew": "CRW0199",
+    "facilities": [
+     "F00378",
+     "F04806"
+    ],
+    "projects": [
+     "P02557",
+     "P04689"
+    ]
+   },
+   {
+    "crew": "CRW0772",
+    "facilities": [
+     "F00552",
+     "F00908"
+    ],
+    "projects": [
+     "P08787",
+     "P11100"
+    ]
+   },
+   {
+    "crew": "CRW0651",
+    "facilities": [
+     "F02503",
+     "F04295"
+    ],
+    "projects": [
+     "P01457",
+     "P05594"
+    ]
+   },
+   {
+    "crew": "CRW0059",
+    "facilities": [
+     "F01568",
+     "F02875"
+    ],
+    "projects": [
+     "P01297",
+     "P08411"
+    ]
+   },
+   {
+    "crew": "CRW0129",
+    "facilities": [
+     "F04667",
+     "F05397"
+    ],
+    "projects": [
+     "P01608",
+     "P10767"
+    ]
+   },
+   {
+    "crew": "CRW0443",
+    "facilities": [
+     "F03352",
+     "F05657"
+    ],
+    "projects": [
+     "P02503",
+     "P07276"
+    ]
+   },
+   {
+    "crew": "CRW0514",
+    "facilities": [
+     "F02635",
+     "F04749"
+    ],
+    "projects": [
+     "P07950",
+     "P09165"
+    ]
+   },
+   {
+    "crew": "CRW0716",
+    "facilities": [
+     "F01327",
+     "F05681"
+    ],
+    "projects": [
+     "P00166",
+     "P05587"
+    ]
+   },
+   {
+    "crew": "CRW0838",
+    "facilities": [
+     "F00961",
+     "F03250"
+    ],
+    "projects": [
+     "P03899",
+     "P06585"
+    ]
+   },
+   {
+    "crew": "CRW0404",
+    "facilities": [
+     "F01619",
+     "F05632"
+    ],
+    "projects": [
+     "P00422",
+     "P02160"
+    ]
+   },
+   {
+    "crew": "CRW0236",
+    "facilities": [
+     "F00683",
+     "F05462"
+    ],
+    "projects": [
+     "P01302",
+     "P01392"
+    ]
+   },
+   {
+    "crew": "CRW0412",
+    "facilities": [
+     "F00650",
+     "F05572"
+    ],
+    "projects": [
+     "P06751",
+     "P10381"
+    ]
+   },
+   {
+    "crew": "CRW0261",
+    "facilities": [
+     "F02754",
+     "F04410"
+    ],
+    "projects": [
+     "P03311",
+     "P06293"
+    ]
+   },
+   {
+    "crew": "CRW0835",
+    "facilities": [
+     "F00600",
+     "F04563"
+    ],
+    "projects": [
+     "P01358",
+     "P08899"
+    ]
+   },
+   {
+    "crew": "CRW0229",
+    "facilities": [
+     "F03522",
+     "F03744"
+    ],
+    "projects": [
+     "P05394",
+     "P10348"
+    ]
+   },
+   {
+    "crew": "CRW0899",
+    "facilities": [
+     "F04627",
+     "F05370"
+    ],
+    "projects": [
+     "P02621",
+     "P11036"
+    ]
+   },
+   {
+    "crew": "CRW0531",
+    "facilities": [
+     "F04248",
+     "F05759"
+    ],
+    "projects": [
+     "P00630",
+     "P07842"
+    ]
+   },
+   {
+    "crew": "CRW0551",
+    "facilities": [
+     "F02502",
+     "F02678"
+    ],
+    "projects": [
+     "P00415",
+     "P10444"
+    ]
+   },
+   {
+    "crew": "CRW0487",
+    "facilities": [
+     "F00091",
+     "F06001"
+    ],
+    "projects": [
+     "P01024",
+     "P01755"
+    ]
+   },
+   {
+    "crew": "CRW0852",
+    "facilities": [
+     "F00684",
+     "F02492"
+    ],
+    "projects": [
+     "P02874",
+     "P04445"
+    ]
+   },
+   {
+    "crew": "CRW0043",
+    "facilities": [
+     "F02885",
+     "F05630"
+    ],
+    "projects": [
+     "P08121",
+     "P09021"
+    ]
+   },
+   {
+    "crew": "CRW0749",
+    "facilities": [
+     "F01152",
+     "F01921"
+    ],
+    "projects": [
+     "P00734",
+     "P06467"
+    ]
+   }
+  ],
+  "C3": [
+   {
+    "facility": "F03701",
+    "post": "P07558",
+    "pre": "P08259"
+   },
+   {
+    "facility": "F05323",
+    "post": "P09806",
+    "pre": "P09989"
+   },
+   {
+    "facility": "F05793",
+    "post": "P08887",
+    "pre": "P03454"
+   },
+   {
+    "facility": "F04165",
+    "post": "P07577",
+    "pre": "P09283"
+   },
+   {
+    "facility": "F04212",
+    "post": "P07839",
+    "pre": "P07483"
+   },
+   {
+    "facility": "F02772",
+    "post": "P06569",
+    "pre": "P08031"
+   },
+   {
+    "facility": "F06350",
+    "post": "P06664",
+    "pre": "P04869"
+   },
+   {
+    "facility": "F03338",
+    "post": "P04322",
+    "pre": "P01008"
+   },
+   {
+    "facility": "F02221",
+    "post": "P09649",
+    "pre": "P09866"
+   },
+   {
+    "facility": "F00075",
+    "post": "P06560",
+    "pre": "P03668"
+   },
+   {
+    "facility": "F02129",
+    "post": "P05549",
+    "pre": "P03818"
+   },
+   {
+    "facility": "F04062",
+    "post": "P09045",
+    "pre": "P08105"
+   },
+   {
+    "facility": "F00942",
+    "post": "P09192",
+    "pre": "P01491"
+   },
+   {
+    "facility": "F03871",
+    "post": "P05360",
+    "pre": "P06553"
+   },
+   {
+    "facility": "F03348",
+    "post": "P02376",
+    "pre": "P01616"
+   },
+   {
+    "facility": "F01499",
+    "post": "P02476",
+    "pre": "P07819"
+   },
+   {
+    "facility": "F02786",
+    "post": "P10366",
+    "pre": "P00652"
+   },
+   {
+    "facility": "F03331",
+    "post": "P02781",
+    "pre": "P09764"
+   },
+   {
+    "facility": "F04063",
+    "post": "P06435",
+    "pre": "P00816"
+   },
+   {
+    "facility": "F03215",
+    "post": "P04109",
+    "pre": "P04805"
+   },
+   {
+    "facility": "F04549",
+    "post": "P02816",
+    "pre": "P03154"
+   },
+   {
+    "facility": "F04173",
+    "post": "P01773",
+    "pre": "P01753"
+   },
+   {
+    "facility": "F01280",
+    "post": "P04978",
+    "pre": "P00074"
+   },
+   {
+    "facility": "F04769",
+    "post": "P00038",
+    "pre": "P01934"
+   },
+   {
+    "facility": "F00738",
+    "post": "P07101",
+    "pre": "P10375"
+   },
+   {
+    "facility": "F04982",
+    "post": "P02069",
+    "pre": "P02780"
+   },
+   {
+    "facility": "F02224",
+    "post": "P03501",
+    "pre": "P08876"
+   },
+   {
+    "facility": "F06331",
+    "post": "P05728",
+    "pre": "P00604"
+   },
+   {
+    "facility": "F03024",
+    "post": "P05215",
+    "pre": "P05525"
+   },
+   {
+    "facility": "F00036",
+    "post": "P08609",
+    "pre": "P09028"
+   },
+   {
+    "facility": "F02767",
+    "post": "P10273",
+    "pre": "P07829"
+   },
+   {
+    "facility": "F04324",
+    "post": "P00009",
+    "pre": "P01282"
+   },
+   {
+    "facility": "F04469",
+    "post": "P01681",
+    "pre": "P04658"
+   },
+   {
+    "facility": "F01864",
+    "post": "P01983",
+    "pre": "P08872"
+   },
+   {
+    "facility": "F04213",
+    "post": "P02878",
+    "pre": "P03582"
+   },
+   {
+    "facility": "F01275",
+    "post": "P08747",
+    "pre": "P01534"
+   },
+   {
+    "facility": "F01458",
+    "post": "P06090",
+    "pre": "P07491"
+   },
+   {
+    "facility": "F04583",
+    "post": "P06508",
+    "pre": "P07478"
+   },
+   {
+    "facility": "F02202",
+    "post": "P10759",
+    "pre": "P07249"
+   },
+   {
+    "facility": "F00038",
+    "post": "P07073",
+    "pre": "P04477"
+   },
+   {
+    "facility": "F01437",
+    "post": "P00417",
+    "pre": "P02879"
+   },
+   {
+    "facility": "F01530",
+    "post": "P00041",
+    "pre": "P07816"
+   },
+   {
+    "facility": "F03086",
+    "post": "P06962",
+    "pre": "P03108"
+   },
+   {
+    "facility": "F06171",
+    "post": "P00046",
+    "pre": "P10258"
+   },
+   {
+    "facility": "F00156",
+    "post": "P00460",
+    "pre": "P01002"
+   },
+   {
+    "facility": "F01299",
+    "post": "P00078",
+    "pre": "P05599"
+   },
+   {
+    "facility": "F03295",
+    "post": "P01892",
+    "pre": "P02794"
+   },
+   {
+    "facility": "F02547",
+    "post": "P02716",
+    "pre": "P00307"
+   },
+   {
+    "facility": "F02447",
+    "post": "P04391",
+    "pre": "P08508"
+   },
+   {
+    "facility": "F04040",
+    "post": "P05428",
+    "pre": "P06984"
+   },
+   {
+    "facility": "F04377",
+    "post": "P07111",
+    "pre": "P02672"
+   },
+   {
+    "facility": "F05556",
+    "post": "P10938",
+    "pre": "P00338"
+   },
+   {
+    "facility": "F02576",
+    "post": "P00137",
+    "pre": "P02534"
+   },
+   {
+    "facility": "F05307",
+    "post": "P02100",
+    "pre": "P07480"
+   },
+   {
+    "facility": "F05351",
+    "post": "P10912",
+    "pre": "P09205"
+   },
+   {
+    "facility": "F04198",
+    "post": "P10043",
+    "pre": "P05368"
+   },
+   {
+    "facility": "F03367",
+    "post": "P06883",
+    "pre": "P06381"
+   },
+   {
+    "facility": "F01832",
+    "post": "P10153",
+    "pre": "P06213"
+   },
+   {
+    "facility": "F04590",
+    "post": "P08081",
+    "pre": "P10204"
+   },
+   {
+    "facility": "F05671",
+    "post": "P03727",
+    "pre": "P06534"
+   },
+   {
+    "facility": "F06219",
+    "post": "P01614",
+    "pre": "P11334"
+   },
+   {
+    "facility": "F03185",
+    "post": "P05484",
+    "pre": "P02862"
+   },
+   {
+    "facility": "F01569",
+    "post": "P05034",
+    "pre": "P10623"
+   },
+   {
+    "facility": "F04753",
+    "post": "P08750",
+    "pre": "P08497"
+   },
+   {
+    "facility": "F04859",
+    "post": "P00494",
+    "pre": "P01760"
+   },
+   {
+    "facility": "F01053",
+    "post": "P05524",
+    "pre": "P05027"
+   },
+   {
+    "facility": "F02338",
+    "post": "P09458",
+    "pre": "P07441"
+   },
+   {
+    "facility": "F02412",
+    "post": "P03524",
+    "pre": "P02681"
+   },
+   {
+    "facility": "F05772",
+    "post": "P05754",
+    "pre": "P00145"
+   },
+   {
+    "facility": "F00364",
+    "post": "P11372",
+    "pre": "P05132"
+   },
+   {
+    "facility": "F03516",
+    "post": "P07727",
+    "pre": "P04244"
+   },
+   {
+    "facility": "F00847",
+    "post": "P06350",
+    "pre": "P03282"
+   },
+   {
+    "facility": "F01627",
+    "post": "P02173",
+    "pre": "P05633"
+   },
+   {
+    "facility": "F03147",
+    "post": "P08797",
+    "pre": "P01643"
+   },
+   {
+    "facility": "F03917",
+    "post": "P07800",
+    "pre": "P01668"
+   },
+   {
+    "facility": "F00885",
+    "post": "P02281",
+    "pre": "P10594"
+   },
+   {
+    "facility": "F05464",
+    "post": "P08582",
+    "pre": "P03940"
+   },
+   {
+    "facility": "F02577",
+    "post": "P01540",
+    "pre": "P04553"
+   },
+   {
+    "facility": "F03778",
+    "post": "P10600",
+    "pre": "P06617"
+   },
+   {
+    "facility": "F03491",
+    "post": "P06872",
+    "pre": "P09219"
+   },
+   {
+    "facility": "F01574",
+    "post": "P04044",
+    "pre": "P09170"
+   },
+   {
+    "facility": "F01768",
+    "post": "P01214",
+    "pre": "P10841"
+   },
+   {
+    "facility": "F06270",
+    "post": "P10831",
+    "pre": "P10665"
+   },
+   {
+    "facility": "F05240",
+    "post": "P01603",
+    "pre": "P01941"
+   },
+   {
+    "facility": "F02324",
+    "post": "P09169",
+    "pre": "P08389"
+   },
+   {
+    "facility": "F03451",
+    "post": "P07044",
+    "pre": "P01998"
+   },
+   {
+    "facility": "F02968",
+    "post": "P03309",
+    "pre": "P00033"
+   },
+   {
+    "facility": "F00194",
+    "post": "P06697",
+    "pre": "P00545"
+   },
+   {
+    "facility": "F01609",
+    "post": "P00305",
+    "pre": "P09081"
+   },
+   {
+    "facility": "F03912",
+    "post": "P03812",
+    "pre": "P10909"
+   },
+   {
+    "facility": "F04832",
+    "post": "P05536",
+    "pre": "P06014"
+   },
+   {
+    "facility": "F06073",
+    "post": "P10683",
+    "pre": "P03544"
+   },
+   {
+    "facility": "F05618",
+    "post": "P07759",
+    "pre": "P04611"
+   },
+   {
+    "facility": "F03356",
+    "post": "P08407",
+    "pre": "P10941"
+   },
+   {
+    "facility": "F01775",
+    "post": "P03788",
+    "pre": "P11069"
+   },
+   {
+    "facility": "F02083",
+    "post": "P08077",
+    "pre": "P04762"
+   },
+   {
+    "facility": "F01455",
+    "post": "P07998",
+    "pre": "P02257"
+   },
+   {
+    "facility": "F02067",
+    "post": "P07183",
+    "pre": "P00547"
+   },
+   {
+    "facility": "F06469",
+    "post": "P02463",
+    "pre": "P02515"
+   },
+   {
+    "facility": "F00601",
+    "post": "P05691",
+    "pre": "P05515"
+   },
+   {
+    "facility": "F05579",
+    "post": "P02810",
+    "pre": "P08571"
+   },
+   {
+    "facility": "F01469",
+    "post": "P05565",
+    "pre": "P08227"
+   },
+   {
+    "facility": "F00665",
+    "post": "P09964",
+    "pre": "P04727"
+   },
+   {
+    "facility": "F04999",
+    "post": "P10117",
+    "pre": "P10075"
+   },
+   {
+    "facility": "F02802",
+    "post": "P04051",
+    "pre": "P07611"
+   },
+   {
+    "facility": "F03306",
+    "post": "P03184",
+    "pre": "P01400"
+   },
+   {
+    "facility": "F04376",
+    "post": "P06532",
+    "pre": "P08428"
+   },
+   {
+    "facility": "F02595",
+    "post": "P02821",
+    "pre": "P00610"
+   },
+   {
+    "facility": "F01186",
+    "post": "P11269",
+    "pre": "P06272"
+   },
+   {
+    "facility": "F02854",
+    "post": "P11017",
+    "pre": "P09974"
+   },
+   {
+    "facility": "F04336",
+    "post": "P04400",
+    "pre": "P11254"
+   },
+   {
+    "facility": "F02172",
+    "post": "P06039",
+    "pre": "P06110"
+   },
+   {
+    "facility": "F04470",
+    "post": "P08801",
+    "pre": "P02940"
+   },
+   {
+    "facility": "F00522",
+    "post": "P06312",
+    "pre": "P10741"
+   }
+  ],
+  "C4": [
+   {
+    "facility": "F02339",
+    "project": "P05861"
+   },
+   {
+    "facility": "F06180",
+    "project": "P09834"
+   },
+   {
+    "facility": "F01991",
+    "project": "P06495"
+   },
+   {
+    "facility": "F04476",
+    "project": "P06418"
+   },
+   {
+    "facility": "F04522",
+    "project": "P00598"
+   },
+   {
+    "facility": "F02476",
+    "project": "P06330"
+   },
+   {
+    "facility": "F06451",
+    "project": "P02141"
+   },
+   {
+    "facility": "F05406",
+    "project": "P03515"
+   },
+   {
+    "facility": "F03607",
+    "project": "P07131"
+   },
+   {
+    "facility": "F00202",
+    "project": "P09307"
+   },
+   {
+    "facility": "F05964",
+    "project": "P07675"
+   },
+   {
+    "facility": "F03392",
+    "project": "P07061"
+   },
+   {
+    "facility": "F05939",
+    "project": "P09419"
+   },
+   {
+    "facility": "F02974",
+    "project": "P03472"
+   },
+   {
+    "facility": "F00667",
+    "project": "P09584"
+   },
+   {
+    "facility": "F02141",
+    "project": "P03826"
+   },
+   {
+    "facility": "F05874",
+    "project": "P10329"
+   },
+   {
+    "facility": "F01804",
+    "project": "P10503"
+   },
+   {
+    "facility": "F05933",
+    "project": "P02480"
+   },
+   {
+    "facility": "F00249",
+    "project": "P05475"
+   },
+   {
+    "facility": "F00585",
+    "project": "P04203"
+   },
+   {
+    "facility": "F03656",
+    "project": "P05501"
+   },
+   {
+    "facility": "F02247",
+    "project": "P10923"
+   },
+   {
+    "facility": "F03703",
+    "project": "P06183"
+   },
+   {
+    "facility": "F05562",
+    "project": "P07700"
+   },
+   {
+    "facility": "F02551",
+    "project": "P08664"
+   },
+   {
+    "facility": "F05500",
+    "project": "P04376"
+   },
+   {
+    "facility": "F02666",
+    "project": "P09154"
+   },
+   {
+    "facility": "F04725",
+    "project": "P10516"
+   },
+   {
+    "facility": "F04844",
+    "project": "P06403"
+   },
+   {
+    "facility": "F06399",
+    "project": "P01321"
+   },
+   {
+    "facility": "F06413",
+    "project": "P02595"
+   },
+   {
+    "facility": "F06263",
+    "project": "P10172"
+   },
+   {
+    "facility": "F03687",
+    "project": "P02068"
+   },
+   {
+    "facility": "F04881",
+    "project": "P02328"
+   },
+   {
+    "facility": "F04477",
+    "project": "P02268"
+   },
+   {
+    "facility": "F01597",
+    "project": "P07750"
+   },
+   {
+    "facility": "F03993",
+    "project": "P06414"
+   },
+   {
+    "facility": "F04283",
+    "project": "P04183"
+   },
+   {
+    "facility": "F05195",
+    "project": "P05010"
+   },
+   {
+    "facility": "F06464",
+    "project": "P01265"
+   },
+   {
+    "facility": "F02276",
+    "project": "P07508"
+   },
+   {
+    "facility": "F06342",
+    "project": "P07534"
+   },
+   {
+    "facility": "F00168",
+    "project": "P00706"
+   },
+   {
+    "facility": "F04985",
+    "project": "P01642"
+   },
+   {
+    "facility": "F06119",
+    "project": "P06082"
+   },
+   {
+    "facility": "F04022",
+    "project": "P05393"
+   },
+   {
+    "facility": "F05164",
+    "project": "P09693"
+   },
+   {
+    "facility": "F05732",
+    "project": "P06562"
+   },
+   {
+    "facility": "F03587",
+    "project": "P03200"
+   },
+   {
+    "facility": "F01635",
+    "project": "P09224"
+   },
+   {
+    "facility": "F02132",
+    "project": "P00125"
+   },
+   {
+    "facility": "F01202",
+    "project": "P08221"
+   },
+   {
+    "facility": "F03382",
+    "project": "P04896"
+   },
+   {
+    "facility": "F05620",
+    "project": "P04148"
+   },
+   {
+    "facility": "F05290",
+    "project": "P08800"
+   },
+   {
+    "facility": "F03873",
+    "project": "P11155"
+   },
+   {
+    "facility": "F03523",
+    "project": "P08242"
+   },
+   {
+    "facility": "F04546",
+    "project": "P10154"
+   },
+   {
+    "facility": "F02675",
+    "project": "P01756"
+   },
+   {
+    "facility": "F04047",
+    "project": "P05832"
+   },
+   {
+    "facility": "F02619",
+    "project": "P08161"
+   },
+   {
+    "facility": "F01419",
+    "project": "P10621"
+   },
+   {
+    "facility": "F00335",
+    "project": "P02705"
+   },
+   {
+    "facility": "F03620",
+    "project": "P09931"
+   },
+   {
+    "facility": "F01687",
+    "project": "P05574"
+   },
+   {
+    "facility": "F01969",
+    "project": "P06195"
+   },
+   {
+    "facility": "F05193",
+    "project": "P08115"
+   },
+   {
+    "facility": "F02527",
+    "project": "P00328"
+   },
+   {
+    "facility": "F02365",
+    "project": "P07718"
+   },
+   {
+    "facility": "F00867",
+    "project": "P02898"
+   },
+   {
+    "facility": "F03173",
+    "project": "P04309"
+   },
+   {
+    "facility": "F04723",
+    "project": "P05292"
+   },
+   {
+    "facility": "F04866",
+    "project": "P06299"
+   },
+   {
+    "facility": "F03804",
+    "project": "P06062"
+   },
+   {
+    "facility": "F00145",
+    "project": "P01245"
+   },
+   {
+    "facility": "F05348",
+    "project": "P05051"
+   },
+   {
+    "facility": "F05563",
+    "project": "P08764"
+   },
+   {
+    "facility": "F00227",
+    "project": "P01237"
+   },
+   {
+    "facility": "F04604",
+    "project": "P10685"
+   },
+   {
+    "facility": "F01352",
+    "project": "P05630"
+   },
+   {
+    "facility": "F03532",
+    "project": "P04433"
+   },
+   {
+    "facility": "F05672",
+    "project": "P09182"
+   },
+   {
+    "facility": "F04158",
+    "project": "P01606"
+   },
+   {
+    "facility": "F03095",
+    "project": "P06512"
+   },
+   {
+    "facility": "F00973",
+    "project": "P03773"
+   },
+   {
+    "facility": "F05758",
+    "project": "P05006"
+   },
+   {
+    "facility": "F02127",
+    "project": "P04565"
+   },
+   {
+    "facility": "F01706",
+    "project": "P02149"
+   },
+   {
+    "facility": "F04425",
+    "project": "P05073"
+   },
+   {
+    "facility": "F04024",
+    "project": "P10806"
+   },
+   {
+    "facility": "F05077",
+    "project": "P07960"
+   },
+   {
+    "facility": "F02173",
+    "project": "P05323"
+   },
+   {
+    "facility": "F01875",
+    "project": "P00915"
+   },
+   {
+    "facility": "F00453",
+    "project": "P08326"
+   },
+   {
+    "facility": "F03736",
+    "project": "P03330"
+   },
+   {
+    "facility": "F06108",
+    "project": "P10277"
+   },
+   {
+    "facility": "F05343",
+    "project": "P10501"
+   },
+   {
+    "facility": "F05859",
+    "project": "P09833"
+   },
+   {
+    "facility": "F02784",
+    "project": "P03870"
+   },
+   {
+    "facility": "F01436",
+    "project": "P07605"
+   },
+   {
+    "facility": "F03308",
+    "project": "P02057"
+   },
+   {
+    "facility": "F03433",
+    "project": "P02060"
+   },
+   {
+    "facility": "F02682",
+    "project": "P10524"
+   },
+   {
+    "facility": "F04884",
+    "project": "P09814"
+   },
+   {
+    "facility": "F03552",
+    "project": "P02951"
+   },
+   {
+    "facility": "F00725",
+    "project": "P09083"
+   },
+   {
+    "facility": "F03008",
+    "project": "P05909"
+   },
+   {
+    "facility": "F06091",
+    "project": "P07211"
+   },
+   {
+    "facility": "F04194",
+    "project": "P09591"
+   },
+   {
+    "facility": "F00561",
+    "project": "P07117"
+   },
+   {
+    "facility": "F04429",
+    "project": "P04735"
+   },
+   {
+    "facility": "F03126",
+    "project": "P03728"
+   },
+   {
+    "facility": "F01616",
+    "project": "P00180"
+   }
+  ],
+  "C5": [
+   {
+    "facility": "F01488",
+    "projects": [
+     "P09575",
+     "P10020"
+    ]
+   },
+   {
+    "facility": "F02008",
+    "projects": [
+     "P02290",
+     "P05567"
+    ]
+   },
+   {
+    "facility": "F02501",
+    "projects": [
+     "P04011",
+     "P07866"
+    ]
+   },
+   {
+    "facility": "F06016",
+    "projects": [
+     "P09939",
+     "P11299"
+    ]
+   },
+   {
+    "facility": "F02317",
+    "projects": [
+     "P03684",
+     "P08961"
+    ]
+   },
+   {
+    "facility": "F05099",
+    "projects": [
+     "P03972",
+     "P10215"
+    ]
+   },
+   {
+    "facility": "F02834",
+    "projects": [
+     "P05764",
+     "P09804"
+    ]
+   },
+   {
+    "facility": "F00331",
+    "projects": [
+     "P08916",
+     "P10224"
+    ]
+   },
+   {
+    "facility": "F02230",
+    "projects": [
+     "P03652",
+     "P10091"
+    ]
+   },
+   {
+    "facility": "F03614",
+    "projects": [
+     "P00314",
+     "P05596"
+    ]
+   },
+   {
+    "facility": "F03845",
+    "projects": [
+     "P00709",
+     "P06281"
+    ]
+   },
+   {
+    "facility": "F00519",
+    "projects": [
+     "P02407",
+     "P07524"
+    ]
+   },
+   {
+    "facility": "F00273",
+    "projects": [
+     "P02481",
+     "P09555"
+    ]
+   },
+   {
+    "facility": "F05319",
+    "projects": [
+     "P03136",
+     "P07571"
+    ]
+   },
+   {
+    "facility": "F01224",
+    "projects": [
+     "P08488",
+     "P09376"
+    ]
+   },
+   {
+    "facility": "F00535",
+    "projects": [
+     "P06675",
+     "P08368"
+    ]
+   },
+   {
+    "facility": "F00160",
+    "projects": [
+     "P00034",
+     "P05920"
+    ]
+   },
+   {
+    "facility": "F04389",
+    "projects": [
+     "P01970",
+     "P09494"
+    ]
+   },
+   {
+    "facility": "F05180",
+    "projects": [
+     "P00501",
+     "P09604"
+    ]
+   },
+   {
+    "facility": "F00654",
+    "projects": [
+     "P01476",
+     "P08193"
+    ]
+   },
+   {
+    "facility": "F05821",
+    "projects": [
+     "P02671",
+     "P02927"
+    ]
+   },
+   {
+    "facility": "F01277",
+    "projects": [
+     "P04669",
+     "P04905"
+    ]
+   },
+   {
+    "facility": "F05799",
+    "projects": [
+     "P05068",
+     "P10731"
+    ]
+   },
+   {
+    "facility": "F04804",
+    "projects": [
+     "P00815",
+     "P08478"
+    ]
+   },
+   {
+    "facility": "F03981",
+    "projects": [
+     "P10096",
+     "P10119"
+    ]
+   },
+   {
+    "facility": "F04167",
+    "projects": [
+     "P05376",
+     "P06490"
+    ]
+   },
+   {
+    "facility": "F02914",
+    "projects": [
+     "P05977",
+     "P09105"
+    ]
+   },
+   {
+    "facility": "F03018",
+    "projects": [
+     "P00884",
+     "P10011"
+    ]
+   },
+   {
+    "facility": "F00440",
+    "projects": [
+     "P06186",
+     "P08625"
+    ]
+   },
+   {
+    "facility": "F04413",
+    "projects": [
+     "P01397",
+     "P06602"
+    ]
+   },
+   {
+    "facility": "F01965",
+    "projects": [
+     "P04528",
+     "P04539"
+    ]
+   },
+   {
+    "facility": "F03645",
+    "projects": [
+     "P04145",
+     "P08284"
+    ]
+   },
+   {
+    "facility": "F05188",
+    "projects": [
+     "P10159",
+     "P11327"
+    ]
+   },
+   {
+    "facility": "F05918",
+    "projects": [
+     "P04661",
+     "P05413"
+    ]
+   },
+   {
+    "facility": "F00752",
+    "projects": [
+     "P02318",
+     "P04062"
+    ]
+   },
+   {
+    "facility": "F00852",
+    "projects": [
+     "P01196",
+     "P09660"
+    ]
+   },
+   {
+    "facility": "F00580",
+    "projects": [
+     "P07507",
+     "P10326"
+    ]
+   },
+   {
+    "facility": "F01796",
+    "projects": [
+     "P04759",
+     "P11258"
+    ]
+   },
+   {
+    "facility": "F00981",
+    "projects": [
+     "P05732",
+     "P06956"
+    ]
+   },
+   {
+    "facility": "F03077",
+    "projects": [
+     "P02285",
+     "P02607"
+    ]
+   },
+   {
+    "facility": "F05175",
+    "projects": [
+     "P03986",
+     "P05183"
+    ]
+   },
+   {
+    "facility": "F00162",
+    "projects": [
+     "P00270",
+     "P00382"
+    ]
+   },
+   {
+    "facility": "F04217",
+    "projects": [
+     "P05520",
+     "P10682"
+    ]
+   },
+   {
+    "facility": "F05064",
+    "projects": [
+     "P00461",
+     "P04880"
+    ]
+   },
+   {
+    "facility": "F02690",
+    "projects": [
+     "P02938",
+     "P09057"
+    ]
+   },
+   {
+    "facility": "F05826",
+    "projects": [
+     "P09087",
+     "P10914"
+    ]
+   },
+   {
+    "facility": "F03481",
+    "projects": [
+     "P05588",
+     "P11195"
+    ]
+   },
+   {
+    "facility": "F02180",
+    "projects": [
+     "P00754",
+     "P03665"
+    ]
+   },
+   {
+    "facility": "F03098",
+    "projects": [
+     "P04377",
+     "P06277"
+    ]
+   },
+   {
+    "facility": "F02327",
+    "projects": [
+     "P06750",
+     "P07133"
+    ]
+   },
+   {
+    "facility": "F04906",
+    "projects": [
+     "P03087",
+     "P10095"
+    ]
+   },
+   {
+    "facility": "F03136",
+    "projects": [
+     "P10709",
+     "P10753"
+    ]
+   },
+   {
+    "facility": "F01799",
+    "projects": [
+     "P04531",
+     "P08080"
+    ]
+   },
+   {
+    "facility": "F04466",
+    "projects": [
+     "P01945",
+     "P03431"
+    ]
+   },
+   {
+    "facility": "F00165",
+    "projects": [
+     "P00899",
+     "P05386"
+    ]
+   },
+   {
+    "facility": "F06145",
+    "projects": [
+     "P04833",
+     "P06173"
+    ]
+   },
+   {
+    "facility": "F00334",
+    "projects": [
+     "P05681",
+     "P07486"
+    ]
+   },
+   {
+    "facility": "F06240",
+    "projects": [
+     "P06526",
+     "P08728"
+    ]
+   },
+   {
+    "facility": "F02771",
+    "projects": [
+     "P01647",
+     "P06788"
+    ]
+   },
+   {
+    "facility": "F06326",
+    "projects": [
+     "P04642",
+     "P06878"
+    ]
+   },
+   {
+    "facility": "F00064",
+    "projects": [
+     "P09879",
+     "P10390"
+    ]
+   },
+   {
+    "facility": "F00173",
+    "projects": [
+     "P05186",
+     "P06665"
+    ]
+   },
+   {
+    "facility": "F04828",
+    "projects": [
+     "P02056",
+     "P09740"
+    ]
+   },
+   {
+    "facility": "F04514",
+    "projects": [
+     "P08776",
+     "P09589"
+    ]
+   },
+   {
+    "facility": "F05589",
+    "projects": [
+     "P02628",
+     "P08628"
+    ]
+   },
+   {
+    "facility": "F04751",
+    "projects": [
+     "P00362",
+     "P03410"
+    ]
+   },
+   {
+    "facility": "F03857",
+    "projects": [
+     "P03395",
+     "P11131"
+    ]
+   },
+   {
+    "facility": "F06106",
+    "projects": [
+     "P05038",
+     "P05133"
+    ]
+   },
+   {
+    "facility": "F02484",
+    "projects": [
+     "P05318",
+     "P08177"
+    ]
+   },
+   {
+    "facility": "F03732",
+    "projects": [
+     "P08215",
+     "P10605"
+    ]
+   },
+   {
+    "facility": "F03630",
+    "projects": [
+     "P04144",
+     "P08867"
+    ]
+   },
+   {
+    "facility": "F04054",
+    "projects": [
+     "P05840",
+     "P08778"
+    ]
+   },
+   {
+    "facility": "F01048",
+    "projects": [
+     "P03383",
+     "P04242"
+    ]
+   },
+   {
+    "facility": "F02582",
+    "projects": [
+     "P07303",
+     "P10921"
+    ]
+   },
+   {
+    "facility": "F06175",
+    "projects": [
+     "P02062",
+     "P07728"
+    ]
+   },
+   {
+    "facility": "F02882",
+    "projects": [
+     "P00818",
+     "P06877"
+    ]
+   },
+   {
+    "facility": "F00673",
+    "projects": [
+     "P03239",
+     "P10229"
+    ]
+   },
+   {
+    "facility": "F04103",
+    "projects": [
+     "P01767",
+     "P08187"
+    ]
+   },
+   {
+    "facility": "F05867",
+    "projects": [
+     "P08034",
+     "P11352"
+    ]
+   },
+   {
+    "facility": "F03444",
+    "projects": [
+     "P02791",
+     "P10236"
+    ]
+   },
+   {
+    "facility": "F01918",
+    "projects": [
+     "P02322",
+     "P11263"
+    ]
+   },
+   {
+    "facility": "F01210",
+    "projects": [
+     "P04246",
+     "P07451"
+    ]
+   },
+   {
+    "facility": "F03326",
+    "projects": [
+     "P02627",
+     "P08262"
+    ]
+   },
+   {
+    "facility": "F04323",
+    "projects": [
+     "P00289",
+     "P08921"
+    ]
+   },
+   {
+    "facility": "F05083",
+    "projects": [
+     "P06225",
+     "P11199"
+    ]
+   },
+   {
+    "facility": "F04346",
+    "projects": [
+     "P04016",
+     "P08648"
+    ]
+   },
+   {
+    "facility": "F00643",
+    "projects": [
+     "P06603",
+     "P08158"
+    ]
+   },
+   {
+    "facility": "F01062",
+    "projects": [
+     "P05836",
+     "P07495"
+    ]
+   },
+   {
+    "facility": "F06314",
+    "projects": [
+     "P00578",
+     "P10210"
+    ]
+   },
+   {
+    "facility": "F05934",
+    "projects": [
+     "P03875",
+     "P04682"
+    ]
+   },
+   {
+    "facility": "F06068",
+    "projects": [
+     "P04801",
+     "P11302"
+    ]
+   },
+   {
+    "facility": "F02844",
+    "projects": [
+     "P03278",
+     "P06706"
+    ]
+   },
+   {
+    "facility": "F01830",
+    "projects": [
+     "P05101",
+     "P10719"
+    ]
+   },
+   {
+    "facility": "F01313",
+    "projects": [
+     "P08228",
+     "P11326"
+    ]
+   },
+   {
+    "facility": "F06010",
+    "projects": [
+     "P08614",
+     "P08886"
+    ]
+   },
+   {
+    "facility": "F05081",
+    "projects": [
+     "P02227",
+     "P06875"
+    ]
+   },
+   {
+    "facility": "F03425",
+    "projects": [
+     "P08527",
+     "P10022"
+    ]
+   },
+   {
+    "facility": "F05342",
+    "projects": [
+     "P03804",
+     "P05632"
+    ]
+   },
+   {
+    "facility": "F05931",
+    "projects": [
+     "P00981",
+     "P03272"
+    ]
+   },
+   {
+    "facility": "F05075",
+    "projects": [
+     "P06632",
+     "P10003"
+    ]
+   },
+   {
+    "facility": "F00102",
+    "projects": [
+     "P07455",
+     "P10734"
+    ]
+   },
+   {
+    "facility": "F02260",
+    "projects": [
+     "P03151",
+     "P08774"
+    ]
+   },
+   {
+    "facility": "F01973",
+    "projects": [
+     "P02772",
+     "P04942"
+    ]
+   },
+   {
+    "facility": "F06190",
+    "projects": [
+     "P04256",
+     "P06816"
+    ]
+   },
+   {
+    "facility": "F05883",
+    "projects": [
+     "P06918",
+     "P09278"
+    ]
+   },
+   {
+    "facility": "F04187",
+    "projects": [
+     "P00810",
+     "P06749"
+    ]
+   },
+   {
+    "facility": "F00741",
+    "projects": [
+     "P02373",
+     "P04358"
+    ]
+   },
+   {
+    "facility": "F00264",
+    "projects": [
+     "P00722",
+     "P03762"
+    ]
+   },
+   {
+    "facility": "F04856",
+    "projects": [
+     "P03022",
+     "P06769"
+    ]
+   },
+   {
+    "facility": "F02950",
+    "projects": [
+     "P02258",
+     "P09318"
+    ]
+   },
+   {
+    "facility": "F05907",
+    "projects": [
+     "P05490",
+     "P05997"
+    ]
+   },
+   {
+    "facility": "F03171",
+    "projects": [
+     "P00475",
+     "P07030"
+    ]
+   },
+   {
+    "facility": "F05460",
+    "projects": [
+     "P04020",
+     "P05337"
+    ]
+   },
+   {
+    "facility": "F01070",
+    "projects": [
+     "P05981",
+     "P06428"
+    ]
+   }
+  ]
+ },
+ "items_per_class": 114,
+ "n_chains": 46,
+ "n_projects": 11389,
+ "seed": 1
+}

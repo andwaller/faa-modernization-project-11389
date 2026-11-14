@@ -62,10 +62,10 @@ let DATA = null;
 let truth = null;
 let db = null;
 
-async function loadFiles() {
+async function loadFiles(size) {
   const names = ["programs", "facilities", "projects", "dependencies", "maintenance_windows"];
   const [schema, truthText, ...csvs] = await Promise.all([
-    fetchText("data/schema.cypher"), fetchText("data/ground_truth.json"), ...names.map((n) => fetchText(`data/${n}.csv`)),
+    fetchText("data/schema.cypher"), fetchText(`data/n${size}/ground_truth.json`), ...names.map((n) => fetchText(`data/n${size}/${n}.csv`)),
   ]);
   truth = JSON.parse(truthText).classes;
   const t = Object.fromEntries(names.map((n, i) => [n, parseCsv(csvs[i])]));
@@ -133,8 +133,8 @@ MATCH (d)-[:IN_PROGRAM]->(gd:Program), (p)-[:IN_PROGRAM]->(gp:Program)
 RETURN gd <> gp AS crossProgram, count(*) AS dependencies`,
   slip: `MATCH (h:Project)
 WHERE EXISTS { (:Project)-[:DEPENDS_ON]->(h) } AND NOT EXISTS { (h)-[:DEPENDS_ON]->() }
-MATCH path = (d:Project)-[:DEPENDS_ON*1..]->(h)
-WITH d, reverse(nodes(path)) AS ns
+MATCH path = (h)<-[:DEPENDS_ON*1..]-(d:Project)
+WITH d, nodes(path) AS ns
 WITH d, reduce(s = $delay, i IN range(1, size(ns) - 1) |
        CASE WHEN s <= 0 THEN 0
             WHEN ns[i-1].endDay + s - ns[i].startDay > 0 THEN ns[i-1].endDay + s - ns[i].startDay
@@ -343,8 +343,10 @@ const QUESTIONS = [
 ];
 const this_q = (id) => QUESTIONS.find((q) => q.id === id);
 
-function showQuestion(q) {
+async function showQuestion(q) {
   const el = $("#answer");
+  el.innerHTML = `<h2>${esc(q.title)}</h2><p class="status" role="status">Working... larger portfolios can take a few seconds.</p>`;
+  await new Promise((res) => setTimeout(res, 30)); // let the browser paint the message first
   let r;
   try { r = q.run(); }
   catch (e) { el.innerHTML = `<h2>${esc(q.title)}</h2><p class="status bad">Something went wrong running this question: ${esc(e.message)}</p><p>Try another question, or reload the page.</p>`; return; }
@@ -409,26 +411,48 @@ function setupDialogs() {
 }
 
 // ---------- boot ----------
+let inited = false;
+const PLACEHOLDER = `<p class="placeholder">Pick a question on the left to begin. If you are not sure where to start, try <strong>What is at one site?</strong></p>`;
+
+// Loads (or reloads) a portfolio of the given size into a fresh in-memory Relate database.
+async function loadPortfolio(size) {
+  const status = $("#status"), pick = $("#size-pick");
+  document.querySelectorAll(".qbtn").forEach((b) => (b.disabled = true));
+  pick.disabled = true;
+  status.className = "status";
+  status.textContent = size === 11389
+    ? "Loading 11,389 projects into Relate. This can take a while and the page may pause. Please wait..."
+    : "Loading Relate in your browser...";
+  await new Promise((res) => setTimeout(res, 50)); // let the browser paint the message first
+  try {
+    const t0 = performance.now();
+    if (!inited) { await init(); inited = true; }
+    await loadFiles(size);
+    if (db) { try { db.free(); } catch { /* already released */ } db = null; }
+    db = buildDb();
+    const n = run(db, "MATCH (p:Project) RETURN count(p) AS n").rows[0].n;
+    const secs = ((performance.now() - t0) / 1000).toFixed(1);
+    status.className = "status ok";
+    status.textContent = `Ready: ${fmt(n)} simulated projects loaded into Relate, running in this page (${secs} s).`;
+    state.site = null;
+    $("#answer").innerHTML = PLACEHOLDER;
+    document.querySelectorAll(".qbtn").forEach((b) => (b.disabled = false));
+    return true;
+  } catch (e) {
+    status.className = "status bad";
+    status.textContent = `Could not start Relate in this page: ${e.message}. If you opened this file by double-clicking it, serve the web folder over http instead (see Help).`;
+    return false;
+  } finally {
+    pick.disabled = false;
+  }
+}
+
 async function boot() {
   const list = $("#qlist");
   list.innerHTML = QUESTIONS.map((q) => `<li><button type="button" class="qbtn" data-q="${q.id}" disabled>${esc(q.title)}<small>${esc(q.sub)}</small></button></li>`).join("");
   list.addEventListener("click", (e) => { const b = e.target.closest(".qbtn"); if (b && !b.disabled) showQuestion(this_q(b.dataset.q)); });
   const maybeTour = setupDialogs();
-  const status = $("#status");
-  try {
-    const t0 = performance.now();
-    await init();
-    await loadFiles();
-    db = buildDb();
-    const n = run(db, "MATCH (p:Project) RETURN count(p) AS n").rows[0].n;
-    const ms = Math.round(performance.now() - t0);
-    status.className = "status ok";
-    status.textContent = `Ready: ${fmt(n)} simulated projects loaded into Relate, running in this page (${ms} ms).`;
-    document.querySelectorAll(".qbtn").forEach((b) => (b.disabled = false));
-    maybeTour();
-  } catch (e) {
-    status.className = "status bad";
-    status.textContent = `Could not start Relate in this page: ${e.message}. If you opened this file by double-clicking it, serve the web folder over http instead (see Help).`;
-  }
+  $("#size-pick").addEventListener("change", (e) => loadPortfolio(parseInt(e.target.value, 10)));
+  if (await loadPortfolio(1000)) maybeTour();
 }
 boot();

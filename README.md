@@ -49,6 +49,17 @@ GAO reports that FAA officials said integrating that many projects in their sche
 - Connecting the data is easy. Keeping thousands of real schedules current is the hard part, and this project does not test it.
 - No speed claim. Some full-scale checks take 2 to 4 seconds and are not optimized.
 
+## Try it in your browser
+
+`web/` is a page that runs Relate by Neo4j inside the browser, using its WebAssembly build. Serve the folder and open it:
+
+```powershell
+cd web
+python -m http.server 8765
+```
+
+Open http://localhost:8765 and choose 1,000 or 11,389 simulated projects. The page has eight plain-language questions, a first-visit tour, a glossary, a help panel, and a "Show the Cypher" panel under every answer. Everything runs in your browser and nothing is sent anywhere. At 11,389 projects, loading takes roughly 5 to 15 seconds and a few questions take several seconds more. The WebAssembly build (`@relate/relate-wasm` 1.0.1, Apache-2.0) is included in `web/vendor/`.
+
 ## Try it
 
 Requires Python 3.10 or later (tested on 3.14, Windows, `relate-db` 1.0.1).
