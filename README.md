@@ -28,6 +28,15 @@ And it reports the reason FAA officials gave:
 
 **How the 11,389 is explained:** GAO does not define a "project" or say how it counted. The program totals in GAO's Table 2 add up to 8,918, not 11,389. FAA's Modern Skies site cites about 4,600 FAA sites, so 11,389 projects works out to roughly two to three per site (my arithmetic, assuming the same scope). That is where overlaps would arise.
 
+## Is the 11,389 meaningful?
+
+**As a count of problems, no. As a claim to test, yes.**
+
+- It counts schedules, not conflicts or costs. GAO documents one overlap (St. Louis) and measures nothing else, and most of the 11,389 may never touch each other.
+- The unit is undefined and the figure is as of May 2026. FAA's own site now lists programs that GAO's table does not (for example, 2,696 analog protocol converter sites), so today's count may differ.
+- It is not a computing limit. 11,389 is tiny for a graph database: it loads in about four seconds here. If integration is hard, the difficulty is keeping thousands of schedules current and connected, which this project does not test.
+- What makes it meaningful is that FAA gave scale as the reason not to integrate. The numbers that matter are how many sites have several programs, and how far apart in time their work falls. FAA's lookup lists seven programs for St. Louis alone. That is what this project looks at.
+
 ## Thesis
 
 > FAA officials said that with so many project schedules, integrating them in their scheduling tool would not be useful. I am testing whether a graph database and an AI agent can make connecting them useful, by surfacing the overlaps and dependencies that no single schedule shows.
