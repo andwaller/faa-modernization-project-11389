@@ -1,43 +1,18 @@
 ## Inspiration
 
-I love learning the history of computer technology. I had just come back from IBM TechExchange, where I gave a talk, and I had been watching videos about modernizing stable, critical systems. Banks, for example, still run core systems on mainframes that descend from the IBM System/370: decades old and rock solid.
+I love the history of computing. Just back from IBM TechExchange, where I gave a talk, I had been watching videos about modernizing stable, critical systems. Banks still run core systems on mainframes descended from the IBM System/370: decades old and rock solid.
 
-Then, on November 13, 2026, the FAA ordered a nationwide ground stop. In January 2023, a nationwide ground stop was the first since the September 11, 2001 attacks (GAO-26-107992, p. 6). The media's reporting on what happened and why left me with more questions. If old systems can be rock solid, was age really the problem? GAO says FAA's aging systems are hard to maintain because replacement parts are unavailable and the technicians who knew them are retiring (p. 6). So I asked: **was this a technology problem or a project management problem?**
+Then, on November 13, 2026, the FAA ordered a nationwide ground stop. If old systems can be rock solid, was age really the problem? **Was this a technology problem or a project management problem?** ([My LinkedIn post](docs/linkedin-post.md))
 
-I put the same question to my network on LinkedIn:
-
-<details>
-<summary>My LinkedIn post</summary>
-
-> **Antiquated Tech or Management?**
->
-> Curious what others with experience in large-scale infrastructure modernization think?
->
-> Aren't some of our most critical systems run on some of our oldest technology...but remain exceptionally reliable?
->
-> With the recent FAA shutdown being attributed to aging telecommunications infrastructure, I have to wonder: Is the issue really the aging technology, or how we're managing its modernization?
->
-> If newer technology overwhelmed older systems, shouldn't that have been anticipated, tested, and accounted for?
->
-> A September 2026 GAO report identified 11,389 individual project schedules without an integrated master schedule, along with accelerated modernization timelines.
->
-> I'm not suggesting this caused the shutdown, but it raises some reasonable questions about planning, dependencies, redundancy, and testing.
->
-> GAO report: https://www.gao.gov/products/gao-26-107992
-
-*(Posted as written, except that the shortened LinkedIn links are replaced with the direct GAO link and the dashboard link is removed.)*
-
-</details>
-
-That question led me to GAO's report on the FAA's modernization, where one sentence stood out:
+GAO's report on the FAA's modernization had one sentence that stood out:
 
 > "FAA officials stated that due to the high number of projects, attempting to integrate all the projects in their scheduling tool would not be useful or helpful."
 >
-> GAO-26-107992, p. 29 (GAO's account of what FAA officials stated, not a direct quote from an FAA official)
+> GAO-26-107992, p. 29 (GAO's account of what FAA officials stated, not a direct quote)
 
-The more projects there are, the harder it is to see how they connect. That is where I thought a graph might help, rather than a reason to give up.
+The more projects there are, the harder it is to see how they connect. That is where I thought a graph might help.
 
-I am not saying the FAA is wrong, and I am not suggesting scheduling caused the ground stop. News coverage attributed it to aging telecommunications equipment, but no source I have found establishes the underlying cause, and the FAA's integrator says its own AI scheduling tool is in the works. I wanted to see what connecting the data would actually let an AI agent find.
+*I am not saying the FAA is wrong or that scheduling caused the ground stop. No source I have found establishes the cause.*
 
 # Project 11,389
 
