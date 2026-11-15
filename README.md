@@ -51,7 +51,7 @@ GAO reports that FAA officials said integrating that many projects in their sche
 
 ## Try it in your browser
 
-**Live page: https://andwaller.github.io/project-11389/** (nothing to install).
+**Live page: https://andwaller.github.io/faa-modernization-project-11389/** (nothing to install).
 
 `web/` is a page that runs Relate by Neo4j inside the browser, using its WebAssembly build. To run it yourself, serve the folder and open it:
 
