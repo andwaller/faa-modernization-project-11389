@@ -116,6 +116,23 @@ pre { overflow-x: auto; background: var(--bg); border: 1px solid var(--line); bo
 .stat .lbl { color: var(--muted); font-size: .9rem; }
 .stat.after .big { color: var(--bad); }
 abbr.term { text-decoration: underline dotted; cursor: help; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ask { margin-bottom: 1rem; }
+#ask-form { display: flex; gap: .5rem; flex-wrap: wrap; }
+#ask-input, #key-input { flex: 1 1 18rem; font: inherit; padding: .55rem .7rem; border-radius: .5rem; border: 1px solid var(--line); background: var(--card); color: var(--ink); min-width: 0; width: 100%; }
+#ask-input { width: auto; }
+#ask-input:disabled, #ask-go:disabled { opacity: .6; cursor: not-allowed; }
+.chips { display: flex; gap: .4rem; flex-wrap: wrap; margin: .6rem 0 0; }
+.chip { font-size: .88rem; padding: .25rem .7rem; border-radius: 999px; }
+button.linklike { border: 0; background: none; padding: 0; color: var(--accent); text-decoration: underline; font-size: inherit; }
+.matchnote { background: var(--bg); border-left: 4px solid var(--accent); padding: .4rem .8rem; border-radius: .3rem; margin: 0 0 .75rem; color: var(--muted); }
+.tag.AGENT { background: var(--inf); color: var(--inf-ink); }
+.agent-final p { margin: 0 0 .7rem; }
+.agent-step { margin: .6rem 0; }
+.agent-step .meta { color: var(--muted); font-size: .88rem; }
+ul.plain { margin: .5rem 0 .75rem 1.1rem; padding: 0; color: var(--muted); }
+ul.plain li { margin: .25rem 0; }
+dialog code { font-size: .9em; }
 .foot { color: var(--muted); font-size: .9rem; padding-bottom: 2rem; }
 dialog { max-width: min(42rem, 92vw); width: 100%; border: 1px solid var(--line); border-radius: .75rem; background: var(--card); color: var(--ink); padding: 1.25rem 1.5rem; }
 dialog::backdrop { background: rgba(0, 0, 0, .5); }

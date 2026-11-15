@@ -6,11 +6,13 @@ Then, on November 13, 2026, the FAA ordered a nationwide ground stop, citing com
 
 I wondered: **the technology may be outdated, but could the project management approach have an impact too?**
 
-# Project 11,389
+# FAA modernization - Project 11,389
 
 **Thousands of infrastructure projects, each on its own schedule. What happens when you connect them?**
 
 An experiment using [Relate by Neo4j](https://relatedb.ai), the embedded graph database, to connect project schedules so an AI agent can find problems no single schedule shows. *Work in progress.*
+
+**[Try the live page](https://andwaller.github.io/faa-modernization-project-11389/)**: nothing to install. Relate runs inside your browser, and you can ask questions in your own words.
 
 ## Where the 11,389 comes from
 
@@ -40,14 +42,19 @@ GAO reports that FAA officials said integrating that many projects in their sche
 - **Result:** at 1,000 and at 11,389 projects, Cypher finds every planted conflict with nothing missing and nothing extra (114 per class at full scale). This shows the queries are correct. It says nothing about how many conflicts the FAA has.
 - **What-if queries** (`queries/thesis_questions.py`): site overlap, slip propagation through dependencies, and a merge test on a temporary copy. On the simulated full-scale portfolio, merging all 114 mergeable duplicate visits without checking crews raised crew conflicts from 114 to 326. A fix made in one schedule can break another.
 
-**Not built yet:** the AI agent, a graph of the documented programs and sites, the hypothetical incident-scenario model, and a comparison against SQLite and a flat-file agent.
+- **Browser page** (`web/`, live): Relate's WebAssembly build runs in the page and loads 11,389 simulated projects by default (1,000 as an option). It has eight plain-language questions with labeled results, a tour, glossary and help, and a "Show the Cypher" panel. Every question was checked in a browser at both sizes against the Python results.
+- **Ask box:** type a question in plain words. Without a key it is a simple matcher that picks the closest built-in question and says which one. It is not an AI.
+- **Optional Claude agent:** a visitor can connect their own Anthropic API key, and an AI agent then writes its own Cypher against a scratch copy of the data, with every query shown. The loop, error handling, and the guarantee that the original data is untouched were tested with a simulated API. **It has not been tested against a live key.**
+
+**Not built yet:** a test of Relate's own agent interface (CLI agent mode and MCP) driving the questions, a graph of the documented programs and sites, the hypothetical incident-scenario model, and a comparison against SQLite and a flat-file agent.
 
 ## Limits
 
 - All generated data is simulated. Only program names, scope, and completion dates are real (GAO Table 2, p. 17). The 11,389 size is a scale test, not a reconstruction of the FAA's portfolio.
 - 11,389 counts schedules, not conflicts. GAO does not define a "project," and its Table 2 totals add up to 8,918.
 - Connecting the data is easy. Keeping thousands of real schedules current is the hard part, and this project does not test it.
-- No speed claim. Some full-scale checks take 2 to 4 seconds and are not optimized.
+- No speed claim. At 11,389 projects, some checks take 2 to 4 seconds in Python and several seconds in the browser, and the "try a fix" question can take around 15 seconds. They are not optimized, and the page cannot respond while one runs.
+- The agent's answers are written by an AI and can be wrong. The built-in questions are checked against planted answers; the agent's are not.
 
 ## Try it in your browser
 
@@ -60,7 +67,11 @@ cd web
 python -m http.server 8765
 ```
 
-Open http://localhost:8765 and choose 1,000 or 11,389 simulated projects. The page has eight plain-language questions, a first-visit tour, a glossary, a help panel, and a "Show the Cypher" panel under every answer. Everything runs in your browser and nothing is sent anywhere. At 11,389 projects, loading takes roughly 5 to 15 seconds and a few questions take several seconds more. The WebAssembly build (`@relate/relate-wasm` 1.0.1, Apache-2.0) is included in `web/vendor/`.
+Open http://localhost:8765. It loads 11,389 simulated projects by default, and you can choose 1,000 instead. The page has an ask box, eight plain-language questions, a first-visit tour, a glossary, a help panel, and a "Show the Cypher" panel under every answer.
+
+- **Privacy:** everything runs in your browser and nothing is sent anywhere, unless you choose to connect Claude. Then your question and the query results go to `api.anthropic.com` and nowhere else. The key stays in the tab's memory, is never stored, and is forgotten when you close or reload the tab. The page enforces the destination with a content security policy. Use a key with a low spending limit, because usage is billed to your Anthropic account.
+- **Speed:** at 11,389 projects, loading takes roughly 5 to 15 seconds, and a few questions take several seconds more.
+- **Engine:** the WebAssembly build (`@relate/relate-wasm` 1.0.1, Apache-2.0) is included in `web/vendor/`. In the browser the database is in memory, so each visit loads the data again, and "try a fix" builds its copy by reloading the data rather than with `relate clone`.
 
 ## Try it
 
@@ -93,6 +104,12 @@ relate -d store\portfolio_n1000_seed1.rl --read-only --toon "MATCH (n) UNWIND la
 
 | Path | What it is |
 |---|---|
+| `web/` | The browser page (also published as the live page) and its data |
+| `schema/` | Graph schema: constraints and indexes |
+| `generator/` | Seeded portfolio generator and its independent checker |
+| `loader/` | Loads a portfolio into a Relate store and verifies it in Cypher |
+| `queries/` | The thesis questions as a Python script |
+| `store/` | A ready-made 1,000-project Relate store |
 | `DESCRIPTION.md` | The story in more detail |
 | `PHASE1-REPORT.md` | Sources, the GAO and DOT positions, and what the 11,389 does and does not mean |
 | `PREREGISTRATION.md` | The planned test design |
@@ -101,6 +118,7 @@ relate -d store\portfolio_n1000_seed1.rl --read-only --toon "MATCH (n) UNWIND la
 ## Disclosures
 
 - Built with Claude Code (Claude Sonnet 5.5).
+- The page's optional agent uses a Claude model through the visitor's own API key. The built-in questions and the ask box's matcher use no AI.
 - The author works at Neo4j, which publishes Relate.
 - Sources: GAO-26-107992, FAA Modern Skies (modernskies.faa.gov), FAA statement of November 13, 2026, relatedb.ai, and the Relate repository.
 

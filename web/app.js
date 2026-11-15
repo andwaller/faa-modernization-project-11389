@@ -20,13 +20,15 @@ const GLOSSARY = {
   graph: "A way of storing data as things (projects, sites, crews) and the connections between them, so questions about connections are easy to ask.",
   cypher: "The query language used to ask a graph database questions. You can see the Cypher behind every answer.",
   simulated: "Made up by a program with a fixed random seed, not real FAA data. It lets us know the right answers in advance.",
-  provenance: "A label on each result saying where it came from: documented, inferred, simulated, or hypothesis."
+  provenance: "A label on each result saying where it came from: documented, inferred, simulated, or hypothesis.",
+  agent: "An AI that decides which queries to run, runs them, and writes the answer. Here it only runs if you connect your own Claude API key, and every query it ran is shown."
 };
 const TAGHELP = {
   SIMULATED: "Generated data with known answers. Not real FAA data.",
   HYPOTHESIS: "A what-if: it assumes something we have not verified, such as two visits being possible at once.",
   DOCUMENTED: "Taken from a public source (GAO report or FAA Modern Skies). The FAA's own figures are self-reported.",
-  INFERRED: "Simple arithmetic done on documented figures. Not a forecast."
+  INFERRED: "Simple arithmetic done on documented figures. Not a forecast.",
+  AGENT: "Written by an AI agent from the queries shown. Check the Cypher before relying on a number."
 };
 const term = (k, label) => `<abbr class="term" tabindex="0" title="${esc(GLOSSARY[k])}">${esc(label ?? k)}</abbr>`;
 
@@ -61,6 +63,7 @@ function run(d, cypher, params) {
 let DATA = null;
 let truth = null;
 let db = null;
+let SIZE = 11389;
 
 async function loadFiles(size) {
   const names = ["programs", "facilities", "projects", "dependencies", "maintenance_windows"];
@@ -191,12 +194,14 @@ const QUESTIONS = [
     why: `Pick a ${term("site")} and see every ${term("project")} scheduled there, from every ${term("program")}. This is the connected view that a single schedule cannot give you.`,
     run() {
       const sites = run(db, Q.siteList).rows;
-      if (!state.site || !sites.some((s) => s.id === state.site)) state.site = sites[0].id;
+      const known = state.site && (sites.some((s) => s.id === state.site) || DATA.facilities.some((f) => f.facility_id === state.site));
+      if (!known) state.site = sites[0].id;
       const rows = run(db, Q.site, { id: state.site }).rows;
       const gaps = []; for (let i = 1; i < rows.length; i++) gaps.push(rows[i].startDay - rows[i - 1].startDay);
       const closest = gaps.length ? Math.min(...gaps) : null;
       const programs = new Set(rows.map((r) => r.program)).size;
-      const opts = sites.map((s) => `<option value="${esc(s.id)}"${s.id === state.site ? " selected" : ""}>${esc(s.id)} (${s.n} programs)</option>`).join("");
+      const shown = sites.some((s) => s.id === state.site) ? sites : [{ id: state.site, n: programs }, ...sites];
+      const opts = shown.map((s) => `<option value="${esc(s.id)}"${s.id === state.site ? " selected" : ""}>${esc(s.id)} (${s.n} programs)</option>`).join("");
       return {
         tags: ["SIMULATED"],
         controls: `<div class="controls"><label for="site-pick">Site</label><select id="site-pick">${opts}</select></div>`,
@@ -343,7 +348,7 @@ const QUESTIONS = [
 ];
 const this_q = (id) => QUESTIONS.find((q) => q.id === id);
 
-async function showQuestion(q) {
+async function showQuestion(q, note) {
   const el = $("#answer");
   el.innerHTML = `<h2>${esc(q.title)}</h2><p class="status" role="status">Working... larger portfolios can take a few seconds.</p>`;
   await new Promise((res) => setTimeout(res, 30)); // let the browser paint the message first
@@ -351,6 +356,7 @@ async function showQuestion(q) {
   try { r = q.run(); }
   catch (e) { el.innerHTML = `<h2>${esc(q.title)}</h2><p class="status bad">Something went wrong running this question: ${esc(e.message)}</p><p>Try another question, or reload the page.</p>`; return; }
   el.innerHTML = `
+    ${note ? `<p class="matchnote">${note}</p>` : ""}
     <h2>${esc(q.title)}</h2>
     <div class="tags">${r.tags.map((t) => `<span class="tag ${t}" title="${esc(TAGHELP[t])}">${t}</span>`).join("")}</div>
     <p class="why">${q.why}</p>
@@ -376,6 +382,7 @@ const TOUR = [
   ["Read the answer", "<p>Every answer starts with <strong>one plain sentence</strong>. Below it are a table or numbers, a <strong>What this means</strong> panel, and a <strong>Show the Cypher</strong> panel with the exact query that ran.</p>"],
   ["Look at the labels", "<p>Colored tags say where each result comes from: <strong>SIMULATED</strong> (made up with known answers), <strong>HYPOTHESIS</strong> (a what-if), <strong>DOCUMENTED</strong> (public figures), and <strong>INFERRED</strong> (arithmetic on public figures). Hover a tag for its meaning.</p>"],
   ["Try a fix", "<p>The <strong>Try a fix</strong> question combines duplicate visits on a copy and then checks what breaks. It is the clearest example of why connected data matters: a fix in one schedule can break another.</p>"],
+  ["Ask in your own words", "<p>The <strong>Ask a question</strong> box takes plain sentences. Without a key it is a simple matcher that picks the closest built-in question and tells you which one it chose. It is not an AI.</p><p>For open-ended questions you can optionally <strong>connect Claude</strong> with your own API key. An AI agent then writes its own queries on a scratch copy of the data, and you can see every query it ran.</p>"],
   ["Where Relate fits", "<p>The database is <strong>Relate by Neo4j</strong>, running entirely inside this page. There is no server, and nothing you do here is sent anywhere. Hover underlined words for definitions, or open the <strong>Glossary</strong> and <strong>Help</strong> buttons at the top.</p>"],
 ];
 const FAQ = [
@@ -385,7 +392,10 @@ const FAQ = [
   ["What is a crew conflict?", "One crew booked for two overlapping projects at different sites. A crew cannot be in two places at once."],
   ["How do I know the answers are right?", "The data was made with known conflicts planted in it. Where a question can be checked, a green note under the result confirms the answer matches the planted one."],
   ["What does Relate do here?", "It stores the projects, sites, crews and links as a graph, in your browser's memory, and answers each question with a Cypher query. Open <strong>Show the Cypher</strong> to see them."],
-  ["Does anything leave my browser?", "No. The page loads its own files and runs everything locally. It does not collect or send what you click."],
+  ["Does anything leave my browser?", "Not unless you connect Claude. The page loads its own files and runs everything locally, and it does not collect or send what you click. If you connect Claude, your question and the query results are sent to api.anthropic.com, and nowhere else."],
+  ["What is the Ask box?", "Without a key it is a simple matcher: it looks for key words in your sentence and runs the closest built-in question, telling you which one it chose. It is not an AI and cannot answer anything outside the list. With a key connected, your sentence goes to an AI agent instead."],
+  ["Is it safe to paste my API key?", "The key stays in this tab's memory, is never stored by the page, and is forgotten when you close or reload the tab. The page can only send it to api.anthropic.com (the page enforces that with a content security policy), and its code is open source. Still, use a key with a low spending limit, and disconnect when you are done. Usage is billed to your Anthropic account."],
+  ["Can the agent be wrong?", "Yes. It writes its own queries and its own summary. That is why every query it ran is shown, and why its answers are labeled AI AGENT. The built-in questions are checked against planted answers; the agent's are not."],
   ["The page says it could not start.", "Browsers block some features when a page is opened by double-clicking the file. Serve the <code>web</code> folder instead, for example with <code>python -m http.server</code>, and open the address it prints."],
 ];
 
@@ -410,14 +420,244 @@ function setupDialogs() {
   return () => { if (!seen) { openTour(); try { localStorage.setItem("tourSeen", "1"); } catch { /* ignore */ } } };
 }
 
+// ---------- ask box: simple matcher (no AI) ----------
+const tick = () => new Promise((res) => setTimeout(res, 30));
+function setAskEnabled(on) { $("#ask-input").disabled = !on; $("#ask-go").disabled = !on; }
+
+// [phrase, weight]: phrases match at the start of a word, so "late" does not match "relate".
+const INTENTS = [
+  { id: "dupes", words: [["combine", 2], ["duplicate", 3], ["twice", 2], ["two visits", 3], ["close together", 3], ["overlap", 2], ["revisit", 2], ["same site", 2], ["12 months", 2], ["within a year", 3]] },
+  { id: "crowded", words: [["crowded", 3], ["busiest", 3], ["how many programs", 3], ["share a site", 3], ["sites have", 2], ["most programs", 3]] },
+  { id: "savings", words: [["save", 2], ["saving", 2], ["site-days", 3], ["site days", 3], ["how much time", 3], ["fewer visits", 2]] },
+  { id: "fix", words: [["fix", 2], ["merge", 2], ["what breaks", 3], ["break", 2], ["crew conflict", 3], ["try a", 2], ["scenario", 2], ["what happens if we combine", 4]] },
+  { id: "slip", words: [["slip", 3], ["delay", 3], ["late", 1], ["pushed", 2], ["propagat", 3], ["knock-on", 3], ["ripple", 3]] },
+  { id: "cross", words: [["cross", 2], ["dependenc", 2], ["between programs", 3], ["across programs", 3], ["depend on", 2]] },
+  { id: "pace", words: [["pace", 3], ["on track", 3], ["behind", 2], ["faster", 2], ["real program", 3], ["radar", 2], ["telecom", 2], ["gao", 2], ["modern skies", 3], ["on schedule", 3]] },
+  { id: "site", words: [["site", 1], ["facility", 2], ["airport", 2], ["what is at", 3], ["what's at", 3], ["located", 1]] },
+];
+const EXAMPLES = ["Which visits could be combined?", "What happens if we combine them?", "What slips if a project is 60 days late?", "Do dependencies cross programs?", "Which real programs need a faster pace?", "What is at site F00017?"];
+
+function matchQuestion(text) {
+  const t = text.toLowerCase();
+  let best = null, top = 0;
+  for (const it of INTENTS) {
+    const score = it.words.reduce((s, [w, wt]) => s + (new RegExp("\\b" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).test(t) ? wt : 0), 0);
+    if (score > top) { best = it.id; top = score; }
+  }
+  return best;
+}
+
+function showNoMatch(text) {
+  const el = $("#answer");
+  el.innerHTML = `<h2>I could not match that</h2>
+    <p class="matchnote">You asked: "${esc(text)}"</p>
+    <p>This box is a simple matcher, not an AI, so it only understands the questions in the list. Try one of these:</p>
+    <ul>${QUESTIONS.map((q) => `<li><button type="button" class="linklike" data-q="${q.id}">${esc(q.title)}</button></li>`).join("")}</ul>
+    <p>For open-ended questions, <button type="button" class="linklike" id="nm-key">connect Claude with your own API key</button>.</p>`;
+  el.querySelectorAll("button[data-q]").forEach((b) => b.addEventListener("click", () => showQuestion(this_q(b.dataset.q))));
+  el.querySelector("#nm-key").addEventListener("click", openKeyDialog);
+  el.focus({ preventScroll: true });
+}
+
+async function handleAsk(raw) {
+  const text = raw.trim();
+  if (!text) return;
+  if (agent.key) return runAgent(text);
+  let id = matchQuestion(text);
+  const site = text.match(/\bF\d{5}\b/i)?.[0].toUpperCase();
+  if (site && DATA.facilities.some((f) => f.facility_id === site)) { state.site = site; id = "site"; }
+  const days = text.match(/\b(30|60|180)\b/);
+  if (days && id === "slip") state.delay = parseInt(days[1], 10);
+  if (!id) return showNoMatch(text);
+  await showQuestion(this_q(id), `You asked: "${esc(text)}". This simple matcher chose the question below. It is not an AI, so check that it is what you meant.`);
+}
+
+// ---------- optional agent: Claude, with the visitor's own API key ----------
+const MODELS = [["claude-sonnet-5-5", "Claude Sonnet 5.5 (recommended)"], ["claude-haiku-5-5", "Claude Haiku 5.5 (faster, cheaper)"]];
+const agent = { key: null, model: MODELS[0][0], db: null };
+const MAX_STEPS = 8, ROW_CAP = 40;
+
+const TOOLS = [{
+  name: "run_cypher",
+  description: "Run one Cypher statement against the in-browser Relate graph. It is a scratch copy of the simulated data, so what-if changes with SET never touch the original. Returns rows as JSON, capped at 40 rows with the total count.",
+  input_schema: {
+    type: "object",
+    properties: {
+      query: { type: "string", description: "One Cypher statement." },
+      params: { type: "object", description: "Optional parameters, referenced in the query as $name." },
+    },
+    required: ["query"],
+  },
+}];
+
+function systemPrompt() {
+  return `You answer questions about a SIMULATED portfolio of ${fmt(DATA.projects.length)} infrastructure projects stored in a Relate by Neo4j graph running in the user's browser. Use the run_cypher tool to look things up. Never guess a number you could query.
+
+Graph schema:
+(:Program {programId, name, domain, plannedScope, completionDay, completionDate, provenance})
+(:Facility {facilityId, name, type, restriction, provenance})   // a site. restriction is null, or 'NO_MERGE_VISITS' meaning visits there cannot be combined
+(:Project {projectId, startDay, endDay, deadlineDay, provenance})   // days are integers, day 0 = 2026-01-01, window is [startDay, endDay)
+(:Crew {crewId}), (:MaintenanceWindow {startDay, endDay}), (:Source {sourceId})
+(:Project)-[:IN_PROGRAM]->(:Program)
+(:Project)-[:SCHEDULED_AT]->(:Facility)
+(:Project)-[:ASSIGNED_TO]->(:Crew)
+(:Project)-[:DEPENDS_ON]->(:Project)   // dependent -> prerequisite
+(:Facility)-[:HAS_MAINTENANCE]->(:MaintenanceWindow)
+
+Definitions used elsewhere on this page:
+- "Close together": two projects at the same site, in different programs, starting within 365 days, with no DEPENDS_ON between them in either direction. "Combinable" means the site has restriction IS NULL.
+- "Crew conflict": two projects with the same crew, overlapping windows, at different sites.
+- Dependency slip: a project that starts late pushes a dependent project only if it overruns that project's start.
+
+Rules:
+- Answer in plain language for a non-technical reader, in a few short paragraphs. Give the numbers you found.
+- Say the data is simulated. Only the program names, scope and completion dates come from GAO-26-107992 Table 2.
+- Make no claim about real FAA conflicts, costs, savings, or the cause of the November 13, 2026 ground stop. If asked, say this data cannot show that.
+- Queries run on a scratch copy and you may test what-if changes with SET or CREATE. Keep queries efficient: anchor variable-length paths on a known node, and aggregate instead of returning thousands of rows.
+- If a query errors, read the message and try a corrected version. Stop after a few attempts and say what you could not do.`;
+}
+
+function agentRun(input) {
+  try {
+    const env = JSON.parse(agent.db.execute(String(input.query ?? ""), input.params ? JSON.stringify(input.params) : null));
+    if (env.error) return { ok: false, rows: 0, text: "Error: " + env.error };
+    const total = env.rows.length;
+    return { ok: true, rows: total, text: JSON.stringify({ columns: env.columns, rows: env.rows.slice(0, ROW_CAP), total, truncated: total > ROW_CAP }) };
+  } catch (e) {
+    return { ok: false, rows: 0, text: "Error: " + e.message };
+  }
+}
+
+function friendlyHttp(status, detail) {
+  if (status === 401) return "Claude rejected the API key. Check it and connect again.";
+  if (status === 403) return "This API key is not allowed to use that model.";
+  if (status === 404) return "Claude could not find that model. Pick a different model when you connect.";
+  if (status === 429) return "Claude says the rate limit or spending limit was reached. Wait a moment or check your limits.";
+  if (status >= 500) return "Claude is temporarily unavailable. Try again shortly.";
+  return `Claude returned an error (${status})${detail ? ": " + detail : ""}.`;
+}
+
+async function callClaude(messages) {
+  let r;
+  try {
+    r = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": agent.key,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true",
+      },
+      body: JSON.stringify({ model: agent.model, max_tokens: 1500, system: systemPrompt(), tools: TOOLS, messages }),
+    });
+  } catch {
+    throw new Error("Could not reach api.anthropic.com. Check your connection, or whether a browser extension is blocking it.");
+  }
+  if (!r.ok) {
+    let detail = ""; try { detail = (await r.json()).error?.message ?? ""; } catch { /* no body */ }
+    throw new Error(friendlyHttp(r.status, detail));
+  }
+  return r.json();
+}
+
+const plain = (text) => esc(text).split(/\n{2,}/).map((p) => `<p>${p.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\n/g, "<br>")}</p>`).join("");
+
+function renderAgent(question, finalText, log, note) {
+  const steps = log.map((s, i) => `<div class="agent-step"><div class="meta">Query ${i + 1}: ${s.ok ? `${fmt(s.rows)} row${s.rows === 1 ? "" : "s"}` : "error"}</div>
+    <pre><code>${esc(s.query)}</code></pre>${s.params ? `<div class="meta">Parameters: ${esc(JSON.stringify(s.params)).slice(0, 300)}</div>` : ""}${s.ok ? "" : `<div class="meta">${esc(s.text)}</div>`}</div>`).join("");
+  $("#answer").innerHTML = `
+    <h2>Your question</h2>
+    <p class="summary">${esc(question)}</p>
+    <div class="tags"><span class="tag AGENT" title="${esc(TAGHELP.AGENT)}">AI AGENT</span><span class="tag SIMULATED" title="${esc(TAGHELP.SIMULATED)}">SIMULATED</span></div>
+    ${note ? `<p class="matchnote">${esc(note)}</p>` : ""}
+    <div class="agent-final">${plain(finalText)}</div>
+    <div class="check" role="note"><strong>Written by Claude (${esc(agent.model)}) from the queries below.</strong> It can make mistakes, so check the Cypher before relying on a number. The queries ran on a scratch copy; your data was not changed.</div>
+    <details open><summary>What the agent did (${log.length} ${log.length === 1 ? "query" : "queries"})</summary>${steps || "<p>It answered without running a query.</p>"}</details>`;
+  $("#answer").focus({ preventScroll: true });
+}
+
+async function runAgent(question) {
+  const el = $("#answer");
+  const setStatus = (t) => { const s = $("#agent-status"); if (s) s.textContent = t; };
+  el.innerHTML = `<h2>Your question</h2><p class="summary">${esc(question)}</p><p class="status" id="agent-status" role="status">Preparing a scratch copy of the data...</p>`;
+  await tick();
+  const log = [];
+  try {
+    if (!agent.db) agent.db = buildDb();
+    const messages = [{ role: "user", content: question }];
+    for (let step = 1; step <= MAX_STEPS; step++) {
+      setStatus(`Asking Claude (step ${step} of up to ${MAX_STEPS})...`);
+      const res = await callClaude(messages);
+      messages.push({ role: "assistant", content: res.content });
+      const calls = res.content.filter((b) => b.type === "tool_use");
+      const text = res.content.filter((b) => b.type === "text").map((b) => b.text).join("\n\n").trim();
+      if (res.stop_reason !== "tool_use" || !calls.length) return renderAgent(question, text || "(Claude gave no answer.)", log);
+      const results = [];
+      for (const c of calls) {
+        setStatus(`Running a query (${log.length + 1})...`);
+        await tick();
+        const out = agentRun(c.input ?? {});
+        log.push({ query: String(c.input?.query ?? ""), params: c.input?.params, ok: out.ok, rows: out.rows, text: out.text });
+        results.push({ type: "tool_result", tool_use_id: c.id, content: out.text, is_error: !out.ok });
+      }
+      messages.push({ role: "user", content: results });
+    }
+    renderAgent(question, "The agent reached its step limit before finishing. The queries it ran are listed below.", log);
+  } catch (e) {
+    el.innerHTML = `<h2>Your question</h2><p class="summary">${esc(question)}</p><p class="status bad">${esc(e.message)}</p>
+      <p>You can still use the questions in the list, or <button type="button" class="linklike" id="ag-retry">try again</button>.</p>`;
+    el.querySelector("#ag-retry").addEventListener("click", () => runAgent(question));
+  }
+}
+
+function updateAgentState() {
+  const box = $("#agent-state"), input = $("#ask-input");
+  if (agent.key) {
+    box.innerHTML = `Agent connected (${esc(agent.model)}). Questions you type now go to Claude, which writes its own queries on a scratch copy of the data. <button type="button" class="linklike" id="agent-off">Disconnect</button>`;
+    box.querySelector("#agent-off").addEventListener("click", disconnectAgent);
+    input.placeholder = "Ask anything about the data...";
+  } else {
+    box.textContent = "";
+    input.placeholder = "For example: which visits could be combined?";
+  }
+}
+function disconnectAgent() { agent.key = null; agent.db = null; updateAgentState(); }
+function openKeyDialog() { $("#key-msg").textContent = ""; $("#key-msg").className = "status"; $("#key-input").value = ""; $("#dlg-key").showModal(); }
+
+function setupAsk() {
+  const chips = $("#ask-chips");
+  chips.innerHTML = EXAMPLES.map((e) => `<button type="button" class="chip">${esc(e)}</button>`).join("");
+  chips.addEventListener("click", (e) => {
+    const b = e.target.closest(".chip");
+    if (b && !$("#ask-input").disabled) { $("#ask-input").value = b.textContent; handleAsk(b.textContent); }
+  });
+  $("#ask-form").addEventListener("submit", (e) => { e.preventDefault(); handleAsk($("#ask-input").value); });
+  const dlg = $("#dlg-key");
+  $("#key-model").innerHTML = MODELS.map(([id, label]) => `<option value="${id}">${esc(label)}</option>`).join("");
+  $("#btn-key").addEventListener("click", openKeyDialog);
+  $("#key-cancel").addEventListener("click", () => dlg.close());
+  $("#key-disconnect").addEventListener("click", () => { disconnectAgent(); $("#key-input").value = ""; dlg.close(); });
+  $("#key-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const k = $("#key-input").value.trim(), msg = $("#key-msg");
+    if (!/^sk-ant-/.test(k)) { msg.className = "status bad"; msg.textContent = "That does not look like an Anthropic API key. They start with sk-ant-."; return; }
+    agent.key = k; agent.model = $("#key-model").value; agent.db = null;
+    $("#key-input").value = "";
+    updateAgentState();
+    dlg.close();
+  });
+  updateAgentState();
+}
+
 // ---------- boot ----------
 let inited = false;
-const PLACEHOLDER = `<p class="placeholder">Pick a question on the left to begin. If you are not sure where to start, try <strong>What is at one site?</strong></p>`;
+const PLACEHOLDER = `<p class="placeholder">Ask a question above, or pick one on the left. If you are not sure where to start, try <strong>What is at one site?</strong></p>`;
 
 // Loads (or reloads) a portfolio of the given size into a fresh in-memory Relate database.
 async function loadPortfolio(size) {
   const status = $("#status"), pick = $("#size-pick");
   document.querySelectorAll(".qbtn").forEach((b) => (b.disabled = true));
+  setAskEnabled(false);
   pick.disabled = true;
   status.className = "status";
   status.textContent = size === 11389
@@ -428,6 +668,8 @@ async function loadPortfolio(size) {
     const t0 = performance.now();
     if (!inited) { await init(); inited = true; }
     await loadFiles(size);
+    SIZE = size;
+    agent.db = null; // the agent's scratch copy belongs to the previous portfolio
     if (db) { try { db.free(); } catch { /* already released */ } db = null; }
     db = buildDb();
     const n = run(db, "MATCH (p:Project) RETURN count(p) AS n").rows[0].n;
@@ -437,6 +679,7 @@ async function loadPortfolio(size) {
     state.site = null;
     $("#answer").innerHTML = PLACEHOLDER;
     document.querySelectorAll(".qbtn").forEach((b) => (b.disabled = false));
+    setAskEnabled(true);
     return true;
   } catch (e) {
     status.className = "status bad";
@@ -453,6 +696,7 @@ async function boot() {
   list.addEventListener("click", (e) => { const b = e.target.closest(".qbtn"); if (b && !b.disabled) showQuestion(this_q(b.dataset.q)); });
   const maybeTour = setupDialogs();
   $("#size-pick").addEventListener("change", (e) => loadPortfolio(parseInt(e.target.value, 10)));
-  if (await loadPortfolio(1000)) maybeTour();
+  setupAsk();
+  if (await loadPortfolio(11389)) maybeTour();
 }
 boot();
