@@ -23,7 +23,7 @@ Work comes first. This list only tracks what will be needed. Nothing here is sta
 | Persistent Relate store (`store/portfolio_n1000_seed1.rl`, 0.8 MB) | Created in the project folder; reopens with 14 constraints |
 | Thesis question queries (`queries/thesis_questions.py`) | Built; run at 1,000 and 11,389 projects |
 | Browser page with guided help (`web/`) | Built; all eight questions checked in Chrome at 1,000 and 11,389 projects |
-| Agent that answers questions through Relate | In the web page: ask box (simple matcher) and an optional Claude agent. The agent loop was tested with a simulated API only, not a live key. A test through Relate's own CLI or MCP interface is not done |
+| Agent that answers questions through Relate | In the web page: ask box (simple matcher) and an optional Claude agent. The agent loop was tested with a simulated API only, not a live key. Fresh Claude Code sessions were tested through Relate's own CLI and MCP interfaces (`docs/agent-test.md`): one run per path, both correct |
 | Incident-scenario network model (all hypothetical) | Not started |
 | Research report and pre-registration (`PHASE1-REPORT.md`, `PREREGISTRATION.md`) | Drafted; heavier than the lean demo needs |
 

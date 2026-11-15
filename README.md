@@ -46,7 +46,9 @@ GAO reports that FAA officials said integrating that many projects in their sche
 - **Ask box:** type a question in plain words. Without a key it is a simple matcher that picks the closest built-in question and says which one. It is not an AI.
 - **Optional Claude agent:** a visitor can connect their own Anthropic API key, and an AI agent then writes its own Cypher against a scratch copy of the data, with every query shown. The loop, error handling, and the guarantee that the original data is untouched were tested with a simulated API. **It has not been tested against a live key.**
 
-**Not built yet:** a test of Relate's own agent interface (CLI agent mode and MCP) driving the questions, a graph of the documented programs and sites, the hypothetical incident-scenario model, and a comparison against SQLite and a flat-file agent.
+- **Agent test through Relate's own interfaces** ([`docs/agent-test.md`](docs/agent-test.md)): two fresh Claude Code sessions answered the same question over a 1,000-project store, one using the Relate skill and CLI and one using the Relate MCP server. Both found the planted answer (20 close pairs, 10 at restricted sites) on the first full query. It was one run per path, so it shows the interfaces work and makes no claim about efficiency.
+
+**Not built yet:** a repeated, pre-registered benchmark of agents using Relate against SQLite and a flat-file agent, a graph of the documented programs and sites, and the hypothetical incident-scenario model.
 
 ## Limits
 
