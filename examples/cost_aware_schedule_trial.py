@@ -187,7 +187,7 @@ def metrics(schedule, visits):
 
     work_hours = sum(int(visits[visit_id]["crewWorkHours"]) for visit_id in schedule)
     finish = max(
-        as_date(assignment["start"]) + timedelta(days=int(visits[visit_id]["workDays"]))
+        as_date(assignment["start"]) + timedelta(days=int(visits[visit_id]["workDays"]) - 1)
         for visit_id, assignment in schedule.items()
     )
     return {
@@ -214,6 +214,10 @@ def main():
         print("\nSIMULATED comparison (assumptions in this file):")
         for name, result in results.items():
             print(f"\n{name}")
+            for visit_id, assignment in SCHEDULES[name].items():
+                visit = visits[visit_id]
+                print(f"  {visit['program']}: {assignment['start']} "
+                      f"(allowed {visit['earliestStart']} to {visit['latestStart']})")
             for metric, value in result.items():
                 print(f"  {metric}: {value}")
 
