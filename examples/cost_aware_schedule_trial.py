@@ -22,6 +22,7 @@ VISITS = [
         "visit_id": "SIM-VISIT-001",
         "program_id": "SIM-PROGRAM-VOICE",
         "program": "Voice switch work",
+        "activity": "Voice switch site preparation",
         "facility_id": "SIM-FACILITY-001",
         "facility_access_start": "2027-06-08",
         "facility_access_end": "2027-06-30",
@@ -41,6 +42,7 @@ VISITS = [
         "visit_id": "SIM-VISIT-002",
         "program_id": "SIM-PROGRAM-DISPLAYS",
         "program": "Information display work",
+        "activity": "Information display site preparation",
         "facility_id": "SIM-FACILITY-001",
         "facility_access_start": "2027-06-08",
         "facility_access_end": "2027-06-30",
@@ -59,7 +61,8 @@ VISITS = [
     {
         "visit_id": "SIM-VISIT-003",
         "program_id": "SIM-PROGRAM-DISPLAYS",
-        "program": "Information display validation",
+        "program": "Information display work",
+        "activity": "Information display validation",
         "facility_id": "SIM-FACILITY-001",
         "facility_access_start": "2027-06-08",
         "facility_access_end": "2027-06-30",
@@ -79,6 +82,7 @@ VISITS = [
         "visit_id": "SIM-VISIT-004",
         "program_id": "SIM-PROGRAM-RADIO",
         "program": "Radio site work",
+        "activity": "Radio site work",
         "facility_id": "SIM-FACILITY-002",
         "facility_access_start": "2027-06-16",
         "facility_access_end": "2027-06-22",
@@ -119,6 +123,7 @@ MERGE (c:Crew {crewId: r.crew_id})
   ON CREATE SET c.provenance = r.provenance
 CREATE (v:Visit {
   visitId: r.visit_id,
+  activity: r.activity,
   baselineStart: r.baseline_start,
   earliestStart: r.earliest_start,
   latestStart: r.latest_start,
@@ -161,6 +166,7 @@ MATCH (v:Visit)-[:IN_PROGRAM]->(p:Program),
 OPTIONAL MATCH (v)-[:DEPENDS_ON]->(pre:Visit)
 RETURN v.visitId AS visitId,
        p.name AS program,
+       v.activity AS activity,
        f.facilityId AS facilityId,
        f.accessStart AS facilityAccessStart,
        f.accessEnd AS facilityAccessEnd,
@@ -387,7 +393,7 @@ def show_schedule(name, schedule, visits, result):
     print(f"\n{name}")
     for visit_id in sorted(schedule):
         visit = visits[visit_id]
-        print(f"  {visit['program']}: {schedule[visit_id]} "
+        print(f"  {visit['activity']}: {schedule[visit_id]} "
               f"(allowed {visit['earliestStart']} to {visit['latestStart']})")
     for metric, value in result.items():
         print(f"  {metric}: {value}")
@@ -398,7 +404,7 @@ def main():
     try:
         print("Relate by Neo4j returned these connected visits:")
         for visit_id, visit in visits.items():
-            print(f"  {visit_id}: {visit['program']} at {visit['facilityId']} "
+            print(f"  {visit_id}: {visit['activity']} ({visit['program']}) at {visit['facilityId']} "
                   f"depends on {visit['dependsOn']} ({visit['provenance']})")
 
         baseline = {
