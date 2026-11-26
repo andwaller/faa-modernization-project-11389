@@ -33,7 +33,6 @@ VISITS = [
         "work_days": 1,
         "crew_work_hours": 8,
         "round_trip_travel_hours": 3,
-        "expense_per_mobilization_usd": 600,
         "coordination_eligible": True,
         "depends_on": [],
         "provenance": "SIMULATED",
@@ -53,7 +52,6 @@ VISITS = [
         "work_days": 1,
         "crew_work_hours": 8,
         "round_trip_travel_hours": 3,
-        "expense_per_mobilization_usd": 600,
         "coordination_eligible": True,
         "depends_on": ["SIM-VISIT-001"],
         "provenance": "SIMULATED",
@@ -73,7 +71,6 @@ VISITS = [
         "work_days": 1,
         "crew_work_hours": 4,
         "round_trip_travel_hours": 3,
-        "expense_per_mobilization_usd": 600,
         "coordination_eligible": True,
         "depends_on": ["SIM-VISIT-002"],
         "provenance": "SIMULATED",
@@ -93,12 +90,49 @@ VISITS = [
         "work_days": 1,
         "crew_work_hours": 6,
         "round_trip_travel_hours": 4,
-        "expense_per_mobilization_usd": 800,
         "coordination_eligible": True,
         "depends_on": [],
         "provenance": "SIMULATED",
     },
 ]
+
+
+# Planning estimate only. These are public wage/travel benchmarks, not FAA or
+# L3Harris contract rates. See docs/cost-aware-schedule-prototype.md.
+COST_ASSUMPTIONS = {
+    "wages": {
+        "telecom_technician_usd_per_hour": 32.51,  # BLS May 2025 median
+        "engineering_technician_annual_usd": 78190,  # BLS May 2025 median
+        "annual_hours": 2080,
+    },
+    # GSA CALC+ BLS average-rate build-up guidance.
+    "burden": {
+        "fringe": 0.35,
+        "government_site_overhead": 0.25,
+        "contractor_site_overhead": 0.50,
+        "general_and_administrative": 0.15,
+        "fee_or_profit": 0.10,
+    },
+    # SIMULATED crew mix for each synthetic crew.
+    "crew_profiles": {
+        "SIM-CREW-001": {"telecom_technicians": 2, "engineering_technicians": 1},
+        "SIM-CREW-002": {"telecom_technicians": 2, "engineering_technicians": 1},
+    },
+    # FY 2027 St. Louis per diem used only as a travel-cost benchmark.
+    "travel": {
+        "locality": "St. Louis, MO (benchmark; simulated facilities are not mapped)",
+        "lodging_per_person_night_usd": 156,
+        "mie_full_day_per_person_usd": 86,
+        "mie_first_or_last_day_per_person_usd": 64.50,
+        "travel_time_billable": True,
+        "overnight_model": (
+            "one night for a standalone one-day visit; for a grouped multi-day "
+            "deployment, nights equal work-span days minus one"
+        ),
+    },
+    # Route, vehicle, rental, airfare, shipping, test equipment, overtime, and
+    # any contract-specific fixed mobilization fee are unpriced and excluded.
+}
 
 # Half-open interval: the site is closed for all of June 18 and open again June 19.
 MAINTENANCE_WINDOWS = [
@@ -130,7 +164,6 @@ CREATE (v:Visit {
   workDays: r.work_days,
   crewWorkHours: r.crew_work_hours,
   roundTripTravelHours: r.round_trip_travel_hours,
-  expensePerMobilizationUsd: r.expense_per_mobilization_usd,
   coordinationEligible: r.coordination_eligible,
   provenance: r.provenance
 })
@@ -177,7 +210,6 @@ RETURN v.visitId AS visitId,
        v.workDays AS workDays,
        v.crewWorkHours AS crewWorkHours,
        v.roundTripTravelHours AS roundTripTravelHours,
-       v.expensePerMobilizationUsd AS expensePerMobilizationUsd,
        v.coordinationEligible AS coordinationEligible,
        collect(DISTINCT pre.visitId) AS dependsOn,
        v.provenance AS provenance
@@ -309,33 +341,107 @@ def mobilization_groups(schedule, visits):
     return groups
 
 
+def loaded_rates(overhead_key):
+    """Build indicative loaded rates using GSA CALC+ average assumptions."""
+    wages = COST_ASSUMPTIONS["wages"]
+    burden = COST_ASSUMPTIONS["burden"]
+    engineering_wage = wages["engineering_technician_annual_usd"] / wages["annual_hours"]
+    overhead = burden[overhead_key]
+    multiplier = (
+        (1 + burden["fringe"])
+        * (1 + overhead)
+        * (1 + burden["general_and_administrative"])
+        * (1 + burden["fee_or_profit"])
+    )
+    return {
+        "telecom_technician": wages["telecom_technician_usd_per_hour"] * multiplier,
+        "engineering_technician": engineering_wage * multiplier,
+    }
+
+
+def crew_hour_rate(crew_id, rates):
+    profile = COST_ASSUMPTIONS["crew_profiles"][crew_id]
+    return (
+        profile["telecom_technicians"] * rates["telecom_technician"]
+        + profile["engineering_technicians"] * rates["engineering_technician"]
+    )
+
+
+def trip_allowance(group, schedule, visits):
+    """Estimate lodging and M&IE for the explicit simulated overnight itinerary."""
+    first_start = min(as_date(schedule[item]) for item in group)
+    last_end_exclusive = max(
+        as_date(schedule[item]) + timedelta(days=int(visits[item]["workDays"]))
+        for item in group
+    )
+    work_span_days = (last_end_exclusive - first_start).days
+    profile = COST_ASSUMPTIONS["crew_profiles"][visits[group[0]]["crewId"]]
+    traveler_count = sum(profile.values())
+    travel = COST_ASSUMPTIONS["travel"]
+
+    # A one-day dispatch is modeled as one overnight trip. A grouped, consecutive
+    # deployment keeps the crew at the site and uses one fewer hotel night than
+    # work-span days.
+    nights = 1 if work_span_days == 1 else max(1, work_span_days - 1)
+    mie_days = 2 if work_span_days == 1 else work_span_days
+    mie = 2 * travel["mie_first_or_last_day_per_person_usd"]
+    mie += max(0, mie_days - 2) * travel["mie_full_day_per_person_usd"]
+    lodging_cost = nights * traveler_count * travel["lodging_per_person_night_usd"]
+    mie_cost = traveler_count * mie
+    return lodging_cost + mie_cost
+
+
 def metrics(schedule, visits):
     errors = check_schedule(schedule, visits)
     if errors:
         raise ValueError("; ".join(errors))
 
     groups = mobilization_groups(schedule, visits)
+    rates_low = loaded_rates("government_site_overhead")
+    rates_high = loaded_rates("contractor_site_overhead")
+    work_cost_low = 0.0
+    work_cost_high = 0.0
+    travel_labor_low = 0.0
+    travel_labor_high = 0.0
+    lodging_mie = 0.0
     travel_hours = 0
-    direct_expenses = 0
+
+    for visit in visits.values():
+        # crew_work_hours are treated as team clock-hours, then priced for each
+        # assumed crew member. This is a simulated interpretation of the field.
+        work_cost_low += int(visit["crewWorkHours"]) * crew_hour_rate(visit["crewId"], rates_low)
+        work_cost_high += int(visit["crewWorkHours"]) * crew_hour_rate(visit["crewId"], rates_high)
+
     for group in groups:
         group_visits = [visits[visit_id] for visit_id in group]
         travel_rates = {int(visit["roundTripTravelHours"]) for visit in group_visits}
-        expense_rates = {int(visit["expensePerMobilizationUsd"]) for visit in group_visits}
-        if len(travel_rates) != 1 or len(expense_rates) != 1:
-            raise ValueError("visits in one mobilization must share the same simulated trip assumptions")
-        travel_hours += travel_rates.pop()
-        direct_expenses += expense_rates.pop()
+        if len(travel_rates) != 1:
+            raise ValueError("visits in one mobilization must share the same simulated trip time")
+        group_travel_hours = travel_rates.pop()
+        crew_id = group_visits[0]["crewId"]
+        travel_hours += group_travel_hours
+        if COST_ASSUMPTIONS["travel"]["travel_time_billable"]:
+            travel_labor_low += group_travel_hours * crew_hour_rate(crew_id, rates_low)
+            travel_labor_high += group_travel_hours * crew_hour_rate(crew_id, rates_high)
+        lodging_mie += trip_allowance(group, schedule, visits)
 
-    work_hours = sum(int(visit["crewWorkHours"]) for visit in visits.values())
     finish = max(
         as_date(schedule[visit_id]) + timedelta(days=int(visits[visit_id]["workDays"]) - 1)
         for visit_id in schedule
     )
+    total_low = work_cost_low + travel_labor_low + lodging_mie
+    total_high = work_cost_high + travel_labor_high + lodging_mie
     return {
         "mobilizations": len(groups),
-        "crew_work_hours": work_hours,
+        "crew_work_hours": sum(int(visit["crewWorkHours"]) for visit in visits.values()),
         "crew_travel_hours": travel_hours,
-        "direct_expenses_usd": direct_expenses,
+        "task_labor_low_usd": round(work_cost_low),
+        "task_labor_high_usd": round(work_cost_high),
+        "travel_labor_low_usd": round(travel_labor_low),
+        "travel_labor_high_usd": round(travel_labor_high),
+        "lodging_and_mie_usd": round(lodging_mie),
+        "modeled_total_cost_low_usd": round(total_low),
+        "modeled_total_cost_high_usd": round(total_high),
         "finish_date": finish.isoformat(),
     }
 
@@ -376,9 +482,9 @@ def optimize_schedule(visits):
         if check_schedule(schedule, visits):
             continue
         result = metrics(schedule, visits)
-        # Prioritize direct expense, then crew travel time, then finish date.
+        # Prioritize modeled total cost, then crew travel time, then finish date.
         score = (
-            result["direct_expenses_usd"],
+            result["modeled_total_cost_low_usd"],
             result["crew_travel_hours"],
             result["finish_date"],
         )
@@ -395,8 +501,14 @@ def show_schedule(name, schedule, visits, result):
         visit = visits[visit_id]
         print(f"  {visit['activity']}: {schedule[visit_id]} "
               f"(allowed {visit['earliestStart']} to {visit['latestStart']})")
-    for metric, value in result.items():
-        print(f"  {metric}: {value}")
+    print(f"  mobilizations: {result['mobilizations']}")
+    print(f"  crew work hours: {result['crew_work_hours']}")
+    print(f"  crew travel hours: {result['crew_travel_hours']}")
+    print(f"  task labor estimate: ${result['task_labor_low_usd']:,}–${result['task_labor_high_usd']:,}")
+    print(f"  travel labor: ${result['travel_labor_low_usd']:,}–${result['travel_labor_high_usd']:,}")
+    print(f"  lodging and M&IE: ${result['lodging_and_mie_usd']:,}")
+    print(f"  modeled total: ${result['modeled_total_cost_low_usd']:,}–${result['modeled_total_cost_high_usd']:,}")
+    print(f"  finish date: {result['finish_date']}")
 
 
 def main():
@@ -414,22 +526,26 @@ def main():
         baseline_result = metrics(baseline, visits)
         optimized, optimized_result = optimize_schedule(visits)
 
-        print("\nSIMULATED comparison (assumptions in this file):")
+        print("\nSIMULATED cost comparison (planning assumptions; not FAA or L3Harris rates):")
+        print("  Rate basis: BLS median wages with GSA CALC+ average burden factors.")
+        print("  Costing-only crew mix: 2 telecom technicians + 1 engineering technician per crew; no skill validation.")
+        print("  Travel: billable round-trip crew time and modeled overnight lodging/M&IE.")
+        print(f"  Per diem benchmark: {COST_ASSUMPTIONS['travel']['locality']}.")
+        print("  Vehicle, airfare, shipping, equipment, overtime, and contract fees are excluded.")
         show_schedule("Baseline", baseline, visits, baseline_result)
         show_schedule("Lowest-expense feasible scenario", optimized, visits, optimized_result)
 
         print("\nChange from baseline to selected scenario")
-        print(f"  mobilizations: "
-              f"{baseline_result['mobilizations'] - optimized_result['mobilizations']} fewer")
-        print(f"  crew work hours: "
-              f"{optimized_result['crew_work_hours'] - baseline_result['crew_work_hours']:+d}")
-        print(f"  crew travel hours: "
-              f"{optimized_result['crew_travel_hours'] - baseline_result['crew_travel_hours']:+d}")
-        print(f"  direct expenses: "
-              f"{optimized_result['direct_expenses_usd'] - baseline_result['direct_expenses_usd']:+d} USD")
-        print(f"  finish date: {baseline_result['finish_date']} to "
-              f"{optimized_result['finish_date']}")
-        print("  all dates and expense rates are illustrative, not FAA data.")
+        print(f"  mobilizations: {baseline_result['mobilizations'] - optimized_result['mobilizations']} fewer")
+        print(f"  crew work hours: {optimized_result['crew_work_hours'] - baseline_result['crew_work_hours']:+d}")
+        print(f"  crew travel hours: {optimized_result['crew_travel_hours'] - baseline_result['crew_travel_hours']:+d}")
+        savings_low = baseline_result["modeled_total_cost_low_usd"] - optimized_result["modeled_total_cost_low_usd"]
+        savings_high = baseline_result["modeled_total_cost_high_usd"] - optimized_result["modeled_total_cost_high_usd"]
+        print(f"  modeled cost reduction: ${savings_low:,}–${savings_high:,}")
+        print(f"  finish date: {baseline_result['finish_date']} to {optimized_result['finish_date']}")
+        print("  task labor is included and remains the same between schedules.")
+        print("  costs are simulated estimates; actual savings depend on contract terms and itinerary.")
+
     finally:
         conn.close()
 

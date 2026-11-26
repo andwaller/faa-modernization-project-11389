@@ -49,6 +49,25 @@ Each visit or work package needs:
 
 Do not infer that two visits can be combined solely because they share a facility. The work, crew skills, access windows, dependencies, and operational constraints must permit it.
 
+## Illustrative cost model for the scheduling trial
+
+The prototype replaces the unsupported flat mobilization charges with a transparent planning estimate. **None of these rates are FAA or L3Harris contract rates, and the simulated facilities are not mapped to St. Louis.**
+
+- **Wage benchmarks:** BLS May 2025 median pay for telecommunications equipment installers and repairers: $32.51/hour; engineering technologists and technicians: $78,190/year, converted using 2,080 hours/year ($37.59/hour).
+- **Loaded labor range:** GSA CALC+ BLS guidance uses fringe, overhead, G&A, and fee/profit factors to build a comparable estimated labor rate. The trial applies GSA's average factor assumptions (35% fringe, 15% G&A, 10% fee/profit) with 25% government-site versus 50% contractor-site overhead. This yields approximately $69–$83/hour per telecommunications technician and $80–$96/hour per engineering technician.
+- **Costing-only crew assumption:** two telecommunications technicians plus one engineering technician per simulated crew. This is only for pricing the scenario; the prototype does not validate skills, actual staffing, or qualifications.
+- **Travel benchmark:** St. Louis FY2027 GSA per diem, used only as a locality reference: $156 lodging per person/night, $86 full-day M&IE, and $64.50 M&IE for first/last travel days. The simulated facilities have no actual location or crew origin.
+- **Trip model:** standalone one-day visits assume one overnight; three consecutive workdays combined into one deployment assume two hotel nights. Travel time is assumed billable for this scenario.
+- **Excluded pending source data:** mileage/vehicle or airfare, equipment freight, test equipment, overtime, contract-specific mobilization/setup charges, and any contract reimbursement or fixed-price rules.
+
+The model treats `crew_work_hours` as team clock-hours and prices each hour for the assumed three crew members. This interpretation is simulated and must be verified before real schedule data is used. The output separates task labor, billable travel labor, and lodging/M&IE. It does not claim these estimates equal a contractor invoice or actual savings. The optimizer uses the lower modeled total-cost case as its objective; the higher case is shown as a sensitivity bound.
+
+Reference inputs:
+- [BLS telecommunications equipment installers and repairers wage data](https://www.bls.gov/iag/tgs/iag517.htm)
+- [BLS engineering technologist and technician wage data](https://www.bls.gov/ooh/architecture-and-engineering/electrical-and-electronics-engineering-technicians.htm)
+- [GSA CALC+ BLS rate build-up guidance](https://buy.gsa.gov/pricing/qr/bls)
+- [GSA FY2027 St. Louis per diem](https://www.gsa.gov/travel/plan-book/per-diem-rates/per-diem-rates-results?action=perdiems_report&city=St.+Louis&fiscal_year=2027&state=MO&zip=)
+
 ## Schedule comparison
 
 Keep the baseline and each scenario separate. Report these measures independently:
