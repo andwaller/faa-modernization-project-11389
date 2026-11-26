@@ -1,44 +1,92 @@
-# Project 11,389: seeing the connections between thousands of infrastructure projects
+# Project 11,389: connecting work across FAA modernization schedules
 
-*Draft v0.1. Items marked [confirm] are in your voice and need your words.*
+## Background
 
-## The business problem
+On November 13, 2026, the FAA issued a nationwide ground stop after communications problems affected multiple air traffic control centers. The FAA said a technical problem caused network instability during a remote facility router replacement, and that the cause was under investigation. The incident made me think about modernization and coordination. I have found no evidence that schedule integration caused the ground stop or that it would have prevented it. [FAA update](https://www.faa.gov/newsroom/nationwide-ground-stop-questions-and-answers)
 
-Large infrastructure programs run as thousands of separate projects, each with its own schedule. The connections between them are what cause trouble: two projects visiting the same facility months apart, one crew booked in two places at once, a project scheduled before the work it depends on. Each project looks fine on its own. The problem only appears when the schedules are connected.
+The schedule-planning context comes from an earlier source: the September 14, 2026 GAO report, [Air Traffic Control Systems: Ambitious New Modernization Effort Needs to Improve Cost and Schedule Planning](https://www.gao.gov/products/gao-26-107992), GAO-26-107992. GAO reported that, as of May 2026, FAA had 11,389 individual project schedules supporting 13 BNATCS programs that were not integrated across projects. GAO described site work scheduled separately across projects and reported that conflicts and opportunities were generally not being addressed at scale.
 
-GAO documented this pattern at the FAA. Its September 2026 report (GAO-26-107992) found 11,389 individual project schedules that were not integrated across programs, and gave one example: technicians scheduled to prepare a St. Louis facility for a voice switch in April 2027, and the information-displays program planning its own site preparation at the same site about eight months later. GAO also reported that FAA officials said integrating all the projects in their scheduling tool "would not be useful or helpful." GAO did not measure what these overlaps cost, and the Department of Transportation disputes parts of GAO's findings. So this project does not claim to know how big the problem is at the FAA. It asks a smaller question: if schedule data is connected, how easily can an AI agent find these problems?
+GAO wrote:
 
-## Why I thought of it
+> “FAA officials stated that due to the high number of projects, attempting to integrate all the projects in their scheduling tool would not be useful or helpful.”
 
-I love learning the history of computer technology. I had just come back from IBM TechExchange, where I gave a talk, and I had been watching videos about modernizing stable, critical systems. Then the FAA grounded all flights, and the reasons given got me wondering whether this was a technology problem or a project management problem. That led me to GAO's report, whose number, 11,389 schedules with no integrated master schedule, made me ask what happens if that complexity is exactly where connected data helps most. I am not suggesting scheduling caused the outage. No source I have found establishes the cause.
+This is GAO's account of what unnamed FAA officials stated, not a quotation from an identified official. DOT described program-level schedules and an AI scheduling tool in its response; GAO disagreed that the schedules logically sequenced work and managed interdependencies.
 
-## Why Relate
+## Research question
 
-Relate by Neo4j (relatedb.ai) is an open-source, embedded graph database that speaks Cypher: "No signup. No server to deploy." The data lives in memory, a directory, or one `.rl` file, and it ships with an agent skill and an MCP endpoint so an agent can write Cypher and get results back. That matches this problem. Project schedules are naturally a graph (projects, facilities, crews, dependencies), a judge can open the whole database as a single file, and each agent can work on its own disposable copy.
+Can a graph-based schedule model help identify cross-program dependencies and compare feasible options by crew hours, travel time, expenses, and completion dates?
 
-## What I did with Relate
+## Thesis
 
-- **Modeled the schedule as a connected graph:** programs, facilities, projects, crews, dependencies, maintenance windows, and sources, each labeled documented, simulated, or hypothesis. The 13 programs and their scope and completion dates come from GAO's Table 2. Everything else is simulated and labeled that way.
-- **Built a seeded generator:** it produces portfolios from 100 up to 11,389 projects with known conflicts planted in them (duplicate visits, resource conflicts, dependency violations, maintenance-window collisions, and decoys that look mergeable but are not). The 11,389-project size is a scale test, not a reconstruction of the FAA's portfolio.
-- **Loaded it into a persistent Relate store** through Relate's Python API, with 14 constraints and 2 indexes. A 1,000-project store is a 0.8 MB file.
-- **Asked Relate to find the conflicts in Cypher** and checked every answer against an independent checker. At 1,000 and 11,389 projects, all five classes matched the planted answers exactly: nothing missing and nothing extra (114 of each class at full scale).
-- **Tested Relate's agent features:** agent mode (automatic here, with a 100-row cap), compact output, the MCP server, `relate clone`, and the installable skill.
+Given project-level schedule data and clearly stated cost and time assumptions, a Relate by Neo4j-based model can connect work across programs and help produce feasible schedule alternatives with lower modeled travel time and expenses than the baseline. The evaluation will report the data and assumptions behind each alternative; simulated results will not be presented as actual FAA savings.
 
-## What it does not show yet
+## Why Relate by Neo4j
 
-- The AI agent demo is not built.
-- The data is simulated, so nothing here measures real FAA conflicts, costs, or savings.
-- At full scale, some Cypher conflict checks took 2 to 4 seconds. I have not optimized them, so I make no speed claim.
-- The incident-scenario model, which asks hypothetical blast-radius and redundancy questions, is not built.
-- The comparison against SQLite and a flat-file agent has not been run.
+Schedules contain connected information: tasks belong to programs, happen at facilities, require crews, depend on other tasks, and share time windows and resources. Relate by Neo4j stores these connections in a graph and lets the prototype query them with Cypher. Python applies the scheduling rules and compares alternatives. The cost-aware trial uses deterministic logic; it does not currently use an LLM to choose dates or calculate costs.
+
+## Experiments so far
+
+### Simulated portfolio and conflict detection
+
+The repository has a seeded generator for portfolios from 100 to 11,389 projects. It plants known examples of duplicate visits, crew conflicts, dependency violations, maintenance-window collisions, and decoys that look mergeable but are not. The loader stores these records in Relate and queries for the planted patterns. An independent checker compares query results with the generated answers.
+
+At 1,000 and 11,389 simulated projects, the tested queries matched the planted conflict cases. The 11,389-project portfolio is a scale test, not a reconstruction of FAA's schedules and not evidence of how many real FAA conflicts exist.
+
+The repository also includes a browser page that runs Relate's WebAssembly build on simulated data. Its built-in questions and optional agent exploration are separate from the cost-aware scheduling trial.
+
+### Cost-aware four-visit trial
+
+A second experiment models four simulated visits: a three-task dependency chain at one synthetic facility and a radio-site visit at another. It includes task windows, facility access, a maintenance closure, two crew identifiers, travel-time assumptions, and a cost model. The schedule search checks the constraints and compares feasible dates.
+
+| Measure | Baseline | Selected simulated scenario |
+|---|---:|---:|
+| Mobilizations | 4 | 2 |
+| Crew work hours | 26 | 26 |
+| Crew travel hours | 13 | 7 |
+| Task labor estimate | $5,695–$6,834 | $5,695–$6,834 |
+| Travel labor | $2,848–$3,417 | $1,533–$1,840 |
+| Lodging and M&IE | $3,420 | $2,436 |
+| Modeled total | $11,963–$13,671 | $9,664–$11,110 |
+| Finish date | June 24, 2027 | June 16, 2027 |
+
+Under the simulated overnight itinerary, the modeled cost reduction is $2,299–$2,561. Task labor is unchanged; the modeled difference comes from fewer travel hours and lower lodging and meal costs.
+
+### Cost assumptions
+
+The flat $600/$800 mobilization placeholders were replaced with a component-based planning estimate:
+
+- BLS wage benchmarks: $32.51/hour for telecommunications equipment installers and repairers, and $78,190/year for electrical and electronic engineering technicians, converted at 2,080 hours per year.
+- GSA CALC+ average-rate factors for fringe, overhead, G&A, and fee/profit. Government-site and contractor-site overhead assumptions create the low/high labor-rate range.
+- A costing-only assumed crew of two telecommunications technicians and one engineering technician for each simulated crew.
+- Billable travel time is assumed.
+- FY2027 St. Louis lodging and meal allowances are used only as a per diem benchmark. Synthetic facilities are not mapped to St. Louis.
+- Each separate one-day visit is assumed to require one hotel night. The grouped three-day deployment is assumed to require two nights.
+
+These are not FAA or L3Harris contract rates. The model does not know the contract type or travel reimbursement rules. Facility locations, crew origins, mileage, airfare, vehicle costs, shipping, equipment, overtime, and contract-specific setup fees are not included. Crew profiles are for costing only; the model does not validate skills or qualifications. The trial treats crew work hours as team clock-hours and multiplies them by the assumed crew size, an interpretation that needs confirmation before real data is used.
+
+The calculation and its source links are documented in [the cost-aware schedule prototype](docs/cost-aware-schedule-prototype.md).
+
+## What the experiments do not establish
+
+- The public report does not provide the detailed FAA task schedules, crew assignments, skill requirements, site-level costs, or travel data needed to recreate the portfolio.
+- The simulated tasks are not GAO's documented St. Louis tasks. No real schedules have been loaded.
+- The output does not show that the ground stop was schedule-related or that schedule integration would have prevented it.
+- The simulated cost reduction is not actual or forecast FAA savings.
+- The small exhaustive search is a teaching prototype, not a production optimizer.
+- The project does not test how to keep thousands of real schedules current or validate proposed alternatives with FAA schedule owners.
+
+## Next research step
+
+Use documented program and site information as anchors, then obtain or define authorized task-level data for work scope, dates, duration, dependency, facility, crew skills and availability, travel origin, and contract cost terms. Keep documented, inferred, and simulated values distinct. Compare local day-trip and overnight travel cases before treating the current cost range as a useful planning estimate.
 
 ## Disclosures
 
-- Built with Claude Code (Claude Sonnet 5.5). I describe significant AI use in the submission.
-- [confirm wording] I work at Neo4j, which publishes Relate.
-- Sources: GAO-26-107992 (pages cited in the repo), relatedb.ai, and the Relate repository.
+- Built with Claude Code (Claude Sonnet 5.5).
+- The author works at Neo4j, which publishes Relate.
+- The optional browser agent uses a visitor-provided Claude API key. Its results can be wrong and are not the same as the deterministic scheduling trial.
+- Sources: GAO-26-107992, FAA's November 13, 2026 update, BLS wage data, GSA CALC+ guidance, and GSA FY2027 per diem rates.
 
-## Background moved from the README
+## Additional source context
 
 ### GAO and DOT positions, and how the 11,389 is explained
 

@@ -1,32 +1,34 @@
-## Inspiration
-
-I love the history of computing. Just back from IBM TechExchange, where I gave a talk, I had been watching videos about modernizing stable, critical systems. Banks still run core systems on mainframes descended from the IBM System/370: decades old and rock solid.
-
-Then, on November 13, 2026, the FAA ordered a nationwide ground stop, citing communication issues at multiple air traffic control centers. News coverage pointed to aging telecommunications equipment: outdated technology.
-
-I wondered: **the technology may be outdated, but could the project management approach have an impact too?**
-
 # FAA modernization - Project 11,389
 
-**Thousands of infrastructure projects, each on its own schedule. What happens when you connect them?**
+**Can connected schedule data help teams coordinate complex modernization work?**
 
-An experiment using [Relate by Neo4j](https://relatedb.ai), the embedded graph database, to connect project schedules so an AI agent can find problems no single schedule shows. *Work in progress.*
+An experiment using Relate by Neo4j to connect work across programs and compare feasible schedule options. The repository includes a large simulated portfolio for conflict-detection experiments and a separate, smaller cost-aware scheduling trial.
 
-**[Try the live page](https://andwaller.github.io/faa-modernization-project-11389/)**: nothing to install. Relate runs inside your browser, and you can ask questions in your own words.
+## Why I started asking
 
-## Where the 11,389 comes from
+I love learning the history of computing. After speaking at IBM TechExchange, I had been thinking about how organizations modernize systems that have to remain dependable while they change.
 
-GAO's report on FAA modernization ([GAO-26-107992](https://www.gao.gov/products/gao-26-107992), September 2026) gave me the number:
+On November 13, 2026, the FAA issued a nationwide ground stop after communications problems affected multiple air traffic control centers. The FAA said a technical issue caused network instability during a remote facility router replacement and that the cause was under investigation. The incident raised questions for me about modernization and coordination. **I have no evidence that schedule integration caused the ground stop or that it would have prevented it.** [FAA update](https://www.faa.gov/newsroom/nationwide-ground-stop-questions-and-answers)
 
-> "FAA has not developed an integrated master schedule for phase 1. Instead, FAA has 11,389 individual project schedules that are not integrated."
+## The schedule-planning context
 
-GAO reports that FAA officials said integrating that many projects in their scheduling tool "would not be useful or helpful" (p. 29). The Department of Transportation disputes GAO's finding (pp. 33 to 34).
+A report published before that incident, the GAO's September 14, 2026 report [GAO-26-107992](https://www.gao.gov/products/gao-26-107992), says that as of May 2026 the FAA had 11,389 individual project schedules supporting 13 BNATCS programs that were not integrated across projects. GAO described work at the same sites that generally was not coordinated across projects to address conflicts, optimize schedules, or reduce disruption.
+
+GAO records this statement:
+
+> “FAA officials stated that due to the high number of projects, attempting to integrate all the projects in their scheduling tool would not be useful or helpful.”
+
+This is GAO's account of what unnamed FAA officials stated, not a direct quote from an identified official. DOT described program-level schedules and an AI scheduling tool in its response. GAO disagreed that the schedules logically sequenced work and managed interdependencies.
+
+## Research question
+
+Can a graph-based schedule model help identify cross-program dependencies and compare feasible options by crew hours, travel time, expenses, and completion dates?
 
 ## Thesis
 
-> The number of schedules is not the obstacle. Once the schedules are connected in a graph, an AI agent can surface the overlaps and dependencies that no single schedule shows, and can test a fix before anyone acts on it.
+Given project-level schedule data and clearly stated cost and time assumptions, a Relate by Neo4j-based model can connect work across programs and help produce feasible schedule alternatives with lower modeled travel time and expenses than the baseline. The evaluation will report the data and assumptions behind each alternative; simulated results will not be presented as actual FAA savings.
 
-**It does not claim** that integration would save the FAA money or time, that the FAA is wrong, or that scheduling caused the ground stop. GAO documents one overlap (St. Louis) and measures nothing else, and no source I have found establishes the cause.
+The project asks whether connected schedule data can support better analysis. It does not claim that the November ground stop was caused by scheduling, that the current prototype reproduces FAA schedules, or that the simulated savings are achievable in FAA operations.
 
 ## How I'm using Relate, and why
 
@@ -39,6 +41,7 @@ GAO reports that FAA officials said integrating that many projects in their sche
 - **Schema** with unique IDs and provenance on every node (`schema/schema.cypher`).
 - **Generator** for seeded synthetic portfolios of 100 to 11,389 projects with known conflicts planted in them: duplicate visits, crew conflicts, dependency violations, maintenance collisions, and decoys that look mergeable but are not. An independent checker recomputes each one.
 - **Loader** that builds a persistent Relate store and finds every conflict class in Cypher.
+- **Cost-aware scheduling trial:** a separate four-visit simulated schedule connects tasks, facilities, crews, dependencies, access windows, and a maintenance closure. The Python search compares feasible dates. In the overnight travel scenario, the modeled total changes from $11,963–$13,671 to $9,664–$11,110, while travel falls from 13 to 7 crew-hours and the finish date moves eight days earlier. Task labor is unchanged. These are planning estimates, not FAA or L3Harris charges. The [cost model and assumptions](docs/cost-aware-schedule-prototype.md) explain the BLS wage benchmarks, GSA rate build-up, St. Louis per diem proxy, and excluded costs.
 - **Result:** at 1,000 and at 11,389 projects, Cypher finds every planted conflict with nothing missing and nothing extra (114 per class at full scale). This shows the queries are correct. It says nothing about how many conflicts the FAA has.
 - **What-if queries** (`queries/thesis_questions.py`): site overlap, slip propagation through dependencies, and a merge test on a temporary copy. On the simulated full-scale portfolio, merging all 114 mergeable duplicate visits without checking crews raised crew conflicts from 114 to 326. A fix made in one schedule can break another.
 
@@ -51,6 +54,8 @@ GAO reports that FAA officials said integrating that many projects in their sche
 **Not built yet:** a repeated, pre-registered benchmark of agents using Relate against SQLite and a flat-file agent, a graph of the documented programs and sites, and the hypothetical incident-scenario model.
 
 ## Limits
+
+- The cost-aware trial is also simulated. Its BLS/GSA-based rates and per diem are estimation benchmarks, not L3Harris billing rates or FAA-specific costs. The modeled overnight itinerary, crew mix, and billable travel assumption need validation. Crew qualifications and route-based transport costs are not modeled.
 
 - All generated data is simulated. Only program names, scope, and completion dates are real (GAO Table 2, p. 17). The 11,389 size is a scale test, not a reconstruction of the FAA's portfolio.
 - 11,389 counts schedules, not conflicts. GAO does not define a "project," and its Table 2 totals add up to 8,918.
