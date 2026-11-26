@@ -1,12 +1,12 @@
 # Project 11,389 — Phase 1 Report
 **Research and verification, with a feasibility assessment and implementation plan.**
-Prepared 2026-11-14. This is a working document for a follow-up blog post. No application code has been written yet.
+Prepared 2026-11-14 as an early research snapshot. **Historical status (updated 2026-11-26):** implementation has since been built, and the primary thesis has shifted from the earlier agent-detection benchmark to schedule coordination and cost-aware alternatives. See README.md, DESCRIPTION.md, and the current draft PREREGISTRATION.md. The sections below preserve the earlier research record; they are not the current project plan.
 
 Sources are linked inline. **[V]** means verified against a primary source in this session. **[S]** means secondary or summarized only; re-check before publishing. **[U]** means unverified.
 
 ---
 
-## Premise (revised after the full-report check)
+## Historical premise (superseded by the current schedule-coordination thesis)
 
 > GAO reports that FAA's project schedules aren't integrated across programs, but it does not measure the cost, and public data cannot size the problem. This project tests one narrower question: **is detecting cross-project scheduling conflicts cheaper or more efficient for an AI agent with Relate than with existing tools?**
 
@@ -27,7 +27,7 @@ Sources are linked inline. **[V]** means verified against a primary source in th
 
 ---
 
-## Thesis and abstract
+## Original detection-efficiency thesis and abstract (superseded)
 
 **Thesis (falsifiable).** For detecting cross-program scheduling conflicts in structured schedule data, an AI agent using Relate reaches detection accuracy no worse than the same agent using flat files or SQLite, at lower cost per correct detection.
 

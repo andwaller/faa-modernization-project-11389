@@ -1,0 +1,41 @@
+{
+  "evidence_status": "DOCUMENTED",
+  "source": {
+    "organization": "U.S. Government Accountability Office",
+    "report": "Air Traffic Control Systems: Ambitious New Modernization Effort Needs to Improve Cost and Schedule Planning",
+    "report_number": "GAO-26-107992",
+    "published": "2026-09-14",
+    "url": "https://www.gao.gov/products/gao-26-107992",
+    "page": 30
+  },
+  "location": "St. Louis",
+  "note": "GAO describes two site-preparation activities at the same facility. This record preserves that limited public example; it is not an optimizer input and does not make St. Louis the focus of the project.",
+  "visits": [
+    {
+      "program": "Voice switches",
+      "activity": "Voice-switch site preparation",
+      "scheduled_month": "2027-04",
+      "provenance": "DOCUMENTED"
+    },
+    {
+      "program": "Information displays",
+      "activity": "Information-display site preparation",
+      "scheduled_month": "2028-01",
+      "provenance": "DOCUMENTED"
+    }
+  ],
+  "not_reported": [
+    "exact start and end dates",
+    "task duration",
+    "detailed work scope",
+    "required skills and crew qualifications",
+    "crew assignments and availability",
+    "dependency relationship",
+    "facility access or maintenance restrictions",
+    "crew origin, route, travel mode, or travel time",
+    "labor rates, reimbursable expenses, or contract terms",
+    "whether the visits can be combined"
+  ],
+  "optimization_eligible": false,
+  "provenance_rule": "Do not fill missing fields with inferred or simulated values in this documented record. Put any illustrative completion in a separate, explicitly SIMULATED scenario."
+}

@@ -36,7 +36,7 @@ The repository also includes a browser page that runs Relate's WebAssembly build
 
 ### Cost-aware four-visit trial
 
-A second experiment models four simulated visits: a three-task dependency chain at one synthetic facility and a radio-site visit at another. It includes task windows, facility access, a maintenance closure, two crew identifiers, travel-time assumptions, and a cost model. The schedule search checks the constraints and compares feasible dates.
+A second experiment models four simulated visits: a three-task dependency chain at one synthetic facility and a radio-site visit at another. It includes task windows, facility access, a maintenance closure, two crew identifiers, simulated required skills, travel-time assumptions, and a cost model. The schedule search checks the constraints and compares feasible dates. Skill checks only compare invented task requirements with invented crew capability lists; they do not validate FAA qualifications, certifications, availability, or staffing rules.
 
 | Measure | Baseline | Selected simulated scenario |
 |---|---:|---:|
@@ -49,7 +49,7 @@ A second experiment models four simulated visits: a three-task dependency chain 
 | Modeled total | $11,963–$13,671 | $9,664–$11,110 |
 | Finish date | June 24, 2027 | June 16, 2027 |
 
-Under the simulated overnight itinerary, the modeled cost reduction is $2,299–$2,561. Task labor is unchanged; the modeled difference comes from fewer travel hours and lower lodging and meal costs.
+In the earlier overnight and billable-travel run, the modeled cost reduction was $2,299–$2,561. Task labor was unchanged; the modeled difference came from fewer travel hours and lower lodging and meal costs. The script now runs four sensitivity cases (local day trip or overnight, crossed with billable or nonbillable travel time). Those additional results have not yet been run, so the earlier cost reduction applies only to its stated scenario.
 
 ### Cost assumptions
 
@@ -57,12 +57,11 @@ The flat $600/$800 mobilization placeholders were replaced with a component-base
 
 - BLS wage benchmarks: $32.51/hour for telecommunications equipment installers and repairers, and $78,190/year for electrical and electronic engineering technicians, converted at 2,080 hours per year.
 - GSA CALC+ average-rate factors for fringe, overhead, G&A, and fee/profit. Government-site and contractor-site overhead assumptions create the low/high labor-rate range.
-- A costing-only assumed crew of two telecommunications technicians and one engineering technician for each simulated crew.
-- Billable travel time is assumed.
+- A simulated crew mix of two telecommunications technicians and one engineering technician. Each synthetic visit lists required skill labels; the checker compares them with each crew's simulated capability list. This demonstrates a hard constraint, but it does not validate real qualifications, certifications, staffing, or availability.
 - FY2027 St. Louis lodging and meal allowances are used only as a per diem benchmark. Synthetic facilities are not mapped to St. Louis.
-- Each separate one-day visit is assumed to require one hotel night. The grouped three-day deployment is assumed to require two nights.
+- The overnight case assumes each separate one-day visit requires one hotel night and the grouped three-day deployment requires two nights. The local-day-trip case assumes no hotel or M&IE. Both are sensitivity assumptions, not actual itinerary or travel-entitlement findings.
 
-These are not FAA or L3Harris contract rates. The model does not know the contract type or travel reimbursement rules. Facility locations, crew origins, mileage, airfare, vehicle costs, shipping, equipment, overtime, and contract-specific setup fees are not included. Crew profiles are for costing only; the model does not validate skills or qualifications. The trial treats crew work hours as team clock-hours and multiplies them by the assumed crew size, an interpretation that needs confirmation before real data is used.
+These are not FAA or L3Harris contract rates. The model does not know the contract type or travel reimbursement rules. Facility locations, crew origins, mileage, airfare, vehicle costs, shipping, equipment, overtime, and contract-specific setup fees are not included. The model checks the simulated skill labels, but it does not validate actual skills, qualifications, certifications, staffing, or availability. The trial treats crew work hours as team clock-hours and multiplies them by the assumed crew size, an interpretation that needs confirmation before real data is used.
 
 The calculation and its source links are documented in [the cost-aware schedule prototype](docs/cost-aware-schedule-prototype.md).
 
@@ -77,7 +76,7 @@ The calculation and its source links are documented in [the cost-aware schedule 
 
 ## Next research step
 
-Use documented program and site information as anchors, then obtain or define authorized task-level data for work scope, dates, duration, dependency, facility, crew skills and availability, travel origin, and contract cost terms. Keep documented, inferred, and simulated values distinct. Compare local day-trip and overnight travel cases before treating the current cost range as a useful planning estimate.
+Use documented program and site information as anchors, then obtain or define authorized task-level data for work scope, dates, duration, dependency, facility, crew skills and availability, travel origin, and contract cost terms. Keep documented, inferred, and simulated values distinct. Run and publish the four-case local-day-trip/overnight by billable/nonbillable sensitivity results. Then validate work-hour meaning, crew requirements and availability, local travel assumptions, transport cost, and contract treatment with authorized data before interpreting any modeled range as a planning estimate.
 
 ## Disclosures
 
@@ -101,7 +100,7 @@ Use documented program and site information as anchors, then obtain or define au
 - It counts schedules, not conflicts or costs. GAO documents one overlap (St. Louis) and measures nothing else, and most of the 11,389 may never touch each other.
 - The unit is undefined and the figure is as of May 2026. FAA's own site now lists programs that GAO's table does not (for example, 2,696 analog protocol converter sites), so today's count may differ.
 - It is not a computing limit. 11,389 is tiny for a graph database: it loads in about four seconds here. If integration is hard, the difficulty is keeping thousands of schedules current and connected, which this project does not test.
-- What makes it meaningful is that FAA gave scale as the reason not to integrate. The numbers that matter are how many sites have several programs, and how far apart in time their work falls. FAA's lookup lists seven programs for St. Louis alone. That is what this project looks at.
+The portfolio-level question is how work across programs, sites, dependencies, crews, and dates can be compared. St. Louis is retained only as one documented reference example; the project does not center the analysis on that location.
 
 ### What FAA's public data shows now
 

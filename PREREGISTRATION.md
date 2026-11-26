@@ -1,197 +1,87 @@
-# Project 11,389 — Pre-registration (DRAFT v0.1)
+# Project 11,389 — Draft evaluation plan
 
-Status: **draft, not frozen.** Items marked **[DECIDE]** need a decision from the author. Once frozen, commit this file and record the commit hash and date. After that, any change goes in the deviations log (section 10), never into this text.
+**Status:** working plan, not frozen. This plan reflects the current schedule-coordination thesis. It supersedes the earlier proposed agent-versus-database detection benchmark as the primary evaluation. Record any later protocol changes with dates and reasons before reporting results.
 
-Related: `PHASE1-REPORT.md` (sources, premise, Relate smoke test).
+## Motivation and scope
 
----
+The September 14, 2026 GAO report GAO-26-107992 says that, as of May 2026, FAA had 11,389 project schedules supporting 13 BNATCS programs that were not integrated across projects. GAO wrote: “FAA officials stated that due to the high number of projects, attempting to integrate all the projects in their scheduling tool would not be useful or helpful.” This is GAO's account of what unnamed FAA officials stated.
 
-## 1. Question and thesis
+The November 13, 2026 FAA ground stop is motivation to ask about modernization coordination. No claim is made that schedule integration caused that event or would have prevented it.
 
-**Question.** When schedule data exists, is detecting cross-program scheduling conflicts cheaper or more efficient for an AI agent using Relate than using existing tools?
+## Research question
 
-**Thesis (H2).** An agent using Relate reaches detection accuracy no worse than the best non-Relate arm, at lower cost per correct detection.
+Can a graph-based schedule model help identify cross-program dependencies and compare feasible schedule alternatives by crew work hours, travel time, modeled expenses, and completion dates?
 
-**Null (H2₀).** No Relate arm has lower cost per correct detection than the best non-Relate arm, or any cost advantage comes with a material loss of accuracy.
+## Thesis
 
-**Scope limits.** This tests detection on synthetic data plus one documented case. It makes no claim about FAA's real conflict frequency, savings, or the November 2026 ground stop. GAO-26-107992 documents one conflict (St. Louis, p. 30) and quantifies nothing else.
+Given project-level schedule data and explicit cost and time assumptions, a Relate by Neo4j-based model can connect work across programs and help produce feasible schedule alternatives with lower modeled travel time and expenses than a baseline. Results will identify data provenance and assumptions. Simulated values will not be described as actual FAA savings.
 
----
+## Current experiments
 
-## 2. Arms
+### A. Synthetic portfolio screening
 
-All arms use the same model, system prompt, task text, tool-call budget, and dataset. The only permitted differences are the tool's name, the query language, and a one-paragraph schema hint of equal length.
+The existing generator produces seeded portfolios from 100 through 11,389 projects. It plants known duplicate-visit, crew-overlap, dependency, maintenance, and decoy cases. Relate queries are checked against an independent generator oracle. This measures query correctness against planted cases, not FAA conflict frequency or Relate's superiority over another database.
 
-| Arm | Data store | Agent's tool | Purpose |
-|---|---|---|---|
-| **F** | CSV files | Python execution (pandas) | Is a database needed at all? |
-| **S** | SQLite (Python standard library) | SQL query | Relational baseline |
-| **R2** | Relate via Python API | Cypher query (same wrapper as N) | Relate database alone |
-| **R1** | Relate via CLI agent mode or MCP | Relate's own agent interface | Relate database plus agent interface |
-| N (only if a graph-database control is needed) | Neo4j server | Cypher query | Server-graph control |
+### B. Four-visit schedule coordination
 
-LadybugDB was dropped from the design by the author on 2026-11-14. DuckDB was replaced by SQLite on the same date, because SQLite ships with Python (no install, easier for others to reproduce) and matched DuckDB on correctness in development testing (both found all 114 planted C1 items at 11,389 projects). Tables for arms F and S are created with an explicit schema and loaded by the same code, so CSV-loader defaults cannot decide a result (DuckDB's loader turned empty fields into NULL and returned 0 instead of 114 on a first attempt). The only graph-database control is the Neo4j server, and it is optional.
+The existing example uses a three-visit dependency chain at one synthetic facility and a separate radio visit at another. The deterministic Python search checks date windows, facility access, maintenance, prerequisite order, crew overlap, and simulated required-skill labels. Relate stores the connected schedule records; it does not perform the date search or use an LLM to choose dates.
 
-R1 vs R2 isolates the agent interface. R2 vs S (and N, if run) isolates the database. R1 vs F is the headline practical comparison.
+The current travel sensitivity is a 2 × 2 comparison:
 
-Pinned versions: Relate v1.0.1 (binary and wheel hashes to be recorded), SQLite (version of the Python `sqlite3` module recorded at run time; 3.50.4 in development), Neo4j **[version recorded if arm N is run]**. Relate telemetry off. Agent-mode setting recorded for every R1 run.
+| Itinerary assumption | Travel-time cost treatment |
+|---|---|
+| Local day trips; no lodging or M&IE | Billable |
+| Local day trips; no lodging or M&IE | Nonbillable |
+| Overnight; modeled lodging and M&IE | Billable |
+| Overnight; modeled lodging and M&IE | Nonbillable |
 
----
+Each case reports the baseline, selected feasible schedule, mobilizations, work hours, travel hours, labor ranges, lodging/M&IE, total modeled cost, and finish date. The optimizer selects a schedule separately under each case's cost assumptions. Local cases assume the crew is based nearby; mileage and vehicle costs remain excluded. Overnight values use GSA St. Louis per diem as a benchmark only; synthetic facilities are not located in St. Louis.
 
-## 3. Data
+The documented GAO St. Louis pair is stored separately as a reference record. It lacks duration, detailed dates, crew, skills, access, dependency, and cost data, so it is not used as an optimizer input.
 
-**Real foundation** (GAO-26-107992): the 13 programs in Table 2 (p. 17) with scope counts and completion dates, and the St. Louis pair (p. 30). Every record carries source, page, retrieval date, and `provenance`: DOCUMENTED, INFERRED, or SIMULATED.
+## Measures and interpretation
 
-**Synthetic portfolios.** Generated by a seeded script from the 13 programs. Scales: 100, 1,000, 5,000, and 11,389 projects. The 11,389 portfolio is a scale test, not a reconstruction of FAA's portfolio. Everything generated is labeled SIMULATED.
+- **Feasibility:** every scheduled visit is inside its allowed dates and facility access window, outside maintenance closures, after its prerequisites, assigned to a non-overlapping crew, and matched to the simulated skill labels.
+- **Schedule effects:** mobilizations, team work-hours, crew travel-hours, and completion date relative to the supplied baseline.
+- **Cost effects:** task labor, travel labor, lodging/M&IE, and total range, by scenario.
+- **Provenance:** each output must distinguish documented source facts, inferred values, and simulated assumptions.
+- **Sensitivity:** show how travel entitlement and overnight assumptions change the selected dates and modeled totals. Do not collapse the measures into a single weighted score.
 
-**Entities.** Program, Project, Facility, Task (site-prep or install visit with a date window), CrewResource, Dependency, MaintenanceWindow, SafetyRestriction.
+A result is a feasible modeled alternative under the encoded constraints. It does not establish that a real FAA crew, site owner, program manager, or contract permits that alternative.
 
-**Seeds.** Development seeds 1–3 (used to tune prompts and tooling). **Test seeds 101–105** (used for reported results, untouched until the freeze).
+## Data and cost assumptions
 
-### Planted ground truth
+The current four-visit inputs, wage benchmarks, burden factors, crew mix, and per diem assumptions are documented in [docs/cost-aware-schedule-prototype.md](docs/cost-aware-schedule-prototype.md). Values use BLS wages and GSA CALC+ factors as estimation benchmarks. They are not FAA or L3Harris contract rates. Travel-mode assumptions, team-clock-hour interpretation, and the task skill lists are simulated and require validation.
 
-Each portfolio ships a hashed manifest listing every planted item.
+No public project-level FAA schedule, crew assignment, qualifications, crew origin, route, or contract terms are included. Do not infer those values from GAO's reported schedule count or its single St. Louis example.
 
-| Class | Definition | Counts as |
+## Planned evaluation steps
+
+1. Run the four-visit example and save the complete output for all four scenarios.
+2. Independently inspect every selected schedule against the encoded hard constraints.
+3. Report all four cases, including any case where the modeled savings disappear or the best dates differ.
+4. Vary wage burden and per diem assumptions after documenting their sources; keep those changes separate from the core 2 × 2 travel sensitivity.
+5. Replace simulated task, crew, travel, and cost inputs only when authorized, sourceable data becomes available.
+6. Evaluate portfolio-scale scheduling only after the small case's constraints and cost semantics are independently reviewed.
+
+## Known limitations
+
+- The four-visit example is too small to establish performance on an FAA-wide schedule.
+- Crew skills and capabilities are synthetic labels, not qualification records; crew availability and calendars are not validated.
+- The local day-trip case assumes no hotel or M&IE and excludes mileage, vehicle, airfare, and route costs.
+- The overnight case applies an illustrative per diem benchmark to synthetic facilities.
+- The optimizer is exhaustive and intended only for a tiny scenario.
+- A lower modeled total does not imply a lower contract price, an achievable saving, or an operationally acceptable schedule.
+- The author works at Neo4j, which publishes Relate; disclose this affiliation alongside results.
+
+## Sources
+
+- U.S. GAO, [GAO-26-107992](https://www.gao.gov/products/gao-26-107992), September 14, 2026, especially pp. 17, 29–34.
+- FAA, [November 13, 2026 ground-stop update](https://www.faa.gov/newsroom/nationwide-ground-stop-questions-and-answers).
+- See the cost prototype for BLS, GSA CALC+, and GSA per diem source links.
+
+## Changes log
+
+| Date | Change | Reason |
 |---|---|---|
-| C1 duplicate visit | Two projects from different programs have site-prep or install visits at one facility within 12 months, and no restriction prevents merging. | Positive |
-| C2 hidden resource conflict | One crew assigned to overlapping windows at different facilities. | Positive |
-| C3 dependency violation | A project is scheduled before a prerequisite from another program at the same facility. | Positive |
-| C4 maintenance collision | A visit falls inside the facility's maintenance window. | Positive |
-| C5 decoy | Same-facility visits within 12 months, but a safety restriction makes merging infeasible. | **Negative** (reporting it as an opportunity is a false positive) |
-| C6 clean facilities | No overlap of any kind. | Negative |
-
-Planted counts per scale: **[DECIDE]**. Suggested: about 2% of facilities per positive class, 2% decoys, remainder clean, so rates stay constant across scales.
-
----
-
-## 4. Tasks
-
-Every agent run receives one task prompt, identical across arms.
-
-| ID | Task | Type |
-|---|---|---|
-| T1 | List all projects scheduled at facility F. | Lookup |
-| T2 | Find all C1-type duplicate visits in the portfolio. | Detection |
-| T3 | Find all C2 resource conflicts. | Detection |
-| T4 | If project P slips by k months, list every project affected through dependencies. | Multi-hop |
-| T5 | Find all C3 and C4 violations. | Detection |
-| T6 | For three named facilities, propose a revised schedule that merges feasible duplicate visits, citing record IDs. | Proposal |
-
-Every answer must cite record IDs. Uncited findings are not scored as correct.
-
----
-
-## 5. Validation of proposals
-
-Proposals (T6) are checked by one shared **OR-Tools CP-SAT** model for all arms. Modeled constraints: precedence, crew availability, facility access and maintenance windows, safety restrictions, and project deadlines. Unknown constraints are recorded as unknown, not assumed away. A proposal counts as feasible only if CP-SAT accepts it. Savings from proposals are reported as "visits removed under the stated assumptions", never as FAA savings.
-
----
-
-## 6. Metrics
-
-**Accuracy (per task and class, against the manifest).** Precision, recall, F1. Decoy handling is scored through precision. T4 is scored on set overlap with the true affected set. T6 is scored on CP-SAT feasibility and visits removed.
-
-**Cost (per run).**
-- Input and output tokens as reported by the API, and estimated dollars at list price.
-- Number of tool calls.
-- Wall-clock time.
-- Retries and tool errors.
-- Whether the run hit the budget cap (failure).
-
-**Primary metric.** *Cost per correct detection* = total tokens ÷ number of correct findings (true positives). Runs with zero true positives are reported separately as failures and excluded from the ratio, with their count shown.
-
-**Secondary metrics.** Tool calls per correct finding; completion rate; accuracy at the budget cap.
-
-**Build effort (per arm, measured by script).** Lines of integration code, number of setup steps from a clean machine, and time to first successful query.
-
-**Database performance (reported separately, not part of the thesis).** Initialization, load, and warmed query time, 5 repetitions after 2 warm-up runs, at every scale. Median and interquartile range.
-
----
-
-## 7. Run protocol
-
-- Model: **[DECIDE]** a single pinned model ID. Temperature and sampling settings recorded and fixed.
-- Per run: fresh process, fresh store copy, no memory across runs.
-- Repetitions: **at least 5 runs per arm × task × test seed × scale**. Scales for agent runs: 1,000 and 11,389 (100 and 5,000 only if budget allows).
-- Budget cap per run: **[DECIDE]**. Suggested 40 tool calls and 200,000 tokens.
-- Run order randomized across arms to avoid time-of-day effects.
-- Raw transcripts, tool calls, and scores stored for every run.
-- Scoring script is run only after all runs for a seed complete. Prompts and tools are tuned on development seeds only.
-- If an arm's tool breaks, the break and the fix are logged, and the affected runs are re-run for that arm only if the break was in the harness rather than the product.
-
----
-
-## 8. Decision rule
-
-**Relate wins** only if all hold, comparing the best Relate arm (R1 or R2) with the best non-Relate arm on the primary metric:
-1. Median cost per correct detection is at least **25% lower** **[DECIDE threshold]**.
-2. A bootstrap 95% confidence interval for the ratio of medians excludes 1.0.
-3. Macro-F1 across T2, T3, T5 is within **5 percentage points** of the best arm.
-4. The result holds at both scales and on a majority of test seeds.
-
-**Relate loses** if a non-Relate arm meets the same bar against Relate.
-
-**Otherwise: tie.** A tie or a loss is reported with equal prominence.
-
-**Attribution.** If Relate wins, R1 vs R2 states whether the gain comes from the agent interface or the database. If R1 and R2 differ from the other databases in opposite directions, that is reported as is.
-
-**H1 (detectability).** Separately, report which planted classes each arm detects (recall by class). If arm F or S matches the graph arms on C1, C2, C4, and C5, the report says so. The graph's expected edge, if any, is on T4 (multi-hop).
-
----
-
-## 9. Threats to validity (stated in advance)
-
-- Synthetic ground truth encodes the author's idea of a conflict. Scores measure agreement with the generator, not with FAA reality.
-- Prompt wording can favor one query language. Mitigation: equal-length schema hints, tuning on development seeds only, publishing all prompts.
-- Small run counts widen confidence intervals. The decision rule requires the interval to exclude 1.0.
-- Relate is a young product (v1.0.1, released 2026-11-12). Results apply to the pinned version.
-- The author is affiliated with Neo4j (disclosed). Mitigations: pre-registration, published manifests and transcripts, a loss reported with equal prominence, and an outside reviewer audit of the baseline queries.
-- Model nondeterminism. Mitigated by repetitions and fixed settings.
-- Agent-mode defaults in Relate (automatic row cap of 100) change what the agent sees. The cap setting is recorded and tested at default and at `--max-rows 0`.
-
----
-
-## 10. Deviations log
-
-| Date | Change | Reason | Affects results? |
-|---|---|---|---|
-| | | | |
-
----
-
-## 11. Disclosures
-
-- AI tools: this work is built with Claude Code (Claude Sonnet 5.5), and the agents under test use the pinned model above.
-- Affiliation: the author's account is associated with Neo4j. Relate is a Neo4j-published product. **[DECIDE the exact wording for the blog and submission.]**
-- All real figures come from GAO-26-107992 with page references. Everything else is labeled SIMULATED.
-
----
-
-## 12. Incident-scenario track (DRAFT, added 2026-11-14, needs author confirmation)
-
-**Why.** The author asked to focus on Relate and Neo4j technology and to test theories about the most recent FAA incident (the nationwide ground stop of 2026-11-13). This supersedes the earlier decision to keep that incident out of the project.
-
-**What is and is not known.** The incident facts so far come from news coverage only (not verified against an official source): a ground stop of more than four hours, attributed by the Transportation Secretary to overloaded aging telecommunications switches and routers on the FAA Telecommunications Infrastructure network. The underlying cause is reported as unclear, and a software-update explanation has been reported but not confirmed. No public source gives the real network topology. **This track therefore cannot establish what happened.**
-
-**What it can test.** Whether a graph agent can answer the *kinds of questions* the theories raise, on a clearly hypothetical network model:
-- Theory A, "new technology overwhelmed old systems": in a modeled network, which nodes are overloaded when a migrated segment shifts load onto legacy equipment (load propagation)?
-- Theory B, "planning, dependencies, redundancy, testing": blast radius of one failed node, single points of failure, and whether redundant paths exist; and change collisions, where two cutovers touch connected equipment inside one window.
-
-**Rules for this track.**
-- Every node, edge, and load figure is SIMULATED or HYPOTHESIS. Nothing is presented as FAA infrastructure fact.
-- Documented inputs may include only what primary sources state (GAO: the telecom network connects "approximately 5,000 FAA facilities, radars, voice systems, and flight data communications", p. 13; copper replacement progress, pp. 1, 31).
-- Hypotheses are written down before any run, with the result that would refute each.
-- The generator, oracle and scoring approach from sections 3 to 8 apply unchanged: seeded models, planted ground truth, an independent checker.
-- No claim is made about the cause of the 2026-11-13 ground stop.
-
----
-
-## Open decisions
-
-Defaults chosen by the author's instruction ("I do") on 2026-11-14: win threshold 25%, accuracy tolerance 5 points, planted counts of max(2, round(0.01 × projects)) per class (114 per class at 11,389 projects), budget cap of 40 tool calls and 200,000 tokens per run, standard Neo4j optional.
-
-Still open:
-1. Pinned model ID.
-2. Where to freeze (git repo and commit).
-3. Confirmation of the incident-scenario track (section 12) and its priority against the schedule-conflict track.
+| 2026-11-26 | Replaced the earlier agent-detection primary question with the current schedule-coordination thesis; added travel sensitivity and simulated skill-fit checks. | Align plan with implemented work and current project direction. |

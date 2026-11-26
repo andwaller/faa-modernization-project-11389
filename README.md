@@ -41,27 +41,31 @@ The project asks whether connected schedule data can support better analysis. It
 - **Schema** with unique IDs and provenance on every node (`schema/schema.cypher`).
 - **Generator** for seeded synthetic portfolios of 100 to 11,389 projects with known conflicts planted in them: duplicate visits, crew conflicts, dependency violations, maintenance collisions, and decoys that look mergeable but are not. An independent checker recomputes each one.
 - **Loader** that builds a persistent Relate store and finds every conflict class in Cypher.
-- **Cost-aware scheduling trial:** a separate four-visit simulated schedule connects tasks, facilities, crews, dependencies, access windows, and a maintenance closure. The Python search compares feasible dates. In the overnight travel scenario, the modeled total changes from $11,963–$13,671 to $9,664–$11,110, while travel falls from 13 to 7 crew-hours and the finish date moves eight days earlier. Task labor is unchanged. These are planning estimates, not FAA or L3Harris charges. The [cost model and assumptions](docs/cost-aware-schedule-prototype.md) explain the BLS wage benchmarks, GSA rate build-up, St. Louis per diem proxy, and excluded costs.
+- **Cost-aware scheduling trial:** a separate four-visit simulated schedule connects tasks, facilities, crews, dependencies, access windows, maintenance, and simulated required skills. Its deterministic Python search checks feasible dates. It now compares four travel cases: local day trips or overnight stays, each with billable or nonbillable travel time. The earlier overnight/billable run modeled $11,963–$13,671 at baseline and $9,664–$11,110 for the selected schedule. The new sensitivity runs have not yet been executed, so those earlier figures are not presented as applying to every case. See the [cost model and assumptions](docs/cost-aware-schedule-prototype.md).
 - **Result:** at 1,000 and at 11,389 projects, Cypher finds every planted conflict with nothing missing and nothing extra (114 per class at full scale). This shows the queries are correct. It says nothing about how many conflicts the FAA has.
 - **What-if queries** (`queries/thesis_questions.py`): site overlap, slip propagation through dependencies, and a merge test on a temporary copy. On the simulated full-scale portfolio, merging all 114 mergeable duplicate visits without checking crews raised crew conflicts from 114 to 326. A fix made in one schedule can break another.
 
-- **Browser page** (`web/`, live): Relate's WebAssembly build runs in the page and loads 11,389 simulated projects by default (1,000 as an option). It has eight plain-language questions with labeled results, a tour, glossary and help, and a "Show the Cypher" panel. Every question was checked in a browser at both sizes against the Python results.
+- **Browser page** (`web/`, live): Relate's WebAssembly build runs in the page and loads 11,389 simulated projects by default (1,000 as an option). It is the portfolio conflict-detection experiment; the four-visit cost-aware schedule trial is a separate command-line experiment documented and linked from the page. The browser page has eight plain-language questions with labeled results, a tour, glossary and help, and a "Show the Cypher" panel. Every question was checked in a browser at both sizes against the Python results.
 - **Ask box:** type a question in plain words. Without a key it is a simple matcher that picks the closest built-in question and says which one. It is not an AI.
 - **Optional Claude agent:** a visitor can connect their own Anthropic API key, and an AI agent then writes its own Cypher against a scratch copy of the data, with every query shown. The loop, error handling, and the guarantee that the original data is untouched were tested with a simulated API. **It has not been tested against a live key.**
 
 - **Agent test through Relate's own interfaces** ([`docs/agent-test.md`](docs/agent-test.md)): two fresh Claude Code sessions answered the same question over a 1,000-project store, one using the Relate skill and CLI and one using the Relate MCP server. Both found the planted answer (20 close pairs, 10 at restricted sites) on the first full query. It was one run per path, so it shows the interfaces work and makes no claim about efficiency.
 
-**Not built yet:** a repeated, pre-registered benchmark of agents using Relate against SQLite and a flat-file agent, a graph of the documented programs and sites, and the hypothetical incident-scenario model.
+**Not built yet:** an authorized portfolio of FAA task-level schedules, validated crew qualifications and availability, contract-specific travel and labor costs, a production optimizer, and a repeated evaluation using real approved data. The public St. Louis overlap is recorded separately as a documented reference pair; it is not enough information to optimize that work.
 
 ## Limits
 
-- The cost-aware trial is also simulated. Its BLS/GSA-based rates and per diem are estimation benchmarks, not L3Harris billing rates or FAA-specific costs. The modeled overnight itinerary, crew mix, and billable travel assumption need validation. Crew qualifications and route-based transport costs are not modeled.
+- The cost-aware trial is also simulated. Its BLS/GSA-based rates and per diem are estimation benchmarks, not L3Harris billing rates or FAA-specific costs. Its four-case sensitivity analysis still relies on explicit hypothetical local-versus-overnight and billable-versus-nonbillable assumptions; it does not estimate routing, airfare, mileage, or vehicle charges. Crew skill matching is checked against invented capability lists only, not real qualifications, certifications, availability records, or staffing rules. Team-clock-hour interpretation and contract terms need validation.
 
 - All generated data is simulated. Only program names, scope, and completion dates are real (GAO Table 2, p. 17). The 11,389 size is a scale test, not a reconstruction of the FAA's portfolio.
 - 11,389 counts schedules, not conflicts. GAO does not define a "project," and its Table 2 totals add up to 8,918.
 - Connecting the data is easy. Keeping thousands of real schedules current is the hard part, and this project does not test it.
 - No speed claim. At 11,389 projects, some checks take 2 to 4 seconds in Python and several seconds in the browser, and the "try a fix" question can take around 15 seconds. They are not optimized, and the page cannot respond while one runs.
 - The agent's answers are written by an AI and can be wrong. The built-in questions are checked against planted answers; the agent's are not.
+
+## Cost-aware schedule trial
+
+Run the four-visit simulation locally with `python examples/cost_aware_schedule_trial.py`. The output now prints baseline and selected schedules for each of four assumption combinations. All dates, skills, per diem applicability, crew assignments, and trip cases remain illustrative. See [the documented St. Louis reference pair](data/st_louis_documented_anchor.json), which contains only the facts GAO reports and is not fed to the optimizer.
 
 ## Try it in your browser
 
@@ -118,9 +122,9 @@ relate -d store\portfolio_n1000_seed1.rl --read-only --toon "MATCH (n) UNWIND la
 | `queries/` | The thesis questions as a Python script |
 | `store/` | A ready-made 1,000-project Relate store |
 | `DESCRIPTION.md` | The story in more detail |
-| `PHASE1-REPORT.md` | Sources, the GAO and DOT positions, and what the 11,389 does and does not mean |
-| `PREREGISTRATION.md` | The planned test design |
-| `ARTIFACTS.md` | What is built, what is not |
+| `PHASE1-REPORT.md` | Historical Phase 1 research snapshot; later implementation and thesis changes are summarized in this README and DESCRIPTION |
+| `PREREGISTRATION.md` | Draft evaluation plan for the current schedule-coordination thesis |
+| `ARTIFACTS.md` | Current implementation status and known gaps |
 
 ## Disclosures
 
