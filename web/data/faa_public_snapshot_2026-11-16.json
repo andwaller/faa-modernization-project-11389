@@ -1,0 +1,40 @@
+{
+  "snapshot_date": "2026-11-16",
+  "source_name": "FAA Modern Skies",
+  "source_url": "https://modernskies.faa.gov/",
+  "provenance": "DOCUMENTED",
+  "progress_basis": "FAA-reported completed or installed counts, as displayed on the source page; not independently verified here.",
+  "september_pace_note": "The comparator is the September 2026 monthly progress value retained from the earlier project snapshot.",
+  "program_progress": [
+    {
+      "program": "Telecommunications",
+      "completed": 3651,
+      "total": 5170,
+      "september_2026_completed": 143
+    },
+    {
+      "program": "Radios",
+      "completed": 497,
+      "total": 1581,
+      "september_2026_completed": 45
+    },
+    {
+      "program": "Voice switches",
+      "completed": 230,
+      "total": 450,
+      "september_2026_completed": 28
+    },
+    {
+      "program": "Radars",
+      "completed": 16,
+      "total": 612,
+      "september_2026_completed": 5
+    },
+    {
+      "program": "Information displays",
+      "completed": 5,
+      "total": 435,
+      "september_2026_completed": 0
+    }
+  ]
+}

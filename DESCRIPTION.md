@@ -26,6 +26,15 @@ Schedules contain connected information: tasks belong to programs, happen at fac
 
 ## Experiments so far
 
+### Public FAA schedule data and progress counts
+
+The live demo now includes two small documented inputs alongside its much larger simulated portfolio:
+
+- A dated FAA Modern Skies snapshot (November 16, 2026) for five program progress counts, compared with a September 2026 monthly pace figure retained from the prior snapshot.
+- Four future activity records at EWR transcribed from the FAA's August 20, 2026 Delay Reduction Plan, page 9. The [public schedule page](web/public-schedule.html) stores them as documented records in Relate and screens for overlapping date ranges at the same facility.
+
+These are dated public snapshots, not live feeds or complete FAA schedules. FAA says the DRP dates are for planning and subject to change. The EWR overlap screen cannot establish a crew conflict or recommend revised dates because the source does not publish the needed crew, access, dependency, travel, and cost fields.
+
 ### Simulated portfolio and conflict detection
 
 The repository has a seeded generator for portfolios from 100 to 11,389 projects. It plants known examples of duplicate visits, crew conflicts, dependency violations, maintenance-window collisions, and decoys that look mergeable but are not. The loader stores these records in Relate and queries for the planted patterns. An independent checker compares query results with the generated answers.
@@ -67,8 +76,8 @@ The calculation and its source links are documented in [the cost-aware schedule 
 
 ## What the experiments do not establish
 
-- The public report does not provide the detailed FAA task schedules, crew assignments, skill requirements, site-level costs, or travel data needed to recreate the portfolio.
-- The simulated tasks are not GAO's documented St. Louis tasks. No real schedules have been loaded.
+- The public sources do not provide the complete detailed FAA portfolio, crew assignments, skill requirements, site-level costs, or travel data needed to recreate and optimize the portfolio.
+- The four EWR rows are real public planning records from FAA's August 2026 report, but they are a small dated sample. The simulated tasks are not those FAA records, and the repository does not contain the complete 11,389 project-level schedule portfolio.
 - The output does not show that the ground stop was schedule-related or that schedule integration would have prevented it.
 - The simulated cost reduction is not actual or forecast FAA savings.
 - The small exhaustive search is a teaching prototype, not a production optimizer.
@@ -104,6 +113,6 @@ The portfolio-level question is how work across programs, sites, dependencies, c
 
 ### What FAA's public data shows now
 
-- FAA's [Modern Skies](https://modernskies.faa.gov/) site (self-reported, data as of October 15, 2026): telecommunications 3,508 of 5,170 (68%), radio sites 457 of 1,581, voice switches 220 of 450, radars 15 of 612, information displays 0 of 435.
+- FAA's [Modern Skies](https://modernskies.faa.gov/) site (self-reported, data current as of November 16, 2026): telecommunications 3,651 of 5,170 (71%), radio sites 497 of 1,581 (31%), voice switches 230 of 450 (51%), radars 16 of 612 (3%), and information displays 5 of 435 (1%).
 - Its location lookup lists seven programs for St. Louis Lambert (STL): six Phase 1 (voice switches in progress; radios, information displays, flight data, surface radar, and radar replacement planned) and one Phase 2. That is consistent with GAO's St. Louis example, where voice switch and information display work were scheduled at the same site about eight months apart. The lookup shows no dates.
 

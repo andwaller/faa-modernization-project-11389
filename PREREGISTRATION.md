@@ -18,7 +18,9 @@ Given project-level schedule data and explicit cost and time assumptions, a Rela
 
 ## Current experiments
 
-### A. Synthetic portfolio screening
+### A. Public FAA schedule sample and synthetic portfolio screening
+
+The browser loads a dated FAA Modern Skies progress snapshot (November 16, 2026) and a separate four-activity schedule snapshot for EWR from the FAA Delay Reduction Plan report dated August 20, 2026, page 9. The public records are labeled DOCUMENTED and stay separate from the seeded SIMULATED portfolio. The EWR page finds same-site date-range overlaps only. FAA says its planning dates may change. Missing crew, skills, access, dependency, travel, and cost inputs prohibit a real constraint-aware reschedule or savings calculation from these public records.
 
 The existing generator produces seeded portfolios from 100 through 11,389 projects. It plants known duplicate-visit, crew-overlap, dependency, maintenance, and decoy cases. Relate queries are checked against an independent generator oracle. This measures query correctness against planted cases, not FAA conflict frequency or Relate's superiority over another database.
 
@@ -53,7 +55,7 @@ A result is a feasible modeled alternative under the encoded constraints. It doe
 
 The current four-visit inputs, wage benchmarks, burden factors, crew mix, and per diem assumptions are documented in [docs/cost-aware-schedule-prototype.md](docs/cost-aware-schedule-prototype.md). Values use BLS wages and GSA CALC+ factors as estimation benchmarks. They are not FAA or L3Harris contract rates. Travel-mode assumptions, team-clock-hour interpretation, and the task skill lists are simulated and require validation.
 
-No public project-level FAA schedule, crew assignment, qualifications, crew origin, route, or contract terms are included. Do not infer those values from GAO's reported schedule count or its single St. Louis example.
+No complete project-level FAA portfolio is public in this repository. A few public planning activities are included, but crew assignments, qualifications, crew origin, route, and contract terms are unavailable. Do not infer those values from GAO's reported schedule count or from a small public sample.
 
 ## Planned evaluation steps
 

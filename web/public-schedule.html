@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; connect-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<meta name="description" content="Explore a dated public FAA schedule sample with Relate running entirely in your browser.">
+<title>Public FAA schedule sample — Project 11,389</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#results">Skip to results</a>
+<header class="top">
+  <div class="wrap top-row">
+    <div>
+      <h1>Public FAA schedule sample</h1>
+      <p class="sub">A small, source-linked slice of FAA planning dates, analyzed in your browser with Relate by Neo4j.</p>
+    </div>
+    <div class="top-actions">
+      <a href="./">Back to portfolio demo</a>
+    </div>
+  </div>
+</header>
+<div class="banner" role="note">
+  <div class="wrap"><strong>Documented snapshot, not a live FAA feed.</strong> Source: FAA Delay Reduction Plan, August 20, 2026, page 9. FAA says dates are for planning and may change. The sample is not a complete BNATCS schedule.</div>
+</div>
+<main class="wrap">
+  <section class="card intro" aria-labelledby="about-h">
+    <h2 id="about-h">What this sample can show</h2>
+    <p>These four scheduled activities are listed for EWR in the FAA's public planning report. This page loads the reported dates and project links into a fresh in-memory Relate database, then checks for date overlaps at the same facility.</p>
+    <p><strong>An overlap is a prompt for review, not proof of a conflict or savings.</strong> The public source does not give crew assignments, qualifications, exact work locations, access restrictions, travel, or costs for these rows. The page therefore does not propose revised dates or calculate FAA savings.</p>
+    <div class="controls">
+      <button class="primary" id="rerun" type="button" disabled>Load and check the public schedule</button>
+      <span id="status" class="status" role="status">Loading the source snapshot…</span>
+    </div>
+    <p class="hint">Privacy: this page reads a static public JSON file from this site. Schedule rows and query results are processed in this browser tab; no FAA data is uploaded or sent to an AI service.</p>
+  </section>
+  <section class="card intro" aria-labelledby="data-h">
+    <h2 id="data-h">Public schedule records</h2>
+    <div id="records" class="tablewrap" tabindex="0"><p class="hint">Waiting for the public snapshot to load.</p></div>
+    <p><a href="https://www.faa.gov/about/office_org/headquarters_offices/ara/programs/nyapio/delay_reduction_plan/DRP-report.pdf" target="_blank" rel="noopener">Open the FAA August 2026 Delay Reduction Plan report</a> (PDF).</p>
+  </section>
+  <section id="results" class="card answer" aria-labelledby="results-h" aria-live="polite">
+    <h2 id="results-h">Same-facility date overlap check</h2>
+    <p class="placeholder">Load the source snapshot to run the Relate query.</p>
+    <div id="overlaps"></div>
+    <details>
+      <summary>What data is missing for a real schedule simulation?</summary>
+      <ul id="missing"></ul>
+    </details>
+    <details>
+      <summary>Show the Cypher</summary>
+      <pre><code id="cypher"></code></pre>
+    </details>
+  </section>
+</main>
+<footer class="wrap foot">
+  <p>Source: FAA, <em>Delay Reduction Plan Report — August 2026</em>, report date August 20, 2026, p. 9. The FAA notes that plans may change. <a href="https://github.com/andwaller/faa-modernization-project-11389" target="_blank" rel="noopener">Project source code</a>.</p>
+</footer>
+<script type="module" src="public-schedule.js?v=1"></script>
+</body>
+</html>

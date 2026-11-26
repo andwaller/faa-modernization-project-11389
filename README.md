@@ -42,6 +42,7 @@ The project asks whether connected schedule data can support better analysis. It
 - **Generator** for seeded synthetic portfolios of 100 to 11,389 projects with known conflicts planted in them: duplicate visits, crew conflicts, dependency violations, maintenance collisions, and decoys that look mergeable but are not. An independent checker recomputes each one.
 - **Loader** that builds a persistent Relate store and finds every conflict class in Cypher.
 - **Cost-aware scheduling trial:** a separate four-visit simulated schedule connects tasks, facilities, crews, dependencies, access windows, maintenance, and simulated required skills. Its deterministic Python search checks feasible dates. It now compares four travel cases: local day trips or overnight stays, each with billable or nonbillable travel time. The earlier overnight/billable run modeled $11,963–$13,671 at baseline and $9,664–$11,110 for the selected schedule. The new sensitivity runs have not yet been executed, so those earlier figures are not presented as applying to every case. See the [cost model and assumptions](docs/cost-aware-schedule-prototype.md).
+- **Documented FAA inputs:** the browser uses a dated FAA Modern Skies progress snapshot (November 16, 2026) and a separate four-activity EWR planning snapshot from the FAA Delay Reduction Plan (August 20, 2026, p. 9). The [public schedule sample](web/public-schedule.html) runs a same-facility date-overlap query in Relate. The source says dates are planning values subject to change; missing crews, skills, access, dependencies, travel, and cost data mean the overlaps are review flags, not proven conflicts or savings.
 - **Result:** at 1,000 and at 11,389 projects, Cypher finds every planted conflict with nothing missing and nothing extra (114 per class at full scale). This shows the queries are correct. It says nothing about how many conflicts the FAA has.
 - **What-if queries** (`queries/thesis_questions.py`): site overlap, slip propagation through dependencies, and a merge test on a temporary copy. On the simulated full-scale portfolio, merging all 114 mergeable duplicate visits without checking crews raised crew conflicts from 114 to 326. A fix made in one schedule can break another.
 
@@ -57,7 +58,7 @@ The project asks whether connected schedule data can support better analysis. It
 
 - The cost-aware trial is also simulated. Its BLS/GSA-based rates and per diem are estimation benchmarks, not L3Harris billing rates or FAA-specific costs. Its four-case sensitivity analysis still relies on explicit hypothetical local-versus-overnight and billable-versus-nonbillable assumptions; it does not estimate routing, airfare, mileage, or vehicle charges. Crew skill matching is checked against invented capability lists only, not real qualifications, certifications, availability records, or staffing rules. Team-clock-hour interpretation and contract terms need validation.
 
-- All generated data is simulated. Only program names, scope, and completion dates are real (GAO Table 2, p. 17). The 11,389 size is a scale test, not a reconstruction of the FAA's portfolio.
+- The generated portfolio data is simulated. GAO Table 2 program names, scope, and completion dates are documented; public FAA progress and activity snapshots are kept in separate files. The 11,389 size is a scale test, not a reconstruction of FAA's portfolio.
 - 11,389 counts schedules, not conflicts. GAO does not define a "project," and its Table 2 totals add up to 8,918.
 - Connecting the data is easy. Keeping thousands of real schedules current is the hard part, and this project does not test it.
 - No speed claim. At 11,389 projects, some checks take 2 to 4 seconds in Python and several seconds in the browser, and the "try a fix" question can take around 15 seconds. They are not optimized, and the page cannot respond while one runs.
@@ -115,7 +116,7 @@ relate -d store\portfolio_n1000_seed1.rl --read-only --toon "MATCH (n) UNWIND la
 
 | Path | What it is |
 |---|---|
-| `web/` | The browser page (also published as the live page) and its data |
+| `web/` | Browser demos, documented FAA snapshots, generated data, and Relate WebAssembly |
 | `schema/` | Graph schema: constraints and indexes |
 | `generator/` | Seeded portfolio generator and its independent checker |
 | `loader/` | Loads a portfolio into a Relate store and verifies it in Cypher |

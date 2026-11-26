@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0",
+  "dataset_id": "FAA-DRP-2026-08-EWR",
+  "title": "FAA public planning schedule sample — EWR",
+  "provenance": "DOCUMENTED",
+  "source": {
+    "organization": "Federal Aviation Administration",
+    "report_title": "Delay Reduction Plan Report — August 2026",
+    "report_date": "2026-08-20",
+    "url": "https://www.faa.gov/about/office_org/headquarters_offices/ara/programs/nyapio/delay_reduction_plan/DRP-report.pdf",
+    "page": 9,
+    "publication_note": "FAA says its schedule dates are for planning purposes and subject to adjustment."
+  },
+  "facility": {
+    "id": "EWR",
+    "name": "EWR (as identified in the FAA report)",
+    "provenance": "DOCUMENTED"
+  },
+  "activities": [
+    {
+      "id": "FAA-EWR-VOICE-PREP-2027",
+      "project_id": "FAA-EWR-VOICE-WAVE3",
+      "project": "REPLACE Terminal Voice Switch Sustainment at EWR, Wave 3",
+      "program": "Terminal Voice Switch Sustainment",
+      "activity": "Electronics Site Preparation",
+      "start": "2027-04-19",
+      "finish": "2027-04-30",
+      "status": "Wave 3 voice switch waterfall dates are expected to change. IMS schedule will be revised at that time.",
+      "provenance": "DOCUMENTED",
+      "source_page": 9
+    },
+    {
+      "id": "FAA-EWR-RADAR-PREP-2027",
+      "project_id": "FAA-EWR-RADAR-REPLACEMENT",
+      "project": "Establish Brand New Air Traffic Control System/Radar System Replacement at EWR",
+      "program": "Radar replacement",
+      "activity": "Conduct Government Site Prep (including electrical work)",
+      "start": "2027-04-13",
+      "finish": "2027-04-26",
+      "status": "",
+      "provenance": "DOCUMENTED",
+      "source_page": 9
+    },
+    {
+      "id": "FAA-EWR-RADAR-INSTALL-2027",
+      "project_id": "FAA-EWR-RADAR-REPLACEMENT",
+      "project": "Establish Brand New Air Traffic Control System/Radar System Replacement at EWR",
+      "program": "Radar replacement",
+      "activity": "Site Installation",
+      "start": "2027-05-05",
+      "finish": "2027-05-18",
+      "status": "",
+      "provenance": "DOCUMENTED",
+      "source_page": 9
+    },
+    {
+      "id": "FAA-EWR-VOICE-INSTALL-2027",
+      "project_id": "FAA-EWR-VOICE-WAVE3",
+      "project": "REPLACE Terminal Voice Switch Sustainment at EWR, Wave 3",
+      "program": "Terminal Voice Switch Sustainment",
+      "activity": "Installation/Checkout by National Contractor",
+      "start": "2027-05-17",
+      "finish": "2027-06-05",
+      "status": "",
+      "provenance": "DOCUMENTED",
+      "source_page": 9
+    }
+  ],
+  "unavailable_fields": [
+    "assigned crew and crew calendar",
+    "required skills and qualifications",
+    "exact work location within the facility",
+    "dependencies between the listed activities",
+    "site access restrictions and maintenance windows",
+    "crew travel origin, mode, and cost",
+    "labor rates and contract reimbursement terms"
+  ],
+  "usage_limit": "This sample supports a same-facility date-overlap screen only. An overlap is a review item, not proof of a resource conflict, avoidable visit, or cost saving. The source is a dated snapshot, not a live FAA feed."
+}

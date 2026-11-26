@@ -18,6 +18,12 @@ This is GAO's account of what unnamed FAA officials stated, not a direct quotati
 
 Source: U.S. GAO, [GAO-26-107992](https://www.gao.gov/products/gao-26-107992), September 14, 2026, pp. 29, 33–34.
 
+## Public FAA inputs in the live demo
+
+The browser now includes a dated FAA Modern Skies progress snapshot (November 16, 2026) and a small four-activity EWR schedule snapshot from the FAA [Delay Reduction Plan report](https://www.faa.gov/about/office_org/headquarters_offices/ara/programs/nyapio/delay_reduction_plan/DRP-report.pdf), dated August 20, 2026, page 9. The public schedule view loads those four activity records into Relate by Neo4j in the browser and checks same-facility date-range overlaps. It does not upload the records or use an AI service.
+
+These sources are snapshots, not live feeds or the full 11,389-project portfolio. The FAA states the DRP dates are for planning and subject to change. Same-site dates that overlap are screening results only. The public rows do not include crews, skills, exact site location, dependencies, access constraints, travel, or cost inputs, so the demo cannot determine whether a resource conflict exists or optimize the reported work.
+
 ## Documented reference versus simulated trial
 
 GAO's St. Louis example identifies voice-switch site preparation in April 2027 and information-display site preparation in January 2028 at the same facility. That is one documented overlap, not proof the work could have been combined. The report does not provide the duration, exact task dates, skill requirements, crew assignments, access windows, dependency details, travel origin, or cost terms needed to optimize it. The evidence-only fixture is in [data/st_louis_documented_anchor.json](../data/st_louis_documented_anchor.json) and is not loaded by the simulation.
