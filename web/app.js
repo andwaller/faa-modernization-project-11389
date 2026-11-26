@@ -1,6 +1,7 @@
 // Same Site, Different Schedules: Relate by Neo4j running entirely in the browser.
-// All data is simulated except the program names, scope and dates (GAO-26-107992, Table 2)
-// and the progress counts marked DOCUMENTED (FAA Modern Skies, self-reported).
+// The generated portfolio is SIMULATED except documented program summaries from GAO.
+// A dated FAA Modern Skies snapshot supplies the progress counts; the separate public schedule page
+// loads a small FAA Delay Reduction Plan activity sample. The sources are kept distinct.
 import init, { RelateDb } from "./vendor/relate-wasm/relate.js";
 
 const EPOCH = Date.UTC(2026, 0, 1);
@@ -26,7 +27,7 @@ const GLOSSARY = {
 const TAGHELP = {
   SIMULATED: "Generated data with known answers. Not real FAA data.",
   HYPOTHESIS: "A what-if: it assumes something we have not verified, such as two visits being possible at once.",
-  DOCUMENTED: "Taken from a public source (GAO report or FAA Modern Skies). The FAA's own figures are self-reported.",
+  DOCUMENTED: "Taken from a public source (GAO report, FAA Modern Skies, or FAA planning report). FAA progress figures are self-reported.",
   INFERRED: "Simple arithmetic done on documented figures. Not a forecast.",
   AGENT: "Written by an AI agent from the queries shown. Check the Cypher before relying on a number."
 };
@@ -67,10 +68,20 @@ let SIZE = 11389;
 
 async function loadFiles(size) {
   const names = ["programs", "facilities", "projects", "dependencies", "maintenance_windows"];
-  const [schema, truthText, ...csvs] = await Promise.all([
-    fetchText("data/schema.cypher"), fetchText(`data/n${size}/ground_truth.json`), ...names.map((n) => fetchText(`data/n${size}/${n}.csv`)),
+  const [schema, truthText, progressText, ...csvs] = await Promise.all([
+    fetchText("data/schema.cypher"),
+    fetchText(`data/n${size}/ground_truth.json`),
+    fetchText("data/faa_public_snapshot_2026-11-16.json"),
+    ...names.map((n) => fetchText(`data/n${size}/${n}.csv`)),
   ]);
   truth = JSON.parse(truthText).classes;
+  const publicSnapshot = JSON.parse(progressText);
+  PACE_ROWS = publicSnapshot.program_progress.filter((r) => r.pace_comparable).map((r) => ({
+    n: r.program === "New Radar Systems" ? "Radars" : r.program,
+    d: r.reported_count,
+    m: r.september_2026_completed,
+  }));
+  renderPublicProgress(publicSnapshot);
   const t = Object.fromEntries(names.map((n, i) => [n, parseCsv(csvs[i])]));
   DATA = {
     schema: schema.split("\n").map((s) => s.trim()).filter((s) => s.startsWith("CREATE ")).map((s) => s.replace(/;$/, "")),
@@ -80,6 +91,21 @@ async function loadFiles(size) {
     deps: t.dependencies,
     mws: t.maintenance_windows.map((r) => toInts(r, "start_day", "end_day")),
   };
+}
+
+function renderPublicProgress(snapshot) {
+  const rows = snapshot.program_progress.map((r) => `<tr>
+    <td>${esc(r.program)}</td>
+    <td class="num">${fmt(r.reported_count)} of ${fmt(r.total)}</td>
+    <td>${esc(r.measure)}</td>
+    <td class="num">${r.reported_percent}%</td>
+  </tr>`).join("");
+  const target = $("#progress-snapshot");
+  if (target) target.innerHTML = `<div class="tablewrap" tabindex="0"><table>
+    <caption>FAA Modern Skies snapshot — ${esc(snapshot.snapshot_date)}</caption>
+    <thead><tr><th>Program</th><th>Reported count</th><th>Measure</th><th>Progress</th></tr></thead>
+    <tbody>${rows}</tbody></table></div>
+    <p class="hint">FAA-reported public figures. “Planned” is preserved as published and is not treated as completed work.</p>`;
 }
 
 // Builds a fresh in-memory Relate database with the schema and data loaded.
@@ -163,11 +189,8 @@ RETURN g.name AS program, g.plannedScope AS scope, r.d AS done, g.completionDate
 ORDER BY neededPerMonth DESC`,
 };
 
-// FAA Modern Skies, self-reported. Totals as of 2026-10-15; recent monthly pace is September 2026.
-const PACE_ROWS = [
-  { n: "Telecommunications", d: 3508, m: 143 }, { n: "Radios", d: 457, m: 45 }, { n: "Voice switches", d: 220, m: 28 },
-  { n: "Radars", d: 15, m: 5 }, { n: "Information displays", d: 0, m: 0 },
-];
+// FAA Modern Skies figures are loaded from a dated, source-linked public snapshot.
+let PACE_ROWS = [];
 
 // ---------- rendering helpers ----------
 function table(caption, cols, rows) {
@@ -336,11 +359,11 @@ const QUESTIONS = [
         tags: ["DOCUMENTED", "INFERRED"],
         summary: `${behind.length} of ${rows.length} programs shown need a faster pace than they managed in September 2026: ${behind.join(" and ") || "none"}.`,
         body: table("Required pace to meet GAO's Table 2 dates", [
-          { key: "program", label: "Program" }, { key: "done", label: "Done (Oct 15)", num: true }, { key: "scope", label: "Total", num: true },
+          { key: "program", label: "Program" }, { key: "done", label: "Count (Nov 16)", num: true }, { key: "scope", label: "Total", num: true },
           { key: "due", label: "Due" }, { key: "neededPerMonth", label: "Needed per month", num: true },
           { key: "recent", label: "September pace", num: true }, { key: "verdict", label: "Compared" },
         ], rows),
-        meaning: `<p>Totals and due dates come from the GAO report (Table 2). Progress counts come from the FAA's Modern Skies page and are the FAA's own reporting; GAO has said it could not verify the data behind the FAA's internal status dashboard. The needed pace is simple arithmetic on those figures. It is not a forecast, because a program's monthly plan can ramp up later, and it ignores how hard each install is.</p>`,
+        meaning: `<p>Totals and due dates come from the GAO report (Table 2). Progress counts come from the FAA's Modern Skies page, snapshot dated November 16, 2026, and are the FAA's own reporting; GAO has said it could not verify the data behind the FAA's internal status dashboard. The needed pace is simple arithmetic on those figures. It is not a forecast, because a program's monthly plan can ramp up later, and it ignores how hard each install is.</p>`,
         cypher: Q.pace,
       };
     },

@@ -23,6 +23,7 @@ VISITS = [
         "program_id": "SIM-PROGRAM-VOICE",
         "program": "Voice switch work",
         "activity": "Voice switch site preparation",
+        "required_skills": ["telecommunications", "voice-switch"],
         "facility_id": "SIM-FACILITY-001",
         "facility_access_start": "2027-06-08",
         "facility_access_end": "2027-06-30",
@@ -42,6 +43,7 @@ VISITS = [
         "program_id": "SIM-PROGRAM-DISPLAYS",
         "program": "Information display work",
         "activity": "Information display site preparation",
+        "required_skills": ["telecommunications", "information-display"],
         "facility_id": "SIM-FACILITY-001",
         "facility_access_start": "2027-06-08",
         "facility_access_end": "2027-06-30",
@@ -61,6 +63,7 @@ VISITS = [
         "program_id": "SIM-PROGRAM-DISPLAYS",
         "program": "Information display work",
         "activity": "Information display validation",
+        "required_skills": ["telecommunications", "information-display"],
         "facility_id": "SIM-FACILITY-001",
         "facility_access_start": "2027-06-08",
         "facility_access_end": "2027-06-30",
@@ -80,6 +83,7 @@ VISITS = [
         "program_id": "SIM-PROGRAM-RADIO",
         "program": "Radio site work",
         "activity": "Radio site work",
+        "required_skills": ["telecommunications", "radio"],
         "facility_id": "SIM-FACILITY-002",
         "facility_access_start": "2027-06-16",
         "facility_access_end": "2027-06-22",
@@ -115,8 +119,8 @@ COST_ASSUMPTIONS = {
     },
     # SIMULATED crew mix for each synthetic crew.
     "crew_profiles": {
-        "SIM-CREW-001": {"telecom_technicians": 2, "engineering_technicians": 1},
-        "SIM-CREW-002": {"telecom_technicians": 2, "engineering_technicians": 1},
+        "SIM-CREW-001": {"telecom_technicians": 2, "engineering_technicians": 1, "skills": ["telecommunications", "voice-switch", "information-display"]},
+        "SIM-CREW-002": {"telecom_technicians": 2, "engineering_technicians": 1, "skills": ["telecommunications", "radio"]},
     },
     # FY 2027 St. Louis per diem used only as a travel-cost benchmark.
     "travel": {
@@ -124,7 +128,6 @@ COST_ASSUMPTIONS = {
         "lodging_per_person_night_usd": 156,
         "mie_full_day_per_person_usd": 86,
         "mie_first_or_last_day_per_person_usd": 64.50,
-        "travel_time_billable": True,
         "overnight_model": (
             "one night for a standalone one-day visit; for a grouped multi-day "
             "deployment, nights equal work-span days minus one"
@@ -154,7 +157,7 @@ MERGE (f:Facility {facilityId: r.facility_id})
                 f.accessEnd = r.facility_access_end,
                 f.provenance = r.provenance
 MERGE (c:Crew {crewId: r.crew_id})
-  ON CREATE SET c.provenance = r.provenance
+  ON CREATE SET c.provenance = r.provenance, c.skills = r.crew_skills
 CREATE (v:Visit {
   visitId: r.visit_id,
   activity: r.activity,
@@ -165,6 +168,7 @@ CREATE (v:Visit {
   crewWorkHours: r.crew_work_hours,
   roundTripTravelHours: r.round_trip_travel_hours,
   coordinationEligible: r.coordination_eligible,
+  requiredSkills: r.required_skills,
   provenance: r.provenance
 })
 CREATE (v)-[:IN_PROGRAM]->(p)
@@ -200,6 +204,8 @@ OPTIONAL MATCH (v)-[:DEPENDS_ON]->(pre:Visit)
 RETURN v.visitId AS visitId,
        p.name AS program,
        v.activity AS activity,
+       v.requiredSkills AS requiredSkills,
+       c.skills AS crewSkills,
        f.facilityId AS facilityId,
        f.accessStart AS facilityAccessStart,
        f.accessEnd AS facilityAccessEnd,
@@ -231,7 +237,13 @@ def as_date(value):
 
 def load_graph():
     conn = relate.connect(":memory:")
-    conn.execute(LOAD_VISITS, {"rows": VISITS})
+    crew_skills = {crew_id: profile["skills"] for crew_id, profile in COST_ASSUMPTIONS["crew_profiles"].items()}
+    # Crew capability data is simulated, not a qualification record.
+    visit_rows = [
+        {**visit, "crew_skills": crew_skills[visit["crew_id"]]}
+        for visit in VISITS
+    ]
+    conn.execute(LOAD_VISITS, {"rows": visit_rows})
     dependency_rows = [
         {"visit_id": row["visit_id"], "prerequisites": row["depends_on"]}
         for row in VISITS if row["depends_on"]
@@ -255,7 +267,7 @@ def load_graph():
 
 
 def check_schedule(schedule, visits):
-    """Check task dates, facility access/closures, dependencies, and crew overlap."""
+    """Check dates, access, dependencies, crew overlap, and simulated skill fit."""
     errors = []
     if set(schedule) != set(visits):
         return ["schedule must include every visit exactly once"]
@@ -266,6 +278,8 @@ def check_schedule(schedule, visits):
         end_exclusive = start + timedelta(days=int(visit["workDays"]))
         last_workday = end_exclusive - timedelta(days=1)
 
+        if not set(visit["requiredSkills"]).issubset(set(visit["crewSkills"])):
+            errors.append(f"{visit_id} crew lacks required simulated skills")
         if not as_date(visit["earliestStart"]) <= start <= as_date(visit["latestStart"]):
             errors.append(f"{visit_id} starts outside its allowed task window")
         if start < as_date(visit["facilityAccessStart"]) or last_workday > as_date(visit["facilityAccessEnd"]):
@@ -367,8 +381,12 @@ def crew_hour_rate(crew_id, rates):
     )
 
 
-def trip_allowance(group, schedule, visits):
-    """Estimate lodging and M&IE for the explicit simulated overnight itinerary."""
+def trip_allowance(group, schedule, visits, scenario):
+    """Estimate lodging and M&IE under the named itinerary assumption."""
+    if not scenario["overnight"]:
+        # Local day trips assume no hotel or reimbursed M&IE; mileage/vehicle
+        # costs remain unpriced in every scenario.
+        return 0
     first_start = min(as_date(schedule[item]) for item in group)
     last_end_exclusive = max(
         as_date(schedule[item]) + timedelta(days=int(visits[item]["workDays"]))
@@ -376,7 +394,7 @@ def trip_allowance(group, schedule, visits):
     )
     work_span_days = (last_end_exclusive - first_start).days
     profile = COST_ASSUMPTIONS["crew_profiles"][visits[group[0]]["crewId"]]
-    traveler_count = sum(profile.values())
+    traveler_count = profile["telecom_technicians"] + profile["engineering_technicians"]
     travel = COST_ASSUMPTIONS["travel"]
 
     # A one-day dispatch is modeled as one overnight trip. A grouped, consecutive
@@ -391,7 +409,14 @@ def trip_allowance(group, schedule, visits):
     return lodging_cost + mie_cost
 
 
-def metrics(schedule, visits):
+SCENARIOS = {
+    "local_day_trip_billable": {"overnight": False, "travel_time_billable": True, "label": "Local day trips; travel time billable"},
+    "local_day_trip_nonbillable": {"overnight": False, "travel_time_billable": False, "label": "Local day trips; travel time nonbillable"},
+    "overnight_billable": {"overnight": True, "travel_time_billable": True, "label": "Overnight travel; travel time billable"},
+    "overnight_nonbillable": {"overnight": True, "travel_time_billable": False, "label": "Overnight travel; travel time nonbillable"},
+}
+
+def metrics(schedule, visits, scenario=SCENARIOS["overnight_billable"]):
     errors = check_schedule(schedule, visits)
     if errors:
         raise ValueError("; ".join(errors))
@@ -420,10 +445,10 @@ def metrics(schedule, visits):
         group_travel_hours = travel_rates.pop()
         crew_id = group_visits[0]["crewId"]
         travel_hours += group_travel_hours
-        if COST_ASSUMPTIONS["travel"]["travel_time_billable"]:
+        if scenario["travel_time_billable"]:
             travel_labor_low += group_travel_hours * crew_hour_rate(crew_id, rates_low)
             travel_labor_high += group_travel_hours * crew_hour_rate(crew_id, rates_high)
-        lodging_mie += trip_allowance(group, schedule, visits)
+        lodging_mie += trip_allowance(group, schedule, visits, scenario)
 
     finish = max(
         as_date(schedule[visit_id]) + timedelta(days=int(visits[visit_id]["workDays"]) - 1)
@@ -469,7 +494,7 @@ def candidate_starts(visit):
     return candidates
 
 
-def optimize_schedule(visits):
+def optimize_schedule(visits, scenario=SCENARIOS["overnight_billable"]):
     """Exhaustively search this small example; use a solver for larger schedules."""
     visit_ids = sorted(visits)
     options = [candidate_starts(visits[visit_id]) for visit_id in visit_ids]
@@ -481,7 +506,7 @@ def optimize_schedule(visits):
         schedule = dict(zip(visit_ids, starts))
         if check_schedule(schedule, visits):
             continue
-        result = metrics(schedule, visits)
+        result = metrics(schedule, visits, scenario)
         # Prioritize modeled total cost, then crew travel time, then finish date.
         score = (
             result["modeled_total_cost_low_usd"],
@@ -523,29 +548,21 @@ def main():
             visit_id: visit["baselineStart"]
             for visit_id, visit in visits.items()
         }
-        baseline_result = metrics(baseline, visits)
-        optimized, optimized_result = optimize_schedule(visits)
 
-        print("\nSIMULATED cost comparison (planning assumptions; not FAA or L3Harris rates):")
-        print("  Rate basis: BLS median wages with GSA CALC+ average burden factors.")
-        print("  Costing-only crew mix: 2 telecom technicians + 1 engineering technician per crew; no skill validation.")
-        print("  Travel: billable round-trip crew time and modeled overnight lodging/M&IE.")
-        print(f"  Per diem benchmark: {COST_ASSUMPTIONS['travel']['locality']}.")
-        print("  Vehicle, airfare, shipping, equipment, overtime, and contract fees are excluded.")
-        show_schedule("Baseline", baseline, visits, baseline_result)
-        show_schedule("Lowest-expense feasible scenario", optimized, visits, optimized_result)
-
-        print("\nChange from baseline to selected scenario")
-        print(f"  mobilizations: {baseline_result['mobilizations'] - optimized_result['mobilizations']} fewer")
-        print(f"  crew work hours: {optimized_result['crew_work_hours'] - baseline_result['crew_work_hours']:+d}")
-        print(f"  crew travel hours: {optimized_result['crew_travel_hours'] - baseline_result['crew_travel_hours']:+d}")
-        savings_low = baseline_result["modeled_total_cost_low_usd"] - optimized_result["modeled_total_cost_low_usd"]
-        savings_high = baseline_result["modeled_total_cost_high_usd"] - optimized_result["modeled_total_cost_high_usd"]
-        print(f"  modeled cost reduction: ${savings_low:,}–${savings_high:,}")
-        print(f"  finish date: {baseline_result['finish_date']} to {optimized_result['finish_date']}")
-        print("  task labor is included and remains the same between schedules.")
-        print("  costs are simulated estimates; actual savings depend on contract terms and itinerary.")
-
+        print("\nSIMULATED sensitivity comparison (four explicit travel assumptions):")
+        print("  Skills: checked against simulated crew capabilities, not real qualifications.")
+        print("  Local day trips assume no lodging/M&IE; vehicle and mileage costs remain excluded.")
+        print("  Overnight cases use the stated St. Louis per-diem benchmark for synthetic locations.")
+        print("  Nonbillable travel still counts as crew travel hours but adds no travel labor cost.")
+        for scenario in SCENARIOS.values():
+            baseline_result = metrics(baseline, visits, scenario)
+            optimized, optimized_result = optimize_schedule(visits, scenario)
+            show_schedule(scenario["label"] + " — baseline", baseline, visits, baseline_result)
+            show_schedule(scenario["label"] + " — lowest-expense feasible scenario", optimized, visits, optimized_result)
+            savings_low = baseline_result["modeled_total_cost_low_usd"] - optimized_result["modeled_total_cost_low_usd"]
+            savings_high = baseline_result["modeled_total_cost_high_usd"] - optimized_result["modeled_total_cost_high_usd"]
+            print(f"  Modeled cost change: ${savings_low:,}–${savings_high:,}")
+            print(f"  Finish date: {baseline_result['finish_date']} to {optimized_result['finish_date']}")
     finally:
         conn.close()
 

@@ -27,7 +27,7 @@
 
 <div class="banner" role="note">
   <div class="wrap">
-    <strong>Simulated data.</strong> This page shows a method, not facts about the FAA. It makes no claim about what caused the November 13, 2026 ground stop or how much any real conflict costs.
+    <strong>Most portfolio data is simulated.</strong> This page also uses dated, self-reported FAA progress counts. The separate public schedule sample shows a few FAA planning activities. Neither dataset explains the November 13, 2026 ground stop or establishes real savings.
   </div>
 </div>
 
@@ -49,6 +49,23 @@
       <li><strong>Open the extra panels</strong> to see what it means, or the exact query behind it.</li>
     </ol>
     <p id="status" class="status" role="status">Loading Relate in your browser...</p>
+  </section>
+
+  <section class="card intro" aria-labelledby="progress-h">
+    <h2 id="progress-h">FAA-reported progress snapshot</h2>
+    <p class="hint">Source: <a href="https://modernskies.faa.gov/" target="_blank" rel="noopener">FAA Modern Skies</a>, current as of November 16, 2026. These self-reported program measures are not the 11,389 project schedule records.</p>
+    <div id="progress-snapshot"><p class="hint">Loading public progress counts…</p></div>
+  </section>
+  <section class="card intro" aria-labelledby="public-h">
+    <h2 id="public-h">Public FAA schedule sample</h2>
+    <p>Explore four activities and planned dates from an FAA Delay Reduction Plan report snapshot. Relate checks for same-facility date overlaps in your browser. The records are public planning data, and an overlap is a review flag rather than proof of a conflict or savings.</p>
+    <p><a href="public-schedule.html">Open the documented FAA schedule sample</a> (August 2026, EWR).</p>
+  </section>
+
+  <section class="card intro" aria-labelledby="cost-h">
+    <h2 id="cost-h">A second experiment: cost-aware scheduling</h2>
+    <p>This page explores conflicts in a large simulated portfolio. A separate four-visit command-line prototype checks dependencies, facility access, crew overlap, and simulated skill requirements while comparing schedule and cost options under four travel assumptions.</p>
+    <p><strong>These are separate experiments.</strong> The four-visit example is also simulated; it is not FAA schedule data or a projection of FAA savings. <a href="https://github.com/andwaller/faa-modernization-project-11389/blob/main/examples/cost_aware_schedule_trial.py" target="_blank" rel="noopener">View the schedule simulation</a> and <a href="https://github.com/andwaller/faa-modernization-project-11389/blob/main/docs/cost-aware-schedule-prototype.md" target="_blank" rel="noopener">read its assumptions and limits</a>.</p>
   </section>
 
   <section class="card ask" aria-labelledby="ask-h">
@@ -122,6 +139,6 @@
   </form>
 </dialog>
 
-<script type="module" src="app.js?v=5"></script>
+<script type="module" src="app.js?v=6"></script>
 </body>
 </html>

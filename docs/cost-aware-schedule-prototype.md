@@ -1,103 +1,83 @@
 # Cost-aware schedule prototype
 
-**Status:** Design for a small, reproducible prototype. Results from the first trial will be simulated unless they come directly from a cited public source.
+**Status:** A small deterministic prototype is implemented in `examples/cost_aware_schedule_trial.py`. Its four-visit inputs and expense assumptions are simulated. The script compares four travel assumptions; updated sensitivity output is pending execution.
 
 ## Purpose
 
-Explore whether **Relate by Neo4j** can connect project work across programs and facilities so a deterministic scheduling optimizer can compare feasible coordination options by crew time, travel time, expenses, and completion dates.
+Test whether connected schedule data in Relate by Neo4j can support a deterministic search over feasible schedule alternatives and compare modeled crew time, travel, expenses, and finish dates. Relate stores the graph of tasks, programs, facilities, crews, dependencies, and maintenance. Python checks constraints and searches dates. No LLM chooses dates or calculates costs.
 
-This is a decision-support experiment. It does not reconstruct the FAA's actual 11,389 schedules or establish actual FAA savings.
+This prototype does not reconstruct FAA's 11,389 schedules, show FAA-wide savings, or explain the November 13, 2026 ground stop.
 
-## Thesis context
+## Evidence context
 
-GAO reported that, as of May 2026, the FAA had **11,389 individual project schedules** supporting 13 BNATCS programs that had not been integrated across the projects. GAO wrote:
+GAO reported that, as of May 2026, FAA had 11,389 individual project schedules supporting 13 BNATCS programs that had not been integrated across projects. GAO wrote:
 
-> "FAA officials stated that due to the high number of projects, attempting to integrate all the projects in their scheduling tool would not be useful or helpful."
+> “FAA officials stated that due to the high number of projects, attempting to integrate all the projects in their scheduling tool would not be useful or helpful.”
 
-This is GAO's account of what unnamed FAA officials stated, not a direct quotation from an identified official. In its written response, the Department of Transportation described program-level schedules and an AI scheduling tool. GAO disagreed that the schedules logically sequenced work and managed interdependencies.
+This is GAO's account of what unnamed FAA officials stated, not a direct quotation from an identified official. DOT described program-level schedules and an AI scheduling tool in its written response; GAO disagreed that the schedules logically sequenced work and managed interdependencies.
 
-Source: U.S. Government Accountability Office, [*Air Traffic Control Systems: Ambitious New Modernization Effort Needs to Improve Cost and Schedule Planning*](https://www.gao.gov/products/gao-26-107992), GAO-26-107992 (September 14, 2026), pp. 29, 33–34. Kevin Walsh is listed as the GAO contact; report contributors are named in Appendix IV.
+Source: U.S. GAO, [GAO-26-107992](https://www.gao.gov/products/gao-26-107992), September 14, 2026, pp. 29, 33–34.
 
-## Research question
+## Public FAA inputs in the live demo
 
-Can a schedule-planning prototype built with Relate by Neo4j help identify feasible ways to coordinate work across programs and compare their modeled effects on crew hours, travel time, expenses, and completion dates?
+The browser now includes a dated FAA Modern Skies progress snapshot (November 16, 2026) and a small four-activity EWR schedule snapshot from the FAA [Delay Reduction Plan report](https://www.faa.gov/about/office_org/headquarters_offices/ara/programs/nyapio/delay_reduction_plan/DRP-report.pdf), dated August 20, 2026, page 9. The public schedule view loads those four activity records into Relate by Neo4j in the browser and checks same-facility date-range overlaps. It does not upload the records or use an AI service.
 
-## What is documented and what is simulated
+These sources are snapshots, not live feeds or the full 11,389-project portfolio. The FAA states the DRP dates are for planning and subject to change. Same-site dates that overlap are screening results only. The public rows do not include crews, skills, exact site location, dependencies, access constraints, travel, or cost inputs, so the demo cannot determine whether a resource conflict exists or optimize the reported work.
 
-| Data | Status and use |
-|---|---|
-| 11,389 project-schedule count and the 13 BNATCS program summaries in GAO Table 2 | DOCUMENTED. These are portfolio context, not the underlying project-level schedule records. |
-| GAO's St. Louis example: site preparation for a voice switch in April 2027 and for information displays in January 2028 at the same facility | DOCUMENTED. Use as a source-grounded example, not as evidence that the visits could be combined. |
-| Detailed visits, flexible work windows, durations, crews, travel, expenses, and task-level dependencies | SIMULATED in the first trial unless a separate source is recorded for a field. |
-| Cost rates and expense assumptions | SIMULATED and editable. No result from these values is an actual FAA savings estimate. |
+## Documented reference versus simulated trial
 
-The repository's existing generator provides synthetic facilities, projects, crews, dates, dependencies, and maintenance windows. It does not contain project-level FAA schedules or expense fields.
+GAO's St. Louis example identifies voice-switch site preparation in April 2027 and information-display site preparation in January 2028 at the same facility. That is one documented overlap, not proof the work could have been combined. The report does not provide the duration, exact task dates, skill requirements, crew assignments, access windows, dependency details, travel origin, or cost terms needed to optimize it. The evidence-only fixture is in [data/st_louis_documented_anchor.json](../data/st_louis_documented_anchor.json) and is not loaded by the simulation.
 
-## Minimum data model
+The cost trial instead uses four simulated visits: a three-task dependency chain at one synthetic facility, plus a radio-site task at a second synthetic facility. All detailed dates, windows, durations, work hours, skill requirements, crew assignments, travel hours, and expense assumptions in that trial are simulated.
 
-Each visit or work package needs:
+## What the constraint checker covers
 
-- Stable visit, project, program, facility, and crew identifiers
-- Activity type and work description
-- Baseline start date and duration
-- Earliest and latest permitted start dates
-- Required crew skills, crew availability, and estimated work hours
-- Dependencies and facility access or maintenance restrictions
-- Travel time and direct travel or mobilization expense
-- Whether coordination with another visit is allowed, with the basis for that decision
-- Provenance for each important fact: DOCUMENTED, INFERRED, or SIMULATED, plus source, page or URL, and retrieval date where applicable
+- Task start windows and facility access dates
+- Facility maintenance closures
+- Task prerequisite order and completion
+- One crew cannot be booked at overlapping work dates
+- Each task's simulated required skill labels must be present in the assigned simulated crew capability list
+- A mobilization can group consecutive eligible tasks sharing one crew and one facility
 
-Do not infer that two visits can be combined solely because they share a facility. The work, crew skills, access windows, dependencies, and operational constraints must permit it.
+The crew and skill records are illustrative labels. They do not represent real FAA crew qualifications, certifications, work calendars, or availability. Work hours are treated as team clock-hours and multiplied by the assumed three crew members for labor costing. This interpretation needs confirmation before applying real data.
 
-## Illustrative cost model for the scheduling trial
+## Cost build-up
 
-The prototype replaces the unsupported flat mobilization charges with a transparent planning estimate. **None of these rates are FAA or L3Harris contract rates, and the simulated facilities are not mapped to St. Louis.**
+The prototype replaces the unsupported flat $600/$800 mobilization placeholders with cost components. It reports task labor, travel labor, lodging/M&IE, and total ranges separately.
 
-- **Wage benchmarks:** BLS May 2025 median pay for telecommunications equipment installers and repairers: $32.51/hour; engineering technologists and technicians: $78,190/year, converted using 2,080 hours/year ($37.59/hour).
-- **Loaded labor range:** GSA CALC+ BLS guidance uses fringe, overhead, G&A, and fee/profit factors to build a comparable estimated labor rate. The trial applies GSA's average factor assumptions (35% fringe, 15% G&A, 10% fee/profit) with 25% government-site versus 50% contractor-site overhead. This yields approximately $69–$83/hour per telecommunications technician and $80–$96/hour per engineering technician.
-- **Costing-only crew assumption:** two telecommunications technicians plus one engineering technician per simulated crew. This is only for pricing the scenario; the prototype does not validate skills, actual staffing, or qualifications.
-- **Travel benchmark:** St. Louis FY2027 GSA per diem, used only as a locality reference: $156 lodging per person/night, $86 full-day M&IE, and $64.50 M&IE for first/last travel days. The simulated facilities have no actual location or crew origin.
-- **Trip model:** standalone one-day visits assume one overnight; three consecutive workdays combined into one deployment assume two hotel nights. Travel time is assumed billable for this scenario.
-- **Excluded pending source data:** mileage/vehicle or airfare, equipment freight, test equipment, overtime, contract-specific mobilization/setup charges, and any contract reimbursement or fixed-price rules.
+- **Wage benchmarks:** BLS May 2025 median pay is $32.51/hour for telecommunications equipment installers and repairers; $78,190/year for electrical and electronic engineering technicians, converted at 2,080 hours/year.
+- **Loaded labor range:** GSA CALC+ average rate build-up uses fringe, overhead, G&A, and fee/profit factors. The example applies 35% fringe, 15% G&A, 10% fee/profit, and 25% versus 50% overhead assumptions to create low/high rates. These factors are benchmarks, not bid rates.
+- **Simulated crew mix:** two telecommunications technicians and one engineering technician per crew. A separate simulated skills list supports the feasibility check.
+- **Per diem benchmark:** FY2027 St. Louis GSA rates ($156 lodging/person/night, $86 full-day M&IE, $64.50 first/last travel day) are an illustrative locality reference. The synthetic facilities have no real location and are not mapped to St. Louis.
+- **Excluded:** mileage, airfare, rental vehicles, routing, shipping, equipment, overtime, contract-specific setup charges, and contract reimbursement or fixed-price rules.
 
-The model treats `crew_work_hours` as team clock-hours and prices each hour for the assumed three crew members. This interpretation is simulated and must be verified before real schedule data is used. The output separates task labor, billable travel labor, and lodging/M&IE. It does not claim these estimates equal a contractor invoice or actual savings. The optimizer uses the lower modeled total-cost case as its objective; the higher case is shown as a sensitivity bound.
+Sources: [BLS telecommunications wage data](https://www.bls.gov/iag/tgs/iag517.htm); [BLS engineering technician wage data](https://www.bls.gov/ooh/architecture-and-engineering/electrical-and-electronics-engineering-technicians.htm); [GSA CALC+ rate build-up guidance](https://buy.gsa.gov/pricing/qr/bls); [GSA FY2027 St. Louis per diem](https://www.gsa.gov/travel/plan-book/per-diem-rates/per-diem-rates-results?action=perdiems_report&city=St.+Louis&fiscal_year=2027&state=MO&zip=).
 
-Reference inputs:
-- [BLS telecommunications equipment installers and repairers wage data](https://www.bls.gov/iag/tgs/iag517.htm)
-- [BLS engineering technologist and technician wage data](https://www.bls.gov/ooh/architecture-and-engineering/electrical-and-electronics-engineering-technicians.htm)
-- [GSA CALC+ BLS rate build-up guidance](https://buy.gsa.gov/pricing/qr/bls)
-- [GSA FY2027 St. Louis per diem](https://www.gsa.gov/travel/plan-book/per-diem-rates/per-diem-rates-results?action=perdiems_report&city=St.+Louis&fiscal_year=2027&state=MO&zip=)
+## Sensitivity cases
 
-## Schedule comparison
+The script runs the schedule search separately for each combination:
 
-Keep the baseline and each scenario separate. Report these measures independently:
+| Trip model | Travel time billable? | Lodging/M&IE treatment |
+|---|---:|---|
+| Local day trips | Yes | $0 assumed |
+| Local day trips | No | $0 assumed |
+| Overnight | Yes | Lodging and M&IE estimated with the cited benchmark |
+| Overnight | No | Lodging and M&IE estimated with the cited benchmark |
 
-- Work hours
-- Crew travel hours
-- Number of separate mobilizations
-- Direct expenses, by category
-- Project completion dates and any schedule movement
-- Constraints satisfied or violated
-- Data provenance and assumptions for every changed visit
+The local cases assume a nearby crew base and no lodging or M&IE. They still count round-trip crew travel hours; billable travel adds labor cost, nonbillable travel does not. All cases exclude mileage, vehicle, airfare, and route costs, so they are not complete trip-cost estimates. In the overnight cases, each stand-alone one-day trip assumes one hotel night; consecutive grouped work uses one fewer hotel night than work-span days. Both the local crew assumption and overnight pattern are hypothetical.
 
-A monetary total should be calculated only when its rates and cost categories are defined. If the first trial uses assumed rates, label the total as a modeled scenario value. Do not hide trade-offs in one weighted score until its weights are explained.
+The optimizer selects a feasible schedule separately under each case, minimizing modeled total cost, then travel hours, then finish date. Task labor is constant across dates in this example. The script prints each baseline and selected schedule, cost components, finish date, and modeled change. Results from the new sensitivity run have not yet been recorded. Earlier output for the overnight/billable case showed baseline total $11,963–$13,671 and selected total $9,664–$11,110, an estimated difference of $2,299–$2,561. That output is scenario-specific, not a forecast, invoice estimate, or FAA savings figure.
 
-## Proposed prototype flow
+## Run it
 
-1. Load a small synthetic set of visits into Relate by Neo4j with clear provenance.
-2. Use Cypher to retrieve connected visits, dependencies, crews, and facility restrictions.
-3. Pass that context to a deterministic scheduling optimizer. Treat dependencies, allowed work windows, resource availability, facility restrictions, and deadlines as hard constraints.
-4. Compare the baseline with feasible alternatives under editable time and expense assumptions.
-5. Store or export the scenario results with the assumptions and changed visits.
-6. Add a LangChain natural-language interface after the deterministic comparison is repeatable. The agent should call defined read and scenario tools, while schedule changes remain proposals for human review.
+From the repository root:
 
-## First-trial completion criteria
+```powershell
+python -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe examples\cost_aware_schedule_trial.py
+```
 
-- A clean setup can load and query the small scenario.
-- The baseline and at least one alternative can be compared with the same input records.
-- Every alternative passes the stated hard constraints.
-- The report shows crew hours, travel hours, mobilizations, direct expenses, and completion dates separately.
-- The report identifies every simulated value and assumption.
-- An independent check confirms the optimizer did not create an invalid schedule.
+## Next validation needed
 
-A positive result means the prototype found a lower modeled time or expense option under its stated assumptions. It does not establish that the FAA can use that option or realize those savings without validation against real schedule, resource, access, and cost data.
+Before treating this as a useful planning estimate, the assumptions requiring real evidence are: meaning of work-hour fields; required task qualifications; actual crew composition and calendars; travel origin and trip mode; local day-trip eligibility; travel billing and reimbursement; route costs; lodging/M&IE eligibility; and contract terms. The optimizer also needs independent review before scaling beyond a handful of visits.

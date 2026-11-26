@@ -1,31 +1,28 @@
-# Artifacts to keep in view
+# Project artifacts and status
 
-Work comes first. This list only tracks what will be needed. Nothing here is started unless marked.
+Status reflects the repository after the schedule-coordination update on 2026-11-26.
 
-## Hackathon submission (deadline Dec 11, 2026, 6:00 PM PST; rules: relate.devpost.com/rules)
-| Artifact | Needed | Status |
+| Component | Status | What it establishes |
 |---|---|---|
-| Public GitHub repo, topic `relate`, kept public through Dec 17 | Yes | Created and public; `relate` topic is set |
-| Open-source license (MIT or Apache-2.0 recommended) | Recommended | Apache-2.0 (`LICENSE`) |
-| README: setup, how a judge runs it, "how are you using Relate, and why?", storage mode | Yes | Drafted (setup, how to run, Relate usage, storage mode all present) |
-| Persistent Relate store (directory or `.rl` file) in the repo | Yes | Created (`store/portfolio_n1000_seed1.rl`) |
-| Demo video, up to 2 minutes, viewable without login | Yes | Not started |
-| Project description: use case and what connects to what | Yes | Not started |
-| Statement of Relate capabilities, third-party tools, and AI tools used (AI disclosure) | Yes | In the README Disclosures section |
-| Reused code disclosure | If any | None so far |
+| GAO/FAA context and thesis | Documented in README and DESCRIPTION | Motivation and evidence boundaries; no claim that scheduling caused or could have prevented the November 2026 ground stop. |
+| Synthetic portfolio generator | Implemented | Creates seeded schedules with planted conflicts and an independent checker. The data is simulated. |
+| Relate loader and Cypher checks | Implemented | Stores connected records and finds planted conflict classes in the synthetic portfolios. This is not an FAA conflict-rate estimate. |
+| Browser portfolio demo | Published through GitHub Pages | Interactive conflict-detection experiment using simulated data, with separate documented FAA inputs. |
+| FAA public inputs | Added as dated snapshots | Nine Modern Skies progress measures from Nov. 16, 2026, and four EWR planned activities from the FAA August 2026 DRP report (p. 9). Not a live feed or full schedule. |
+| Public schedule overlap view | Added | Relate checks date ranges at the same facility; results are review flags, not proof of conflicts. Crew, access, dependencies, travel, and cost fields are missing. |
+| Four-visit cost-aware schedule trial | Implemented as a small deterministic example | Relate stores the connected schedule; Python checks constraints and searches feasible dates. The example includes synthetic task skills and a four-case travel sensitivity. |
+| Cost sensitivity output | Added; results pending execution | Compares local-day-trip/overnight assumptions with billable/nonbillable travel time. It has not yet been run after this change. |
+| St. Louis GAO reference fixture | Added as evidence-only data | Preserves the limited public overlap and labels unavailable fields; not loaded into the optimizer. |
+| Crew skill matching | Added for simulated skills | Checks required task labels against synthetic crew capability lists. Not a qualification, certification, staffing, or availability check. |
+| Cost evidence | Partly source-grounded | BLS and GSA benchmarks support a transparent estimate; no FAA/L3Harris rates, route costs, or contract terms are available. |
+| Preregistration | Draft, not frozen | Current schedule-coordination evaluation plan; assumptions and protocol still need review. |
+| Phase 1 report | Historical snapshot | Records earlier research and the earlier detection-efficiency thesis. Do not treat that thesis as current. |
 
-## Project working files
-| Artifact | Status |
-|---|---|
-| Graph schema (`schema/schema.cypher`) | Drafted, being tested in Relate |
-| Synthetic data generator and checker (`generator/`) | Built, verified on dev seed 1 |
-| Loader into Relate (`loader/load_portfolio.py`) | Built; verified at 1,000 and 11,389 projects |
-| Persistent Relate store (`store/portfolio_n1000_seed1.rl`, 0.8 MB) | Created in the project folder; reopens with 14 constraints |
-| Thesis question queries (`queries/thesis_questions.py`) | Built; run at 1,000 and 11,389 projects |
-| Browser page with guided help (`web/`) | Built; all eight questions checked in Chrome at 1,000 and 11,389 projects |
-| Agent that answers questions through Relate | In the web page: ask box (simple matcher) and an optional Claude agent. The agent loop was tested with a simulated API only, not a live key. Fresh Claude Code sessions were tested through Relate's own CLI and MCP interfaces (`docs/agent-test.md`): one run per path, both correct |
-| Incident-scenario network model (all hypothetical) | Not started |
-| Research report and pre-registration (`PHASE1-REPORT.md`, `PREREGISTRATION.md`) | Drafted; heavier than the lean demo needs |
+## Remaining work
 
-## Blog
-Not started. Write alongside the build. Keep claims at the level of the evidence; disclose the Neo4j affiliation; no claim about the cause of the 2026-11-13 ground stop.
+1. Run the updated four-case simulation and record the complete output.
+2. Review the assumptions for team work-hours, local crew origins, reimbursable travel, and overnight stays.
+3. Add realistic but sourceable travel costs only after route and transport assumptions are available.
+4. Validate crew skills, calendars, and task constraints against authorized data.
+5. Keep the St. Louis pair as a documented reference unless sufficient task-level inputs are obtained; GAO's public example alone does not support optimization.
+6. Define and review an independent evaluation before scaling schedule search beyond the four-visit teaching example.

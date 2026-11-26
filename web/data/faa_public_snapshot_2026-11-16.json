@@ -1,0 +1,86 @@
+{
+  "snapshot_date": "2026-11-16",
+  "source_name": "FAA Modern Skies",
+  "source_url": "https://modernskies.faa.gov/",
+  "provenance": "DOCUMENTED",
+  "note": "FAA-reported counts and percentages as displayed on the source page. The E-IDS figure is labeled planned, not installed, and is excluded from the completed-work pace comparison.",
+  "pace_comparison_month": "2026-09",
+  "program_progress": [
+    {
+      "program": "Telecommunications",
+      "reported_count": 3651,
+      "total": 5170,
+      "measure": "replaced",
+      "reported_percent": 71,
+      "pace_comparable": true,
+      "september_2026_completed": 143
+    },
+    {
+      "program": "Surface Awareness Initiatives",
+      "reported_count": 143,
+      "total": 220,
+      "measure": "installed",
+      "reported_percent": 65,
+      "pace_comparable": false
+    },
+    {
+      "program": "Radios",
+      "reported_count": 497,
+      "total": 1581,
+      "measure": "converted",
+      "reported_percent": 31,
+      "pace_comparable": true,
+      "september_2026_completed": 45
+    },
+    {
+      "program": "Electronic Flight Strips (TFDM)",
+      "reported_count": 28,
+      "total": 89,
+      "measure": "implemented",
+      "reported_percent": 31,
+      "pace_comparable": false
+    },
+    {
+      "program": "Voice switches",
+      "reported_count": 230,
+      "total": 450,
+      "measure": "installed",
+      "reported_percent": 51,
+      "pace_comparable": true,
+      "september_2026_completed": 28
+    },
+    {
+      "program": "New Radar Systems",
+      "reported_count": 16,
+      "total": 612,
+      "measure": "deployed",
+      "reported_percent": 3,
+      "pace_comparable": true,
+      "september_2026_completed": 5
+    },
+    {
+      "program": "Tower Simulation Systems",
+      "reported_count": 20,
+      "total": 117,
+      "measure": "deployed",
+      "reported_percent": 17,
+      "pace_comparable": false
+    },
+    {
+      "program": "Enterprise Information Display Systems",
+      "reported_count": 5,
+      "total": 435,
+      "measure": "planned",
+      "reported_percent": 1,
+      "pace_comparable": false
+    },
+    {
+      "program": "Surface Movement Radars",
+      "reported_count": 8,
+      "total": 53,
+      "measure": "installed",
+      "reported_percent": 15,
+      "pace_comparable": false
+    }
+  ]
+}
