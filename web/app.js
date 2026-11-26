@@ -76,9 +76,12 @@ async function loadFiles(size) {
   ]);
   truth = JSON.parse(truthText).classes;
   const publicSnapshot = JSON.parse(progressText);
-  PACE_ROWS = publicSnapshot.program_progress.map((r) => ({
-    n: r.program, d: r.completed, m: r.september_2026_completed,
+  PACE_ROWS = publicSnapshot.program_progress.filter((r) => r.pace_comparable).map((r) => ({
+    n: r.program === "New Radar Systems" ? "Radars" : r.program,
+    d: r.reported_count,
+    m: r.september_2026_completed,
   }));
+  renderPublicProgress(publicSnapshot);
   const t = Object.fromEntries(names.map((n, i) => [n, parseCsv(csvs[i])]));
   DATA = {
     schema: schema.split("\n").map((s) => s.trim()).filter((s) => s.startsWith("CREATE ")).map((s) => s.replace(/;$/, "")),
@@ -88,6 +91,21 @@ async function loadFiles(size) {
     deps: t.dependencies,
     mws: t.maintenance_windows.map((r) => toInts(r, "start_day", "end_day")),
   };
+}
+
+function renderPublicProgress(snapshot) {
+  const rows = snapshot.program_progress.map((r) => `<tr>
+    <td>${esc(r.program)}</td>
+    <td class="num">${fmt(r.reported_count)} of ${fmt(r.total)}</td>
+    <td>${esc(r.measure)}</td>
+    <td class="num">${r.reported_percent}%</td>
+  </tr>`).join("");
+  const target = $("#progress-snapshot");
+  if (target) target.innerHTML = `<div class="tablewrap" tabindex="0"><table>
+    <caption>FAA Modern Skies snapshot — ${esc(snapshot.snapshot_date)}</caption>
+    <thead><tr><th>Program</th><th>Reported count</th><th>Measure</th><th>Progress</th></tr></thead>
+    <tbody>${rows}</tbody></table></div>
+    <p class="hint">FAA-reported public figures. “Planned” is preserved as published and is not treated as completed work.</p>`;
 }
 
 // Builds a fresh in-memory Relate database with the schema and data loaded.
@@ -341,7 +359,7 @@ const QUESTIONS = [
         tags: ["DOCUMENTED", "INFERRED"],
         summary: `${behind.length} of ${rows.length} programs shown need a faster pace than they managed in September 2026: ${behind.join(" and ") || "none"}.`,
         body: table("Required pace to meet GAO's Table 2 dates", [
-          { key: "program", label: "Program" }, { key: "done", label: "Done (Nov 16)", num: true }, { key: "scope", label: "Total", num: true },
+          { key: "program", label: "Program" }, { key: "done", label: "Count (Nov 16)", num: true }, { key: "scope", label: "Total", num: true },
           { key: "due", label: "Due" }, { key: "neededPerMonth", label: "Needed per month", num: true },
           { key: "recent", label: "September pace", num: true }, { key: "verdict", label: "Compared" },
         ], rows),

@@ -30,7 +30,7 @@ Schedules contain connected information: tasks belong to programs, happen at fac
 
 The live demo now includes two small documented inputs alongside its much larger simulated portfolio:
 
-- A dated FAA Modern Skies snapshot (November 16, 2026) for five program progress counts, compared with a September 2026 monthly pace figure retained from the prior snapshot.
+- A dated FAA Modern Skies snapshot (November 16, 2026) with nine reported program progress measures. Four measures labeled as completed, installed, converted, or deployed are also compared with September 2026 monthly pace figures retained from the prior snapshot. The E-IDS count is labeled “planned” and excluded from that comparison.
 - Four future activity records at EWR transcribed from the FAA's August 20, 2026 Delay Reduction Plan, page 9. The [public schedule page](web/public-schedule.html) stores them as documented records in Relate and screens for overlapping date ranges at the same facility.
 
 These are dated public snapshots, not live feeds or complete FAA schedules. FAA says the DRP dates are for planning and subject to change. The EWR overlap screen cannot establish a crew conflict or recommend revised dates because the source does not publish the needed crew, access, dependency, travel, and cost fields.
@@ -113,6 +113,6 @@ The portfolio-level question is how work across programs, sites, dependencies, c
 
 ### What FAA's public data shows now
 
-- FAA's [Modern Skies](https://modernskies.faa.gov/) site (self-reported, data current as of November 16, 2026): telecommunications 3,651 of 5,170 (71%), radio sites 497 of 1,581 (31%), voice switches 230 of 450 (51%), radars 16 of 612 (3%), and information displays 5 of 435 (1%).
+- FAA's [Modern Skies](https://modernskies.faa.gov/) site (self-reported, data current as of November 16, 2026): telecommunications 3,651 of 5,170 (71%), Surface Awareness Initiatives 143 of 220 (65%), radio sites 497 of 1,581 (31%), electronic flight strips 28 of 89 (31%), voice switches 230 of 450 (51%), new radar systems 16 of 612 (3%), tower simulation systems 20 of 117 (17%), information displays 5 of 435 planned (1%), and surface movement radars 8 of 53 (15%).
 - Its location lookup lists seven programs for St. Louis Lambert (STL): six Phase 1 (voice switches in progress; radios, information displays, flight data, surface radar, and radar replacement planned) and one Phase 2. That is consistent with GAO's St. Louis example, where voice switch and information display work were scheduled at the same site about eight months apart. The lookup shows no dates.
 
