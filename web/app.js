@@ -497,7 +497,7 @@ async function handleAsk(raw) {
 
 // ---------- optional agent: Claude, with the visitor's own API key ----------
 const MODELS = [["claude-sonnet-5-5", "Claude Sonnet 5.5 (recommended)"], ["claude-haiku-5-5", "Claude Haiku 5.5 (faster, cheaper)"]];
-const agent = { key: null, model: MODELS[0][0], db: null };
+const agent = { key: null, workspaceId: null, model: MODELS[0][0], db: null };
 const MAX_STEPS = 8, ROW_CAP = 40;
 
 const TOOLS = [{
@@ -552,6 +552,7 @@ function agentRun(input) {
 }
 
 function friendlyHttp(status, detail) {
+  if (status === 400 && /not scoped to a workspace|anthropic-workspace-id|workspace id/i.test(detail)) return "Anthropic requires a workspace ID for this API key. Enter the workspace ID from your Anthropic workspace, then reconnect.";
   if (status === 401) return "Claude rejected the API key. Check it and connect again.";
   if (status === 403) return "This API key is not allowed to use that model.";
   if (status === 404) return "Claude could not find that model. Pick a different model when you connect.";
@@ -570,6 +571,7 @@ async function callClaude(messages) {
         "x-api-key": agent.key,
         "anthropic-version": "2023-06-01",
         "anthropic-dangerous-direct-browser-access": "true",
+        ...(agent.workspaceId ? { "anthropic-workspace-id": agent.workspaceId } : {}),
       },
       body: JSON.stringify({ model: agent.model, max_tokens: 1500, system: systemPrompt(), tools: TOOLS, messages }),
     });
@@ -644,8 +646,8 @@ function updateAgentState() {
     input.placeholder = "For example: which visits could be combined?";
   }
 }
-function disconnectAgent() { agent.key = null; agent.db = null; updateAgentState(); }
-function openKeyDialog() { $("#key-msg").textContent = ""; $("#key-msg").className = "status"; $("#key-input").value = ""; $("#dlg-key").showModal(); }
+function disconnectAgent() { agent.key = null; agent.workspaceId = null; agent.db = null; updateAgentState(); }
+function openKeyDialog() { $("#key-msg").textContent = ""; $("#key-msg").className = "status"; $("#key-input").value = ""; $("#workspace-input").value = ""; $("#dlg-key").showModal(); }
 
 function setupAsk() {
   const chips = $("#ask-chips");
@@ -659,13 +661,14 @@ function setupAsk() {
   $("#key-model").innerHTML = MODELS.map(([id, label]) => `<option value="${id}">${esc(label)}</option>`).join("");
   $("#btn-key").addEventListener("click", openKeyDialog);
   $("#key-cancel").addEventListener("click", () => dlg.close());
-  $("#key-disconnect").addEventListener("click", () => { disconnectAgent(); $("#key-input").value = ""; dlg.close(); });
+  $("#key-disconnect").addEventListener("click", () => { disconnectAgent(); $("#key-input").value = ""; $("#workspace-input").value = ""; dlg.close(); });
   $("#key-form").addEventListener("submit", (e) => {
     e.preventDefault();
     const k = $("#key-input").value.trim(), msg = $("#key-msg");
     if (!/^sk-ant-/.test(k)) { msg.className = "status bad"; msg.textContent = "That does not look like an Anthropic API key. They start with sk-ant-."; return; }
-    agent.key = k; agent.model = $("#key-model").value; agent.db = null;
+    agent.key = k; agent.workspaceId = $("#workspace-input").value.trim() || null; agent.model = $("#key-model").value; agent.db = null;
     $("#key-input").value = "";
+    $("#workspace-input").value = "";
     updateAgentState();
     dlg.close();
   });

@@ -123,12 +123,13 @@
   <p>An AI agent can answer open-ended questions by writing its own queries against a scratch copy of the data. It needs <strong>your own Anthropic API key</strong>.</p>
   <ul class="plain">
     <li>The key stays in this tab's memory. This page never stores it, and it is forgotten when you close or reload the tab.</li>
-    <li>It is sent only to <code>api.anthropic.com</code>, together with your question and the query results. The data is simulated.</li>
+    <li>The API key and, if entered, workspace ID are sent only to <code>api.anthropic.com</code>. Your question and query results are also sent to Anthropic to generate an answer. The graph stays in this browser; the schedule data is simulated.</li>
     <li>Usage is billed to your Anthropic account. Use a key with a low spending limit.</li>
     <li>The page's code is open source, so you can check this: github.com/andwaller/faa-modernization-project-11389.</li>
   </ul>
   <form id="key-form" autocomplete="off">
     <p><label for="key-input">API key</label><br><input id="key-input" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-..."></p>
+    <p><label for="workspace-input">Workspace ID (optional; required for some API keys)</label><br><input id="workspace-input" type="text" autocomplete="off" spellcheck="false" placeholder="Workspace ID"></p>
     <p><label for="key-model">Model</label><br><select id="key-model"></select></p>
     <p id="key-msg" class="status" role="status"></p>
     <div class="dlg-actions">
@@ -139,6 +140,6 @@
   </form>
 </dialog>
 
-<script type="module" src="app.js?v=6"></script>
+<script type="module" src="app.js?v=7"></script>
 </body>
 </html>
