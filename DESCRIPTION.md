@@ -38,7 +38,7 @@ The repository also includes a browser page that runs Relate's WebAssembly build
 
 A second experiment models four simulated visits: a three-task dependency chain at one synthetic facility and a radio-site visit at another. It includes task windows, facility access, a maintenance closure, two crew identifiers, simulated required skills, travel-time assumptions, and a cost model. The schedule search checks the constraints and compares feasible dates. Skill checks only compare invented task requirements with invented crew capability lists; they do not validate FAA qualifications, certifications, availability, or staffing rules.
 
-| Measure | Baseline | Selected simulated scenario |
+| Measure | Baseline | Selected simulated scenario (overnight, travel billable) |
 |---|---:|---:|
 | Mobilizations | 4 | 2 |
 | Crew work hours | 26 | 26 |

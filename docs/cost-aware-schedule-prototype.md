@@ -68,8 +68,8 @@ From the repository root:
 
 ```powershell
 python -m venv .venv
-.venv\\Scripts\\python.exe -m pip install -r requirements.txt
-.venv\\Scripts\\python.exe examples\\cost_aware_schedule_trial.py
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe examples\cost_aware_schedule_trial.py
 ```
 
 ## Next validation needed
